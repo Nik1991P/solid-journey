@@ -5,17 +5,13 @@
 <title>Dubrovnik Audio Guide</title>
 <style>
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-/* Pozadina sa blur efektom */
 body::before {
-  content:"";
-  position:fixed; top:0; left:0; width:100%; height:100%;
+  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
   background:url('images/DubrovnikSlika.webp') no-repeat center center;
-  background-size:cover;
-  filter:blur(4px); transform:scale(1.05); z-index:-1;
+  background-size:cover; filter:blur(4px); transform:scale(1.05); z-index:-1;
 }
 body::after {
-  content:"";
-  position:fixed; top:0; left:0; width:100%; height:100%;
+  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
   background:rgba(0,0,0,0.3); z-index:-1;
 }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; }
@@ -55,11 +51,7 @@ audio { width:90%; margin-top:15px; }
 
 <script>
 // Audio linkovi
-var audioLinks = {
-  EN: "audio/audio_en.mp3",
-  HR: "audio/audio_hr.mp3",
-  DE: "audio/audio_de.mp3"
-};
+var audioLinks = { EN:"audio/audio_en.mp3", HR:"audio/audio_hr.mp3", DE:"audio/audio_de.mp3" };
 
 // Privremeno spremi podatke iz forme
 var formData = {};
@@ -69,18 +61,12 @@ function submitForm() {
   var name = document.getElementById("name").value.trim();
   var surname = document.getElementById("surname").value.trim();
   var phone = document.getElementById("phone").value.trim();
+  if(!name || !surname || !phone){ alert("Please fill all fields!"); return; }
 
-  if(!name || !surname || !phone){
-    alert("Please fill all fields!");
-    return;
-  }
-
-  // Sprema podatke privremeno
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
 
-  // Prikaži div za odabir jezika
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
@@ -96,17 +82,15 @@ function backToForm() {
 function selectLanguage(lang) {
   formData.language = lang;
 
-  // Pošalji u Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycby6JOySibSDS1EoXOtM9lA0loMsm4eShxFWSBaGQ3kBp86EYPp3N4HSTkXNZ2FB4XAE3g/exec", { // <- zamijeni sa svojim Web App URL
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  fetch("https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec", { // <- zamijeni sa svojim URL
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
     body: JSON.stringify(formData)
   })
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.log(err));
+  .then(res=>res.json())
+  .then(data=>console.log(data))
+  .catch(err=>console.log(err));
 
-  // Pokreni audio
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
   player.style.display = "block";
