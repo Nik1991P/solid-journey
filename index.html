@@ -41,7 +41,6 @@ audio { width:90%; margin-top:15px; }
 </div>
 
 <script>
-// Audio linkovi
 var audioLinks = {
   EN: "audio/audio_en.mp3",
   HR: "audio/audio_hr.mp3",
@@ -80,17 +79,18 @@ function backToForm() {
 function selectLanguage(lang) {
   formData.language = lang;
 
-  // Pošalji podatke u Sheet
-  fetch("https://script.google.com/macros/s/AKfycbxWK8JV-t720Ywhr2jBwpVBsVpnCkvIINVHl3mDkFXbUy1e7Mj5vkBBeK72KOttOY2UdQ/exec", { // <-- zamijeni sa URL iz deploya
+  fetch("https://script.google.com/macros/s/AKfycbwRDVUEemhauIy5tI9xwEbnSSYeSrGGqxWVTY5WQGJudJ9TgT3nPURge7s2YTYi2MHF-Q/exec", { // <-- stavi ovdje svoj Web App URL
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData)
   })
   .then(res => res.json())
-  .then(data => console.log("Saved:", data))
+  .then(data => {
+      console.log("Saved:", data);
+      alert("Podaci su spremljeni!");
+  })
   .catch(err => console.log("Error:", err));
 
-  // Pokreni audio
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
   player.style.display = "block";
