@@ -5,15 +5,8 @@
 <title>Dubrovnik Audio Guide</title>
 <style>
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body::before {
-  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
-  background:url('images/DubrovnikSlika.webp') no-repeat center center;
-  background-size:cover; filter:blur(4px); transform:scale(1.05); z-index:-1;
-}
-body::after {
-  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.3); z-index:-1;
-}
+body::before { content:""; position:fixed; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); transform:scale(1.05); z-index:-1; }
+body::after { content:""; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; }
 .container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; color:#fff; }
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; }
@@ -27,7 +20,6 @@ audio { width:90%; margin-top:15px; }
 <body>
 
 <div class="screen-center">
-  <!-- FORM -->
   <div id="formDiv" class="container">
     <h2>Dubrovnik Audio Guide</h2>
     <p>Please enter your details:</p>
@@ -37,13 +29,12 @@ audio { width:90%; margin-top:15px; }
     <button type="button" onclick="submitForm()">Submit</button>
   </div>
 
-  <!-- LANGUAGE SELECTION -->
   <div id="languageDiv" class="container" style="display:none">
     <h2>Select your language</h2>
     <button onclick="selectLanguage('EN')">English</button><br>
     <button onclick="selectLanguage('HR')">Hrvatski</button><br>
     <button onclick="selectLanguage('DE')">Deutsch</button><br><br>
-    <button onclick="backToForm()">Back</button>
+    <button type="button" onclick="backToForm()">Back</button>
     <br>
     <audio id="audioPlayer" controls style="display:none"></audio>
   </div>
@@ -51,17 +42,24 @@ audio { width:90%; margin-top:15px; }
 
 <script>
 // Audio linkovi
-var audioLinks = { EN:"audio/audio_en.mp3", HR:"audio/audio_hr.mp3", DE:"audio/audio_de.mp3" };
+var audioLinks = {
+  EN: "audio/audio_en.mp3",
+  HR: "audio/audio_hr.mp3",
+  DE: "audio/audio_de.mp3"
+};
 
-// Privremeno spremi podatke iz forme
 var formData = {};
 
-// Submit forma – prikazuje div za odabir jezika
+// Submit forma
 function submitForm() {
   var name = document.getElementById("name").value.trim();
   var surname = document.getElementById("surname").value.trim();
   var phone = document.getElementById("phone").value.trim();
-  if(!name || !surname || !phone){ alert("Please fill all fields!"); return; }
+
+  if(!name || !surname || !phone){
+    alert("Please fill all fields!");
+    return;
+  }
 
   formData.name = name;
   formData.surname = surname;
@@ -78,19 +76,21 @@ function backToForm() {
   document.getElementById("audioPlayer").style.display = "none";
 }
 
-// Odabir jezika – šalje podatke i pokreće audio
+// Odabir jezika
 function selectLanguage(lang) {
   formData.language = lang;
 
-  fetch("https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec", { // <- zamijeni sa svojim URL
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
+  // Pošalji podatke u Sheet
+  fetch("https://script.google.com/macros/s/AKfycbyC5SiMLC_rBTQWd8LO8zW7X3QyGG81EIkFltv1fPnQTyJU4jbIw2tXhQRVVApaJH-bzg/exec", { // <-- zamijeni sa URL iz deploya
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData)
   })
-  .then(res=>res.json())
-  .then(data=>console.log(data))
-  .catch(err=>console.log(err));
+  .then(res => res.json())
+  .then(data => console.log("Saved:", data))
+  .catch(err => console.log("Error:", err));
 
+  // Pokreni audio
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
   player.style.display = "block";
