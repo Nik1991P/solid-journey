@@ -61,7 +61,7 @@ var audioLinks = {
   DE: "audio/audio_de.mp3"
 };
 
-// Privremeno spremi podatke iz forme
+// Privremeni objekt za formu
 var formData = {};
 
 // Submit forma – prikazuje div za odabir jezika
@@ -75,12 +75,12 @@ function submitForm() {
     return;
   }
 
-  // Sprema podatke privremeno
-  formData.name = name;
-  formData.surname = surname;
-  formData.phone = phone;
+  formData = {
+    ime: name,
+    prezime: surname,
+    "broj telefona": phone
+  };
 
-  // Prikaži div za odabir jezika
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
@@ -94,10 +94,11 @@ function backToForm() {
 
 // Odabir jezika – šalje podatke i pokreće audio
 function selectLanguage(lang) {
-  formData.language = lang;
+  formData.jezik = lang;
+  formData.vrijeme_prijave = new Date().toLocaleString();
 
   // Pošalji u Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycbw-_0FBt62k1rLmOxn3Tvt4gSBy3u97ZLK_hgj7hz1Gdwp03JePap1DIeO6Hu5MMxqFOw/exec", { // <- zamijeni sa svojim Web App URL
+  fetch("https://script.google.com/macros/s/AKfycbx3I6MDKaIT13ooozsubXfg3abypo9-2eW-6odipZcmUmPQdjLJrRwuI4MGEFuhQLg3Ng/exec", {  // <- zamijeni sa svojim Web App URL
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData)
