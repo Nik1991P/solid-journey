@@ -147,12 +147,17 @@ function submitForm() {
   }
 
   // Slanje podataka u Google Sheets (zamijeni sa svojim linkom)
-fetch("https://script.google.com/macros/s/AKfycbx23trZX5Cm4CFNtpstLU5LivirbkTAlFSSL-GcbrCyjLyp8lv7ouYuCxkKhf_1mhebBw/exec", { // stavi ovdje URL iz deploya
+fetch("https://script.google.com/macros/s/AKfycbzaBQYfl1IfnSLFLEVJiRc2k1ofEGYnoNk9TKE9nmqStpDBzUyaCGIUe_GBU6HWS-xvhg/exec", {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ name: name, surname: surname, phone: phone, language: lang })
+  headers: { "Content-Type": "application/json" }, // KLJUČNO
+  body: JSON.stringify({
+    name: document.getElementById("name").value,
+    surname: document.getElementById("surname").value,
+    phone: document.getElementById("phone").value,
+    language: lang
+  })
 })
-.then(response => response.json())
+.then(res => res.json())
 .then(data => console.log(data))
 .catch(err => console.log(err));
 
