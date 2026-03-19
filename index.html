@@ -147,7 +147,7 @@ function submitForm() {
   }
 
   // Slanje podataka u Google Sheets (zamijeni sa svojim linkom)
-  fetch("OVDJE_IDE_TVOJ_LINK", {
+  fetch("https://docs.google.com/spreadsheets/d/17valWxztjezBn5p3duFSLIcG4l4_zhBXdJaGsb-DB_Y/edit?usp=drive_link", {
     method: "POST",
     body: JSON.stringify({ name: name, surname: surname, phone: phone })
   });
