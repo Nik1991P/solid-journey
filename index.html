@@ -150,7 +150,7 @@ function submitForm() {
 fetch("https://script.google.com/macros/s/AKfycbwOhht3ETlyZ9hDQ0uYRgctj-jHCfGVWrIQJvrjWeKHecjOFkcLzMbeCMorXVHy7r2G/exec", { // stavi ovdje URL iz deploya
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ name: name, surname: surname, phone: phone })
+  body: JSON.stringify({ name: name, surname: surname, phone: phone, language: lang })
 })
 .then(response => response.json())
 .then(data => console.log(data))
