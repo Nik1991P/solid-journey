@@ -41,24 +41,15 @@ audio { width:90%; margin-top:15px; }
 </div>
 
 <script>
-var audioLinks = {
-  EN: "audio/audio_en.mp3",
-  HR: "audio/audio_hr.mp3",
-  DE: "audio/audio_de.mp3"
-};
-
+var audioLinks = {EN:"audio/audio_en.mp3", HR:"audio/audio_hr.mp3", DE:"audio/audio_de.mp3"};
 var formData = {};
 
-// Submit forma
 function submitForm() {
   var name = document.getElementById("name").value.trim();
   var surname = document.getElementById("surname").value.trim();
   var phone = document.getElementById("phone").value.trim();
 
-  if(!name || !surname || !phone){
-    alert("Please fill all fields!");
-    return;
-  }
+  if(!name || !surname || !phone){ alert("Please fill all fields!"); return; }
 
   formData.name = name;
   formData.surname = surname;
@@ -68,26 +59,24 @@ function submitForm() {
   document.getElementById("languageDiv").style.display = "block";
 }
 
-// Back dugme
 function backToForm() {
   document.getElementById("languageDiv").style.display = "none";
   document.getElementById("formDiv").style.display = "block";
   document.getElementById("audioPlayer").style.display = "none";
 }
 
-// Odabir jezika
 function selectLanguage(lang) {
   formData.language = lang;
 
-  fetch("https://script.google.com/macros/s/AKfycbwRDVUEemhauIy5tI9xwEbnSSYeSrGGqxWVTY5WQGJudJ9TgT3nPURge7s2YTYi2MHF-Q/exec", { // <-- stavi ovdje svoj Web App URL
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData)
+  fetch("https://script.google.com/macros/s/AKfycbzMPiAVdiqn-IIaC5EDgM29iVvZRyBrvjKGNdNS_B7xiM1KgvlEu1HgmjUaqhc3FWsR4g/exec", {  // <-- stavi ovdje tvoj Web App URL
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(formData)
   })
   .then(res => res.json())
   .then(data => {
-      console.log("Saved:", data);
-      alert("Podaci su spremljeni!");
+    console.log("Saved:", data);
+    alert("Podaci su spremljeni!");
   })
   .catch(err => console.log("Error:", err));
 
