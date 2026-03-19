@@ -75,10 +75,12 @@ function submitForm() {
     return;
   }
 
+  // Sprema podatke privremeno
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
 
+  // Prikaži div za odabir jezika
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
