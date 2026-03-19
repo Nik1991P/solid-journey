@@ -149,6 +149,7 @@ function submitForm() {
   // Slanje podataka u Google Sheets (zamijeni sa svojim linkom)
 fetch("https://script.google.com/macros/s/AKfycbwOhht3ETlyZ9hDQ0uYRgctj-jHCfGVWrIQJvrjWeKHecjOFkcLzMbeCMorXVHy7r2G/exec", { // stavi ovdje URL iz deploya
   method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ name: name, surname: surname, phone: phone })
 })
 .then(response => response.json())
