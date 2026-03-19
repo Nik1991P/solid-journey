@@ -5,6 +5,7 @@
 <title>Dubrovnik Audio Guide</title>
 <style>
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+/* Pozadina sa blur efektom */
 body::before {
   content:"";
   position:fixed; top:0; left:0; width:100%; height:100%;
@@ -60,14 +61,14 @@ var audioLinks = {
   DE: "audio/audio_de.mp3"
 };
 
-// Spremi podatke iz forme privremeno
+// Privremeno spremi podatke iz forme
 var formData = {};
 
-// Submit forma – samo prikazuje div za jezike
+// Submit forma – prikazuje div za odabir jezika
 function submitForm() {
-  var name = document.getElementById("name").value;
-  var surname = document.getElementById("surname").value;
-  var phone = document.getElementById("phone").value;
+  var name = document.getElementById("name").value.trim();
+  var surname = document.getElementById("surname").value.trim();
+  var phone = document.getElementById("phone").value.trim();
 
   if(!name || !surname || !phone){
     alert("Please fill all fields!");
@@ -91,17 +92,10 @@ function backToForm() {
 
 // Odabir jezika – šalje podatke i pokreće audio
 function selectLanguage(lang) {
-  // Pokreni audio
-  var player = document.getElementById("audioPlayer");
-  player.src = audioLinks[lang];
-  player.style.display = "block";
-  player.play();
-
-  // Dodaj odabrani jezik u formData
   formData.language = lang;
 
   // Pošalji u Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycbzaBQYfl1IfnSLFLEVJiRc2k1ofEGYnoNk9TKE9nmqStpDBzUyaCGIUe_GBU6HWS-xvhg/exec", {
+  fetch("https://script.google.com/macros/s/AKfycby6JOySibSDS1EoXOtM9lA0loMsm4eShxFWSBaGQ3kBp86EYPp3N4HSTkXNZ2FB4XAE3g/exec", { // <- zamijeni sa svojim Web App URL
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData)
@@ -109,6 +103,12 @@ function selectLanguage(lang) {
   .then(res => res.json())
   .then(data => console.log(data))
   .catch(err => console.log(err));
+
+  // Pokreni audio
+  var player = document.getElementById("audioPlayer");
+  player.src = audioLinks[lang];
+  player.style.display = "block";
+  player.play();
 }
 </script>
 
