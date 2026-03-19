@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dubrovnik Audio Guide</title>
+<style>
+/* Full-screen pozadina preko pseudo-elementa za blur i skaliranje */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Pseudo-element za pozadinu sa blur efektom */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images/DubrovnikSlika.webp') no-repeat center center;
+  background-size: cover;
+  filter: blur(4px);
+  transform: scale(1.05);
+  z-index: -1;
+}
+
+/* Tamni overlay preko pozadine da tekst bude čitljiv */
+body::after {
+  content: "";
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.3);
+  z-index: -1;
+}
+
+/* Centrirani div preko cijelog ekrana */
+.screen-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container za formu i jezik */
+.container {
+  background: rgba(0,0,0,0.6); /* poluprozirni overlay */
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Input polja */
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+/* Dugmad */
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background: #0a7cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #005ecb;
+}
+
+/* Naslov */
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Audio player i gumbi */
+#languageDiv button {
+  width: 80%;
+  margin: 8px 0;
+}
+
+audio {
+  width: 90%;
+  margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-center">
+  <!-- DIV 1: Forma -->
+  <div id="formDiv" class="container">
+    <h2>Dubrovnik Audio Guide</h2>
+    <p>Please enter your details:</p>
+    <input id="name" placeholder="Name"><br>
+    <input id="surname" placeholder="Surname"><br>
+    <input id="phone" placeholder="Phone"><br>
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <!-- DIV 2: Odabir jezika i audio -->
+  <div id="languageDiv" class="container" style="display:none">
+    <h2>Select your language</h2>
+    <button onclick="playAudio('EN')">English</button><br>
+    <button onclick="playAudio('HR')">Hrvatski</button><br>
+    <button onclick="playAudio('DE')">Deutsch</button><br><br>
+    <button onclick="backToForm()">Back</button>
+    <br>
+    <audio id="audioPlayer" controls style="display:none"></audio>
+  </div>
+</div>
+
+<script>
+// Audio linkovi – na GitHub Pages stavi audio u folder "audio"
+var audioLinks = {
+  EN: "audio/audio_en.mp3",
+  HR: "audio/audio_hr.mp3",
+  DE: "audio/audio_de.mp3"
+};
+
+// Submit forma
+function submitForm() {
+  var name = document.getElementById("name").value;
+  var surname = document.getElementById("surname").value;
+  var phone = document.getElementById("phone").value;
+
+  if(!name || !surname || !phone){
+    alert("Please fill all fields!");
+    return;
+  }
+
+  // Slanje podataka u Google Sheets (zamijeni sa svojim linkom)
+  fetch("OVDJE_IDE_TVOJ_LINK", {
+    method: "POST",
+    body: JSON.stringify({ name: name, surname: surname, phone: phone })
+  });
+
+  document.getElementById("formDiv").style.display = "none";
+  document.getElementById("languageDiv").style.display = "block";
+}
+
+// Back dugme
+function backToForm() {
+  document.getElementById("languageDiv").style.display = "none";
+  document.getElementById("formDiv").style.display = "block";
+  document.getElementById("audioPlayer").style.display = "none";
+}
+
+// Gumb za audio
+function playAudio(lang) {
+  var player = document.getElementById("audioPlayer");
+  player.src = audioLinks[lang];
+  player.style.display = "block";
+  player.play();
+}
+</script>
+
+</body>
+</html>
