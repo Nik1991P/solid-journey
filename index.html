@@ -76,7 +76,6 @@ function submitForm() {
   formData.prezime = surname;
   formData.phone = phone;
 
-  // Prikaz odabira jezika
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
@@ -89,7 +88,6 @@ function selectLanguage(lang) {
 
   formData.jezik = lang;
 
-  // Google Sheet URL
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     + "?ime=" + encodeURIComponent(formData.ime)
     + "&prezime=" + encodeURIComponent(formData.prezime)
@@ -97,15 +95,17 @@ function selectLanguage(lang) {
     + "&jezik=" + encodeURIComponent(formData.jezik);
 
   console.log("Sending data to Google Sheet:", url);
-  
-  var img = new Image();
-  img.src = url;
 
-  // Audio player
+  var iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
+  document.body.appendChild(iframe);
+
+  // Audio
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
   player.style.display = "block";
-  player.load();  // bolje za mobitele
+  player.load();
   player.play();
 }
 
