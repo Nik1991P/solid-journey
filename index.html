@@ -90,7 +90,9 @@ function submitForm() {
     + "&prezime=" + encodeURIComponent(formData.prezime)
     + "&phone=" + encodeURIComponent(formData.phone)
     + "&jezik=" + encodeURIComponent(formData.jezik);
-
+    
+console.log("URL:", url);
+    
   fetch(url)
     .then(res => res.text())
     .then(data => console.log(data))
