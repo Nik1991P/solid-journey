@@ -99,13 +99,6 @@ function selectLanguage(lang) {
     .then(data => console.log(data))
     .catch(err => console.log(err));
 
-  // audio
-  var player = document.getElementById("audioPlayer");
-  player.src = audioLinks[lang];
-  player.style.display = "block";
-  player.play();
-}
-
   // Pokreni audio
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
