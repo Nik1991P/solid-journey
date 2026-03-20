@@ -58,8 +58,8 @@ audio { width:90%; margin-top:15px; }
 var formData = {};
 var audioLinks = {
   EN: "https://nik1991p.github.io/solid-journey/audio/audio_en.mp3",
-  HR: "audio/audio_hr.mp3",
-  DE: "audio/audio_de.mp3"
+  HR: "https://nik1991p.github.io/solid-journey/audio/audio_hr.mp3",
+  DE: "https://nik1991p.github.io/solid-journey/audio/audio_de.mp3"
 };
 
 function submitForm() {
@@ -81,26 +81,31 @@ function submitForm() {
   document.getElementById("languageDiv").style.display = "block";
 }
 
-  // Pošalji podatke u Google Sheet
-  function selectLanguage(lang) {
+function selectLanguage(lang) {
+  if(!formData.ime){
+    alert("Please fill the form first!");
+    return;
+  }
+
   formData.jezik = lang;
 
+  // Google Sheet URL
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     + "?ime=" + encodeURIComponent(formData.ime)
     + "&prezime=" + encodeURIComponent(formData.prezime)
     + "&phone=" + encodeURIComponent(formData.phone)
     + "&jezik=" + encodeURIComponent(formData.jezik);
-    
-console.log("URL:", url);
-    
+
+  console.log("Sending data to Google Sheet:", url);
+  
   var img = new Image();
   img.src = url;
 
-  // Pokreni audio
+  // Audio player
   var player = document.getElementById("audioPlayer");
   player.src = audioLinks[lang];
   player.style.display = "block";
-  player.load();
+  player.load();  // bolje za mobitele
   player.play();
 }
 
