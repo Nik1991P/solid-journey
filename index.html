@@ -85,13 +85,26 @@ function selectLanguage(lang) {
   formData.jezik = lang;
 
   // Pošalji podatke u Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycbxh-XFg6EpDcbEf0l2SiSU_nlTNjWE6cURlTBi-edvHNSOHzKnLaU-fjTHMuIZh4iQvgA/exec", { // <- zamijeni sa svojim Web App URL-om iz deploya
-    method: "POST",
-    body: new URLSearchParams(formData)
-  })
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.log(err));
+  function selectLanguage(lang) {
+  formData.jezik = lang;
+
+  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
+    + "?ime=" + encodeURIComponent(formData.ime)
+    + "&prezime=" + encodeURIComponent(formData.prezime)
+    + "&phone=" + encodeURIComponent(formData.phone)
+    + "&jezik=" + encodeURIComponent(formData.jezik);
+
+  fetch(url)
+    .then(res => res.text())
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+
+  // audio
+  var player = document.getElementById("audioPlayer");
+  player.src = audioLinks[lang];
+  player.style.display = "block";
+  player.play();
+}
 
   // Pokreni audio
   var player = document.getElementById("audioPlayer");
