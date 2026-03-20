@@ -93,10 +93,8 @@ function submitForm() {
     
 console.log("URL:", url);
     
-  fetch(url)
-    .then(res => res.text())
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+  var img = new Image();
+  img.src = url;
 
   // Pokreni audio
   var player = document.getElementById("audioPlayer");
