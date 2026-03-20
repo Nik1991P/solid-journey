@@ -85,9 +85,8 @@ function selectLanguage(lang) {
   formData.jezik = lang;
 
   // Pošalji podatke u Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycbzgwyW2Mxkj8OYtVsM09LWQYp0f-7UlUG_45-7r5LkuxJTzfd4lxnt-if1vftAsXHJKlQ/exec", { // <- zamijeni sa svojim Web App URL-om iz deploya
+  fetch("https://script.google.com/macros/s/AKfycbyn53DVCrNqQbKLKE2F5gBj80pCMU-O02qAdwNLqp2Xe2P06IkYswP3LSDdxRg11ZgMHQ/exec", { // <- zamijeni sa svojim Web App URL-om iz deploya
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData)
   })
   .then(res => res.json())
