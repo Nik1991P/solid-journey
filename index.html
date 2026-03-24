@@ -61,8 +61,7 @@ h2 { margin-bottom:20px; font-size:24px; }
 #languageDiv button { width:80%; margin:8px 0; }
 
 audio { width:100%; margin-top:15px; }
-
-/* 🔥 NOVO – naslov na prvom ekranu */
+  
 .main-title {
   font-size: 32px;
   margin-bottom: 10px;
@@ -76,6 +75,26 @@ audio { width:100%; margin-top:15px; }
   margin-bottom: 20px;
   color: #ddd;
 }
+.login-container {
+  max-width: 500px;
+  padding: 40px 30px;
+}
+
+/*  veliki naslov */
+.main-title {
+  font-size: 42px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.7);
+}
+
+/*  podnaslov */
+.sub-title {
+  font-size: 20px;
+  margin-bottom: 25px;
+  color: #ddd;
+}
 </style>
 </head>
 
@@ -84,14 +103,14 @@ audio { width:100%; margin-top:15px; }
 <div class="screen-center">
 
   <!-- PASSWORD SCREEN -->
-  <div id="passwordDiv" class="container">
-    <h1 class="main-title">Dubrovnik Audio Guide</h1>
-    <h3 class="sub-title">Private Access</h3>
+  <div id="passwordDiv" class="container login-container">
+  <h1 class="main-title">Dubrovnik Audio Guide</h1>
+  <h3 class="sub-title">Private Access</h3>
 
-    <p>Enter password to continue:</p>
-    <input id="passwordInput" type="password" placeholder="Password"><br>
-    <button onclick="checkPassword()">Enter</button>
-  </div>
+  <p>Enter password to continue:</p>
+  <input id="passwordInput" type="password" placeholder="Password"><br>
+  <button onclick="checkPassword()">Enter</button>
+</div>
 
   <!-- FORM -->
   <div id="formDiv" class="container" style="display:none">
