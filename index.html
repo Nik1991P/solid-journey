@@ -53,9 +53,9 @@ audio { width:100%; margin-top:15px; }
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
-<button onclick="selectLanguage('EN')">English</button><br>
-<button onclick="selectLanguage('HR')">Hrvatski</button><br>
-<button onclick="selectLanguage('DE')">Deutsch</button><br><br>
+<button onclick="sendDataAndPlay('EN')">English</button><br>
+<button onclick="sendDataAndPlay('HR')">Hrvatski</button><br>
+<button onclick="sendDataAndPlay('DE')">Deutsch</button><br><br>
 <button onclick="backToForm()">Back</button>
 <p id="playHint" style="display:none;">Kliknite ▶️ za reprodukciju</p>
 <audio id="audioPlayer" controls style="display:none"></audio>
@@ -126,21 +126,21 @@ function validateForm(){
   formData.surname = surname;
   formData.phone = phone;
 
-  // prikaži language screen
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
 }
 
-// SLANJE PODATAKA I AUDIO
-function selectLanguage(lang){
-  formData.lang = lang;
+// FINALNA FUNKCIJA: SLANJE PODATAKA I AUDIO
+function sendDataAndPlay(selectedLang){
+  // kreiraj lokalnu varijablu jezika
+  var lang = selectedLang;
 
-  // Pouzdano slanje podataka preko skrivenog iframe (radi na mobitelu)
+  // kreiraj iframe i pošalji podatke
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     +"?ime="+encodeURIComponent(formData.name)
     +"&prezime="+encodeURIComponent(formData.surname)
     +"&phone="+encodeURIComponent(formData.phone)
-    +"&jezik="+encodeURIComponent(formData.lang);
+    +"&jezik="+encodeURIComponent(lang);
 
   var iframe = document.createElement('iframe');
   iframe.style.display = 'none';
