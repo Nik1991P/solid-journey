@@ -60,7 +60,10 @@ h2 { margin-bottom:20px; font-size:24px; }
 
 #languageDiv button { width:80%; margin:8px 0; }
 
-  .main-title {
+audio { width:100%; margin-top:15px; }
+
+/* 🔥 NOVO – naslov na prvom ekranu */
+.main-title {
   font-size: 32px;
   margin-bottom: 10px;
   font-weight: bold;
@@ -73,7 +76,6 @@ h2 { margin-bottom:20px; font-size:24px; }
   margin-bottom: 20px;
   color: #ddd;
 }
-audio { width:100%; margin-top:15px; }
 </style>
 </head>
 
@@ -83,14 +85,13 @@ audio { width:100%; margin-top:15px; }
 
   <!-- PASSWORD SCREEN -->
   <div id="passwordDiv" class="container">
-  <h1 class="main-title">Dubrovnik Audio Guide</h1>
-  <h3 class="sub-title">Private Access</h3>
+    <h1 class="main-title">Dubrovnik Audio Guide</h1>
+    <h3 class="sub-title">Private Access</h3>
 
-  <p>Enter password to continue:</p>
-
-  <input id="passwordInput" type="password" placeholder="Password"><br>
-  <button onclick="checkPassword()">Enter</button>
-</div>
+    <p>Enter password to continue:</p>
+    <input id="passwordInput" type="password" placeholder="Password"><br>
+    <button onclick="checkPassword()">Enter</button>
+  </div>
 
   <!-- FORM -->
   <div id="formDiv" class="container" style="display:none">
@@ -118,7 +119,7 @@ audio { width:100%; margin-top:15px; }
 
 <script>
 
-var correctPassword = "1234"; // 🔐 PROMIJENI OVO
+var correctPassword = "1234"; // 🔐 promijeni po želji
 
 var formData = {};
 
@@ -128,12 +129,13 @@ var audioLinks = {
   DE: "https://nik1991p.github.io/solid-journey/audio/audio_de.mp3"
 };
 
-// ENTER za password
-document.getElementById("passwordInput").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    checkPassword();
-  }
-});
+window.onload = function() {
+  document.getElementById("passwordInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      checkPassword();
+    }
+  });
+};
 
 function checkPassword() {
   var input = document.getElementById("passwordInput").value;
@@ -179,7 +181,6 @@ function selectLanguage(lang) {
   iframe.src = url;
   document.body.appendChild(iframe);
 
-  // audio
   var player = document.getElementById("audioPlayer");
 
   player.pause();
