@@ -54,9 +54,9 @@ audio { width:100%; margin-top:15px; }
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
-<button onclick="playAudio('EN')">English</button><br>
-<button onclick="playAudio('HR')">Hrvatski</button><br>
-<button onclick="playAudio('DE')">Deutsch</button><br><br>
+<button onclick="selectLanguage('EN')">English</button><br>
+<button onclick="selectLanguage('HR')">Hrvatski</button><br>
+<button onclick="selectLanguage('DE')">Deutsch</button><br><br>
 <button onclick="backToForm()">Back</button>
 <p id="playHint" style="display:none;">Kliknite ▶️ za reprodukciju</p>
 <audio id="audioPlayer" controls style="display:none"></audio>
@@ -71,6 +71,8 @@ var audioLinks = {
   HR: "https://nik1991p.github.io/solid-journey/audio/audio_hr.mp3",
   DE: "https://nik1991p.github.io/solid-journey/audio/audio_de.mp3"
 };
+
+var formData = {};
 
 // ENTER za password
 window.onload = function(){
@@ -100,53 +102,56 @@ function validateForm(){
   var phone=document.getElementById("phone").value.trim();
   var errorDiv=document.getElementById("formError");
 
-  // prazna polja
   if(!name || !surname || !phone){
     errorDiv.textContent="All fields are required";
     errorDiv.classList.add("show");
-    return;
+    return false;
   }
 
-  // provjera da je broj
   if(!/^[0-9]+$/.test(phone)){
     errorDiv.textContent="Phone must contain only digits";
     errorDiv.classList.add("show");
-    return;
+    return false;
   }
 
-  // provjera minimalno 5 znamenki
-  if(phone.length < 5){
+  if(phone.length<5){
     errorDiv.textContent="Phone must be at least 5 digits";
     errorDiv.classList.add("show");
-    return;
+    return false;
   }
 
-  // sve OK
   errorDiv.classList.remove("show");
 
-  // prikaz language screen
+  // spremanje podataka u formData
+  formData.name = name;
+  formData.surname = surname;
+  formData.phone = phone;
+
+  // prikaz language div
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
-
-  // šaljemo podatke u Google Sheet
-  var iframe=document.createElement('iframe');
-  iframe.name="hiddenIframe";
-  iframe.style.display="none";
-  iframe.src="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
-    +"?ime="+encodeURIComponent(name)
-    +"&prezime="+encodeURIComponent(surname)
-    +"&phone="+encodeURIComponent(phone)
-    +"&jezik="+encodeURIComponent(document.getElementById("jezik").value);
-  document.body.appendChild(iframe);
 }
 
-// AUDIO
-function playAudio(lang){
-  document.getElementById("jezik").value=lang;
-  var player=document.getElementById("audioPlayer");
+// FUNKCIJA ZA ODABIR JEZIKA I SLANJE PODATAKA
+function selectLanguage(lang){
+  formData.lang = lang;
+
+  // šaljemo podatke u Google Sheet preko iframe
+  var iframe = document.createElement('iframe');
+  iframe.name = "hiddenIframe";
+  iframe.style.display = "none";
+  iframe.src = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
+    +"?ime="+encodeURIComponent(formData.name)
+    +"&prezime="+encodeURIComponent(formData.surname)
+    +"&phone="+encodeURIComponent(formData.phone)
+    +"&jezik="+encodeURIComponent(formData.lang);
+  document.body.appendChild(iframe);
+
+  // pokreni audio
+  var player = document.getElementById("audioPlayer");
   player.pause();
-  player.currentTime=0;
-  player.src=audioLinks[lang];
+  player.currentTime = 0;
+  player.src = audioLinks[lang];
   player.style.display="block";
   player.load();
   document.getElementById("playHint").style.display="block";
@@ -159,5 +164,6 @@ function backToForm(){
   document.getElementById("audioPlayer").style.display="none";
 }
 </script>
+
 </body>
 </html>
