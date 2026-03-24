@@ -130,24 +130,26 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// STARA iframe metoda koja radi na mobitelu
+// SLANJE PODATAKA I AUDIO pomoću fetch (radi i na mobitelu)
 function sendDataAndPlay(lang){
-  // Stvori novi iframe svaki put
-  var url="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
-    +"?ime="+encodeURIComponent(formData.name)
-    +"&prezime="+encodeURIComponent(formData.surname)
-    +"&phone="+encodeURIComponent(formData.phone)
-    +"&jezik="+encodeURIComponent(lang);
+  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
 
-  var iframe=document.createElement('iframe');
-  iframe.style.display='none';
-  iframe.src=url;
-  document.body.appendChild(iframe);
+  var params = new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", lang);
 
-  var player=document.getElementById("audioPlayer");
+  // Fetch POST request
+  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+    .then(() => console.log("Data sent:", formData, lang))
+    .catch(err => console.log("Error sending data:", err));
+
+  // Pokreni audio
+  var player = document.getElementById("audioPlayer");
   player.pause();
-  player.currentTime=0;
-  player.src=audioLinks[lang];
+  player.currentTime = 0;
+  player.src = audioLinks[lang];
   player.style.display="block";
   player.load();
   document.getElementById("playHint").style.display="block";
