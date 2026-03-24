@@ -48,7 +48,6 @@ audio { width:100%; margin-top:15px; }
 <input id="phone" placeholder="Phone"><br>
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
-<iframe name="hiddenIframe" style="display:none;"></iframe>
 </div>
 
 <!-- LANGUAGE -->
@@ -100,6 +99,7 @@ function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
   var phone=document.getElementById("phone").value.trim();
+  phone = phone.replace(/\s+/g,''); // ukloni razmake
   var errorDiv=document.getElementById("formError");
 
   if(!name || !surname || !phone){
@@ -114,7 +114,7 @@ function validateForm(){
     return false;
   }
 
-  if(phone.length<5){
+  if(phone.length < 5){
     errorDiv.textContent="Phone must be at least 5 digits";
     errorDiv.classList.add("show");
     return false;
@@ -122,29 +122,29 @@ function validateForm(){
 
   errorDiv.classList.remove("show");
 
-  // spremanje podataka u formData
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
 
-  // prikaz language div
+  // prikaži language screen
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
 }
 
-// FUNKCIJA ZA ODABIR JEZIKA I SLANJE PODATAKA
+// SLANJE PODATAKA I AUDIO
 function selectLanguage(lang){
   formData.lang = lang;
 
-  // šaljemo podatke u Google Sheet preko iframe
-  var iframe = document.createElement('iframe');
-  iframe.name = "hiddenIframe";
-  iframe.style.display = "none";
-  iframe.src = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
+  // Pouzdano slanje podataka preko skrivenog iframe (radi na mobitelu)
+  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     +"?ime="+encodeURIComponent(formData.name)
     +"&prezime="+encodeURIComponent(formData.surname)
     +"&phone="+encodeURIComponent(formData.phone)
     +"&jezik="+encodeURIComponent(formData.lang);
+
+  var iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
   document.body.appendChild(iframe);
 
   // pokreni audio
