@@ -125,18 +125,23 @@ audio { width:100%; margin-top:15px; }
   <div id="formDiv" class="container" style="display:none">
     <h2>Dubrovnik Audio Guide</h2>
     <p>Please enter your details:</p>
-    <input id="name" placeholder="Name"><br>
-    <input id="surname" placeholder="Surname"><br>
-    <input id="phone" placeholder="Phone"><br>
-    <button onclick="submitForm()">Submit</button>
+    <form id="userForm" method="POST" target="hiddenIframe" action="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec">
+      <input name="ime" id="name" placeholder="Name" required><br>
+      <input name="prezime" id="surname" placeholder="Surname" required><br>
+      <input name="phone" id="phone" placeholder="Phone" required><br>
+      <input type="hidden" name="jezik" id="jezik">
+      <button type="submit" onclick="goToLanguage()">Submit</button>
+    </form>
+    <!-- hidden iframe za siguran POST -->
+    <iframe name="hiddenIframe" style="display:none;"></iframe>
   </div>
 
   <!-- LANGUAGE -->
   <div id="languageDiv" class="container" style="display:none">
     <h2>Select your language</h2>
-    <button onclick="selectLanguage('EN')">English</button><br>
-    <button onclick="selectLanguage('HR')">Hrvatski</button><br>
-    <button onclick="selectLanguage('DE')">Deutsch</button><br><br>
+    <button onclick="playAudio('EN')">English</button><br>
+    <button onclick="playAudio('HR')">Hrvatski</button><br>
+    <button onclick="playAudio('DE')">Deutsch</button><br><br>
     <button onclick="backToForm()">Back</button>
     <p id="playHint" style="display:none;">Kliknite ▶️ za reprodukciju</p>
     <audio id="audioPlayer" controls style="display:none"></audio>
@@ -146,7 +151,6 @@ audio { width:100%; margin-top:15px; }
 
 <script>
 var correctPassword = "1234"; // promijeni po želji
-var formData = {};
 var audioLinks = {
   EN: "https://nik1991p.github.io/solid-journey/audio/audio_en.mp3",
   HR: "https://nik1991p.github.io/solid-journey/audio/audio_hr.mp3",
@@ -167,32 +171,16 @@ function checkPassword() {
   } else alert("Wrong password!");
 }
 
-function submitForm() {
-  var name = document.getElementById("name").value.trim();
-  var surname = document.getElementById("surname").value.trim();
-  var phone = document.getElementById("phone").value.trim();
-  if(!name || !surname || !phone){ alert("Please fill all fields!"); return; }
-  formData.ime = name;
-  formData.prezime = surname;
-  formData.phone = phone;
+// nakon submit forme idemo na language selection
+function goToLanguage() {
+  var langInput = document.getElementById("jezik");
+  langInput.value = ""; // default empty
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
 
-function selectLanguage(lang) {
-  formData.jezik = lang;
-
-  // 🔹 šaljemo podatke u Google Sheet preko fetch()
-  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
-    + "?ime=" + encodeURIComponent(formData.ime)
-    + "&prezime=" + encodeURIComponent(formData.prezime)
-    + "&phone=" + encodeURIComponent(formData.phone)
-    + "&jezik=" + encodeURIComponent(formData.jezik);
-
-  fetch(url)
-    .then(response => console.log('Podaci poslani u Sheet'))
-    .catch(err => console.error('Greška pri slanju podataka:', err));
-
+function playAudio(lang) {
+  document.getElementById("jezik").value = lang; // postavljanje u hidden input
   var player = document.getElementById("audioPlayer");
   player.pause();
   player.currentTime = 0;
