@@ -5,14 +5,11 @@
 <title>Dubrovnik Audio Guide</title>
 
 <style>
-body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
-body::before {
-  content:"";
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:url('images/DubrovnikSlika.webp') no-repeat center center;
-  background-size:cover;
-  filter:blur(4px); transform:scale(1.05); z-index:-1;
+body { 
+  margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  background: url('images/DubrovnikSlika.webp') no-repeat center center;
+  background-size: cover;
+  background-attachment: scroll; /* ključ za mobitel */
 }
 
 body::after {
@@ -61,26 +58,8 @@ h2 { margin-bottom:20px; font-size:24px; }
 #languageDiv button { width:80%; margin:8px 0; }
 
 audio { width:100%; margin-top:15px; }
-  
-.main-title {
-  font-size: 32px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
 
-.sub-title {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #ddd;
-}
-.login-container {
-  max-width: 500px;
-  padding: 40px 30px;
-}
-
-/*  veliki naslov */
+/* LOGIN NASLOV */
 .main-title {
   font-size: 42px;
   margin-bottom: 10px;
@@ -89,11 +68,15 @@ audio { width:100%; margin-top:15px; }
   text-shadow: 0 4px 15px rgba(0,0,0,0.7);
 }
 
-/*  podnaslov */
 .sub-title {
   font-size: 20px;
   margin-bottom: 25px;
   color: #ddd;
+}
+
+.login-container {
+  max-width: 500px;
+  padding: 40px 30px;
 }
 </style>
 </head>
@@ -104,13 +87,12 @@ audio { width:100%; margin-top:15px; }
 
   <!-- PASSWORD SCREEN -->
   <div id="passwordDiv" class="container login-container">
-  <h1 class="main-title">Dubrovnik Audio Guide</h1>
-  <h3 class="sub-title">Private Access</h3>
-
-  <p>Enter password to continue:</p>
-  <input id="passwordInput" type="password" placeholder="Password"><br>
-  <button onclick="checkPassword()">Enter</button>
-</div>
+    <h1 class="main-title">Dubrovnik Audio Guide</h1>
+    <h3 class="sub-title">Private Access</h3>
+    <p>Enter password to continue:</p>
+    <input id="passwordInput" type="password" placeholder="Password"><br>
+    <button onclick="checkPassword()">Enter</button>
+  </div>
 
   <!-- FORM -->
   <div id="formDiv" class="container" style="display:none">
@@ -129,7 +111,6 @@ audio { width:100%; margin-top:15px; }
     <button onclick="selectLanguage('HR')">Hrvatski</button><br>
     <button onclick="selectLanguage('DE')">Deutsch</button><br><br>
     <button onclick="backToForm()">Back</button>
-
     <p id="playHint" style="display:none;">Kliknite ▶️ za reprodukciju</p>
     <audio id="audioPlayer" controls style="display:none"></audio>
   </div>
@@ -137,11 +118,8 @@ audio { width:100%; margin-top:15px; }
 </div>
 
 <script>
-
-var correctPassword = "1234"; // 🔐 promijeni po želji
-
+var correctPassword = "1234"; // promijeni po želji
 var formData = {};
-
 var audioLinks = {
   EN: "https://nik1991p.github.io/solid-journey/audio/audio_en.mp3",
   HR: "https://nik1991p.github.io/solid-journey/audio/audio_hr.mp3",
@@ -150,45 +128,32 @@ var audioLinks = {
 
 window.onload = function() {
   document.getElementById("passwordInput").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-      checkPassword();
-    }
+    if (e.key === "Enter") checkPassword();
   });
 };
 
 function checkPassword() {
   var input = document.getElementById("passwordInput").value;
-
   if(input === correctPassword){
     document.getElementById("passwordDiv").style.display = "none";
     document.getElementById("formDiv").style.display = "block";
-  } else {
-    alert("Wrong password!");
-  }
+  } else alert("Wrong password!");
 }
 
 function submitForm() {
   var name = document.getElementById("name").value.trim();
   var surname = document.getElementById("surname").value.trim();
   var phone = document.getElementById("phone").value.trim();
-
-  if(!name || !surname || !phone){
-    alert("Please fill all fields!");
-    return;
-  }
-
+  if(!name || !surname || !phone){ alert("Please fill all fields!"); return; }
   formData.ime = name;
   formData.prezime = surname;
   formData.phone = phone;
-
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
 }
 
 function selectLanguage(lang) {
-
   formData.jezik = lang;
-
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     + "?ime=" + encodeURIComponent(formData.ime)
     + "&prezime=" + encodeURIComponent(formData.prezime)
@@ -201,13 +166,11 @@ function selectLanguage(lang) {
   document.body.appendChild(iframe);
 
   var player = document.getElementById("audioPlayer");
-
   player.pause();
   player.currentTime = 0;
   player.src = audioLinks[lang];
   player.style.display = "block";
   player.load();
-
   document.getElementById("playHint").style.display = "block";
 }
 
@@ -216,7 +179,6 @@ function backToForm() {
   document.getElementById("formDiv").style.display = "block";
   document.getElementById("audioPlayer").style.display = "none";
 }
-
 </script>
 
 </body>
