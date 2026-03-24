@@ -4,7 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* font i osnovni body */
 body {
   margin:0;
   padding:0;
@@ -14,7 +13,7 @@ body {
   min-height: 100vh;
 }
 
-/* STABILNA POZADINA */
+/* POZADINA */
 .background {
   position: absolute;
   top: 0; left: 0;
@@ -29,8 +28,7 @@ body {
 .overlay {
   position: absolute;
   top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   background: rgba(0,0,0,0.3);
   z-index: -1;
 }
@@ -183,16 +181,17 @@ function submitForm() {
 
 function selectLanguage(lang) {
   formData.jezik = lang;
+
+  // 🔹 šaljemo podatke u Google Sheet preko fetch()
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     + "?ime=" + encodeURIComponent(formData.ime)
     + "&prezime=" + encodeURIComponent(formData.prezime)
     + "&phone=" + encodeURIComponent(formData.phone)
     + "&jezik=" + encodeURIComponent(formData.jezik);
 
-  var iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
-  document.body.appendChild(iframe);
+  fetch(url)
+    .then(response => console.log('Podaci poslani u Sheet'))
+    .catch(err => console.error('Greška pri slanju podataka:', err));
 
   var player = document.getElementById("audioPlayer");
   player.pause();
