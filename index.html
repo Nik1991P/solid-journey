@@ -130,12 +130,8 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// FINALNA FUNKCIJA: SLANJE PODATAKA I AUDIO
-function sendDataAndPlay(selectedLang){
-  // kreiraj lokalnu varijablu jezika
-  var lang = selectedLang;
-
-  // kreiraj iframe i pošalji podatke
+// FINALNA FUNKCIJA: SLANJE PODATAKA I AUDIO (iframe metoda, radi na mobitelu)
+function sendDataAndPlay(lang){
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec"
     +"?ime="+encodeURIComponent(formData.name)
     +"&prezime="+encodeURIComponent(formData.surname)
@@ -143,15 +139,14 @@ function sendDataAndPlay(selectedLang){
     +"&jezik="+encodeURIComponent(lang);
 
   var iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
+  iframe.style.display='none';
+  iframe.src=url;
   document.body.appendChild(iframe);
 
-  // pokreni audio
   var player = document.getElementById("audioPlayer");
   player.pause();
-  player.currentTime = 0;
-  player.src = audioLinks[lang];
+  player.currentTime=0;
+  player.src=audioLinks[lang];
   player.style.display="block";
   player.load();
   document.getElementById("playHint").style.display="block";
