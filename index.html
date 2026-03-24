@@ -183,7 +183,7 @@ function checkPassword() {
     document.getElementById("passwordDiv").style.display = "none";
     document.getElementById("formDiv").style.display = "block";
   } else {
-    errorDiv.textContent = "Incorrect password. Please try again!";
+    errorDiv.textContent = "Wrong password";
     errorDiv.style.display = "block";
   }
 }
@@ -196,7 +196,7 @@ function validateForm() {
   var errorDiv = document.getElementById("formError");
 
   if(!name || !surname || !phone){
-    errorDiv.textContent = "All fields are required!";
+    errorDiv.textContent = "All fields are required";
     errorDiv.style.display = "block";
     return false; // sprječava submit
   }
