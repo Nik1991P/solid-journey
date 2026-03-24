@@ -134,10 +134,10 @@ audio { width:100%; margin-top:15px; }
   <div id="formDiv" class="container" style="display:none">
     <h2>Dubrovnik Audio Guide</h2>
     <p>Please enter your details:</p>
-    <form id="userForm" method="POST" target="hiddenIframe" action="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec" onsubmit="return validateForm()">
-      <input name="ime" id="name" placeholder="Name" required><br>
-      <input name="prezime" id="surname" placeholder="Surname" required><br>
-      <input name="phone" id="phone" placeholder="Phone" required><br>
+    <form id="userForm" method="POST" target="hiddenIframe" action="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec" onsubmit="return validateForm()" novalidate>
+      <input name="ime" id="name" placeholder="Name"><br>
+      <input name="prezime" id="surname" placeholder="Surname"><br>
+      <input name="phone" id="phone" placeholder="Phone"><br>
       <input type="hidden" name="jezik" id="jezik">
       <button type="submit">Submit</button>
     </form>
