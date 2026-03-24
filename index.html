@@ -60,6 +60,19 @@ h2 { margin-bottom:20px; font-size:24px; }
 
 #languageDiv button { width:80%; margin:8px 0; }
 
+  .main-title {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.sub-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #ddd;
+}
 audio { width:100%; margin-top:15px; }
 </style>
 </head>
@@ -70,11 +83,14 @@ audio { width:100%; margin-top:15px; }
 
   <!-- PASSWORD SCREEN -->
   <div id="passwordDiv" class="container">
-    <h2>Access</h2>
-    <p>Enter password to continue:</p>
-    <input id="passwordInput" type="password" placeholder="Password"><br>
-    <button onclick="checkPassword()">Enter</button>
-  </div>
+  <h1 class="main-title">Dubrovnik Audio Guide</h1>
+  <h3 class="sub-title">Private Access</h3>
+
+  <p>Enter password to continue:</p>
+
+  <input id="passwordInput" type="password" placeholder="Password"><br>
+  <button onclick="checkPassword()">Enter</button>
+</div>
 
   <!-- FORM -->
   <div id="formDiv" class="container" style="display:none">
