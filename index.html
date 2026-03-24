@@ -102,6 +102,14 @@ audio { width:100%; margin-top:15px; }
   max-width: 500px;
   padding: 40px 30px;
 }
+
+/* PORUKE GREŠKE */
+.error-message {
+  color:#ff6961;
+  margin-top:10px;
+  display:none;
+  font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -119,20 +127,21 @@ audio { width:100%; margin-top:15px; }
     <p>Enter password to continue:</p>
     <input id="passwordInput" type="password" placeholder="Password"><br>
     <button onclick="checkPassword()">Enter</button>
+    <p id="passwordError" class="error-message"></p>
   </div>
 
   <!-- FORM -->
   <div id="formDiv" class="container" style="display:none">
     <h2>Dubrovnik Audio Guide</h2>
     <p>Please enter your details:</p>
-    <form id="userForm" method="POST" target="hiddenIframe" action="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec">
+    <form id="userForm" method="POST" target="hiddenIframe" action="https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec" onsubmit="return validateForm()">
       <input name="ime" id="name" placeholder="Name" required><br>
       <input name="prezime" id="surname" placeholder="Surname" required><br>
       <input name="phone" id="phone" placeholder="Phone" required><br>
       <input type="hidden" name="jezik" id="jezik">
-      <button type="submit" onclick="goToLanguage()">Submit</button>
+      <button type="submit">Submit</button>
     </form>
-    <!-- hidden iframe za siguran POST -->
+    <p id="formError" class="error-message"></p>
     <iframe name="hiddenIframe" style="display:none;"></iframe>
   </div>
 
@@ -157,30 +166,52 @@ var audioLinks = {
   DE: "https://nik1991p.github.io/solid-journey/audio/audio_de.mp3"
 };
 
+// ENTER za password
 window.onload = function() {
   document.getElementById("passwordInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") checkPassword();
   });
 };
 
+// CHECK PASSWORD
 function checkPassword() {
   var input = document.getElementById("passwordInput").value;
+  var errorDiv = document.getElementById("passwordError");
+
   if(input === correctPassword){
+    errorDiv.style.display = "none";
     document.getElementById("passwordDiv").style.display = "none";
     document.getElementById("formDiv").style.display = "block";
-  } else alert("Wrong password!");
+  } else {
+    errorDiv.textContent = "Incorrect password. Please try again!";
+    errorDiv.style.display = "block";
+  }
 }
 
-// nakon submit forme idemo na language selection
-function goToLanguage() {
-  var langInput = document.getElementById("jezik");
-  langInput.value = ""; // default empty
+// VALIDACIJA FORME
+function validateForm() {
+  var name = document.getElementById("name").value.trim();
+  var surname = document.getElementById("surname").value.trim();
+  var phone = document.getElementById("phone").value.trim();
+  var errorDiv = document.getElementById("formError");
+
+  if(!name || !surname || !phone){
+    errorDiv.textContent = "All fields are required!";
+    errorDiv.style.display = "block";
+    return false; // sprječava submit
+  }
+
+  errorDiv.style.display = "none";
+
+  // nakon submit-a idemo na language screen
   document.getElementById("formDiv").style.display = "none";
   document.getElementById("languageDiv").style.display = "block";
+  return true; // forma se šalje
 }
 
+// AUDIO
 function playAudio(lang) {
-  document.getElementById("jezik").value = lang; // postavljanje u hidden input
+  document.getElementById("jezik").value = lang; // hidden input
   var player = document.getElementById("audioPlayer");
   player.pause();
   player.currentTime = 0;
@@ -190,6 +221,7 @@ function playAudio(lang) {
   document.getElementById("playHint").style.display = "block";
 }
 
+// BACK BUTTON
 function backToForm() {
   document.getElementById("languageDiv").style.display = "none";
   document.getElementById("formDiv").style.display = "block";
