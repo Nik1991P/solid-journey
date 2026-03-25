@@ -82,7 +82,7 @@ var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 
-// koliko audio fajlova ima po jeziku/turi
+// broj audio fajlova po jeziku i turi
 var tours = {
   EN: { old: 4, road: 3 },
   HR: { old: 4, road: 3 },
@@ -145,7 +145,7 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// ⚠️ OVA FUNKCIJA - EXCEL DIO OSTAVLJEN NETAKNUT
+// 🔒 NE DIRATI (EXCEL SPREMANJE)
 function sendDataAndPlay(lang){
   selectedLang = lang;
 
@@ -157,7 +157,6 @@ function sendDataAndPlay(lang){
   params.append("phone", formData.phone);
   params.append("jezik", lang);
 
-  // 🔒 NE DIRAMO OVO
   fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
     .then(() => console.log("Data sent:", formData, lang))
     .catch(err => console.log("Error sending data:", err));
