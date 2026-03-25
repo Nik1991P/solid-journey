@@ -55,9 +55,9 @@ audio { width:100%; margin-top:10px; }
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
-<button onclick="sendDataAndGoToTour('EN')">English</button><br>
-<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
-<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
+<button onclick="selectLanguage('EN')">English</button><br>
+<button onclick="selectLanguage('HR')">Hrvatski</button><br>
+<button onclick="selectLanguage('DE')">Deutsch</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 </div>
 
@@ -90,6 +90,7 @@ window.onload = function(){
   });
 };
 
+// PASSWORD
 function checkPassword(){
   var input=document.getElementById("passwordInput").value;
   var errorDiv=document.getElementById("passwordError");
@@ -103,6 +104,7 @@ function checkPassword(){
   }
 }
 
+// VALIDACIJA FORME
 function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
@@ -134,26 +136,14 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// 🔒 EXCEL dio - netaknuto, samo šalje jezik prije odabira tour-a
-function sendDataAndGoToTour(lang){
+// ODABIR JEZIKA
+function selectLanguage(lang){
   selectedLang = lang;
-
-  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", lang);
-
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent:", formData, lang))
-    .catch(err => console.log("Error sending data:", err));
-
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
 }
 
-// 🔹 Slanje podataka u Sheet POST metodom kada se odabere tourType
+// 🔹 POST metoda šalje podatke kada se odabere tourType
 function sendDataToSheet(tourType) {
   var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
@@ -167,21 +157,17 @@ function sendDataToSheet(tourType) {
 
   fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   })
   .then(() => console.log("Data sent:", payload))
   .catch(err => console.log("Error sending data:", err));
 }
 
-// Funkcija koja se poziva klikom na Old Town ili Road
+// Klik na Old Town ili Road
 function playAudioList(type){
-  // prvo pošalji podatke u Sheet
-  sendDataToSheet(type);
+  sendDataToSheet(type); // šalje sve podatke + tourType
 
-  // prikaz audio liste
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
@@ -206,6 +192,7 @@ function playAudioList(type){
   }
 }
 
+// BACK dugmići
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
