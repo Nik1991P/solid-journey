@@ -14,7 +14,7 @@ button { padding:12px 25px; font-size:16px; background:#0a7cff; color:white; bor
 button:hover { background:#005ecb; }
 h2 { margin-bottom:20px; font-size:24px; }
 #languageDiv button { width:80%; margin:8px 0; }
-audio { width:100%; margin-top:15px; }
+audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
 .login-container { max-width:500px; padding:40px 30px; }
@@ -29,7 +29,7 @@ audio { width:100%; margin-top:15px; }
 
 <div class="screen-center">
 
-<!-- PASSWORD SCREEN -->
+<!-- PASSWORD -->
 <div id="passwordDiv" class="container login-container">
 <h1 class="main-title">Dubrovnik Audio Guide</h1>
 <h3 class="sub-title">Private Access</h3>
@@ -57,21 +57,37 @@ audio { width:100%; margin-top:15px; }
 <button onclick="sendDataAndPlay('HR')">Hrvatski</button><br>
 <button onclick="sendDataAndPlay('DE')">Deutsch</button><br><br>
 <button onclick="backToForm()">Back</button>
-<p id="playHint" style="display:none;">Kliknite ▶️ za reprodukciju</p>
-<audio id="audioPlayer" controls style="display:none"></audio>
+</div>
+
+<!-- TOUR TYPE -->
+<div id="tourDiv" class="container" style="display:none">
+<h2>Select tour type</h2>
+<button onclick="playAudioList('old')">Old Town</button><br>
+<button onclick="playAudioList('road')">Road</button><br><br>
+<button onclick="backToLanguage()">Back</button>
+</div>
+
+<!-- AUDIO LIST -->
+<div id="audioListDiv" class="container" style="display:none">
+<h2>Audio Guide</h2>
+<div id="audioList"></div>
+<button onclick="backToTour()">Back</button>
 </div>
 
 </div>
 
 <script>
 var correctPassword = "1234";
-var audioLinks = {
-  EN: "https://nik1991p.github.io/solid-journey/audio/audio_en.mp3",
-  HR: "https://nik1991p.github.io/solid-journey/audio/audio_hr.mp3",
-  DE: "https://nik1991p.github.io/solid-journey/audio/audio_de.mp3"
-};
 
 var formData = {};
+var selectedLang = "";
+
+// koliko audio fajlova ima po jeziku/turi
+var tours = {
+  EN: { old: 4, road: 3 },
+  HR: { old: 4, road: 3 },
+  DE: { old: 4, road: 2 }
+};
 
 // ENTER za password
 window.onload = function(){
@@ -80,7 +96,7 @@ window.onload = function(){
   });
 };
 
-// CHECK PASSWORD
+// PASSWORD
 function checkPassword(){
   var input=document.getElementById("passwordInput").value;
   var errorDiv=document.getElementById("passwordError");
@@ -94,12 +110,11 @@ function checkPassword(){
   }
 }
 
-// VALIDACIJA FORME
+// VALIDACIJA
 function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
-  var phone=document.getElementById("phone").value.trim();
-  phone = phone.replace(/\s+/g,''); // ukloni razmake
+  var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
   var errorDiv=document.getElementById("formError");
 
   if(!name || !surname || !phone){
@@ -130,8 +145,10 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// SLANJE PODATAKA I AUDIO pomoću fetch (radi i na mobitelu)
+// ⚠️ OVA FUNKCIJA - EXCEL DIO OSTAVLJEN NETAKNUT
 function sendDataAndPlay(lang){
+  selectedLang = lang;
+
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
 
   var params = new URLSearchParams();
@@ -140,26 +157,58 @@ function sendDataAndPlay(lang){
   params.append("phone", formData.phone);
   params.append("jezik", lang);
 
-  // Fetch POST request
+  // 🔒 NE DIRAMO OVO
   fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
     .then(() => console.log("Data sent:", formData, lang))
     .catch(err => console.log("Error sending data:", err));
 
-  // Pokreni audio
-  var player = document.getElementById("audioPlayer");
-  player.pause();
-  player.currentTime = 0;
-  player.src = audioLinks[lang];
-  player.style.display="block";
-  player.load();
-  document.getElementById("playHint").style.display="block";
+  document.getElementById("languageDiv").style.display="none";
+  document.getElementById("tourDiv").style.display="block";
 }
 
-// BACK BUTTON
+// GENERIRANJE PLAYERA
+function playAudioList(type){
+
+  document.getElementById("tourDiv").style.display="none";
+  document.getElementById("audioListDiv").style.display="block";
+
+  var container = document.getElementById("audioList");
+  container.innerHTML = "";
+
+  var count = tours[selectedLang][type];
+
+  for(let i=1; i<=count; i++){
+
+    var block = document.createElement("div");
+    block.style.marginBottom = "15px";
+
+    var title = document.createElement("p");
+    title.textContent = "Stop " + i;
+
+    var audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+
+    block.appendChild(title);
+    block.appendChild(audio);
+    container.appendChild(block);
+  }
+}
+
+// BACK
 function backToForm(){
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("formDiv").style.display="block";
-  document.getElementById("audioPlayer").style.display="none";
+}
+
+function backToLanguage(){
+  document.getElementById("tourDiv").style.display="none";
+  document.getElementById("languageDiv").style.display="block";
+}
+
+function backToTour(){
+  document.getElementById("audioListDiv").style.display="none";
+  document.getElementById("tourDiv").style.display="block";
 }
 </script>
 
