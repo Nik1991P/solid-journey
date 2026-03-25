@@ -152,25 +152,20 @@ function sendDataAndGoToTour(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// 🔹 Slanje podataka u Sheet kada se odabere tour
+// 🔹 Slanje podataka u Sheet kada se odabere tour (fix za mobitel)
 function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/AKfycbzeAt5Wy1H-tqzkmEHb8HvzcdOx1_QHusK1zqPMHHO1svueETbYr1MSf0FQcG1a1DZ0Nw/exec"; // zamijeni sa svojim Apps Script URL
+  var url = "https://script.google.com/macros/s/AKfycby1Q6V9UQufpdJzdvrIspISwPPpBGVb8NgMHod9kAej6iHcpvny1Ib4Tf90ZyAKEFh24Q/exec"; // zamijeni sa svojim Apps Script URL
 
-  var payload = {
-    ime: formData.name,
-    prezime: formData.surname,
-    phone: formData.phone,
-    jezik: selectedLang,
-    tourType: tourType
-  };
+  var params = new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", selectedLang);
+  params.append("tourType", tourType);
 
-  fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(() => console.log("Data sent:", payload))
-  .catch(err => console.log("Error sending data:", err));
+  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+    .then(() => console.log("Tour data sent:", tourType))
+    .catch(err => console.log("Error sending tour:", err));
 }
 
 function playAudioList(type){
