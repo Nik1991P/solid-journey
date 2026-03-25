@@ -4,25 +4,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
 <style>
-body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; background:#000; }
+body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
 .background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
-.overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.35); z-index:-1; }
+.overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
-.container { background:rgba(0,0,0,0.7); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; box-shadow:0 8px 20px rgba(0,0,0,0.6); }
+.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; }
+
+input {
+  width:90%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+  box-sizing:border-box;
+}
+
+button {
+  padding:12px 0;
+  font-size:16px;
+  background:#0a7cff;
+  color:white;
+  border:none;
+  border-radius:8px;
+  margin:8px 0;
+  cursor:pointer;
+  width:80%;      /* svi gumbi iste širine */
+  transition:0.3s;
+}
+
+button:hover { background:#005ecb; }
+
+/* Ako želiš da Back bude malo manji */
+button.back-btn { width:60%; }
+
+h2 { margin-bottom:20px; font-size:24px; }
+audio { width:100%; margin-top:10px; }
+
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
-h2 { margin-bottom:20px; font-size:24px; }
-input { width:90%; padding:14px; margin:10px 0; border-radius:12px; border:none; font-size:16px; box-sizing:border-box; outline:none; transition:0.3s; }
-input:focus { box-shadow:0 0 8px rgba(10,124,255,0.7); }
-button { padding:14px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:12px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
-button:hover { background:#005ecb; transform:translateY(-2px); }
-button.back-btn { background:#555; width:60%; }
-button.back-btn:hover { background:#333; transform:translateY(-2px); }
-audio { width:100%; margin-top:10px; outline:none; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
-.error-message.show { display:block; opacity:1; }
-.tour-btn { display:flex; align-items:center; justify-content:center; font-size:18px; }
-.tour-btn img { width:24px; height:24px; margin-right:10px; }
+
+.login-container { max-width:500px; padding:40px 30px; }
+
+.error-message {
+  color:#ff6961;
+  margin-top:10px;
+  display:none;
+  font-weight:bold;
+  transition:opacity 0.3s;
+  opacity:0;
+}
+
+.error-message.show {
+  display:block;
+  opacity:1;
+}
 </style>
 </head>
 <body>
@@ -34,51 +70,48 @@ audio { width:100%; margin-top:10px; outline:none; }
 
 <!-- PASSWORD -->
 <div id="passwordDiv" class="container login-container">
-  <h1 class="main-title">Dubrovnik Audio Guide</h1>
-  <h3 class="sub-title">Private Access</h3>
-  <p>Enter password to continue:</p>
-  <input id="passwordInput" type="password" placeholder="Password"><br>
-  <button onclick="checkPassword()">Enter</button>
-  <p id="passwordError" class="error-message"></p>
+<h1 class="main-title">Dubrovnik Audio Guide</h1>
+<h3 class="sub-title">Private Access</h3>
+<p>Enter password to continue:</p>
+<input id="passwordInput" type="password" placeholder="Password"><br>
+<button onclick="checkPassword()">Enter</button>
+<p id="passwordError" class="error-message"></p>
 </div>
 
 <!-- FORM -->
 <div id="formDiv" class="container" style="display:none">
-  <h2>Dubrovnik Audio Guide</h2>
-  <p>Please enter your details:</p>
-  <input id="name" placeholder="Name"><br>
-  <input id="surname" placeholder="Surname"><br>
-  <input id="phone" placeholder="Phone"><br>
-  <button onclick="validateForm()">Submit</button>
-  <p id="formError" class="error-message"></p>
+<h2>Dubrovnik Audio Guide</h2>
+<p>Please enter your details:</p>
+<input id="name" placeholder="Name"><br>
+<input id="surname" placeholder="Surname"><br>
+<input id="phone" placeholder="Phone"><br>
+<button onclick="validateForm()">Submit</button>
+<button class="back-btn" onclick="backToForm()">Back</button>
+<p id="formError" class="error-message"></p>
 </div>
 
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
-  <h2>Select your language</h2>
-  <button onclick="sendDataAndPlay('EN')">English</button><br>
-  <button onclick="sendDataAndPlay('HR')">Hrvatski</button><br>
-  <button onclick="sendDataAndPlay('DE')">Deutsch</button><br>
-  <button class="back-btn" onclick="backToForm()">Back</button>
+<h2>Select your language</h2>
+<button onclick="sendDataAndPlay('EN')">English</button><br>
+<button onclick="sendDataAndPlay('HR')">Hrvatski</button><br>
+<button onclick="sendDataAndPlay('DE')">Deutsch</button><br>
+<button class="back-btn" onclick="backToForm()">Back</button>
 </div>
 
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
-  <h2>Select tour type</h2>
-  <button class="tour-btn" onclick="playAudioList('old')">
-    <img src="images/oldtown-icon.png" alt="Old Town">Old Town
-  </button><br>
-  <button class="tour-btn" onclick="playAudioList('road')">
-    <img src="images/road-icon.png" alt="Road">Road
-  </button><br>
-  <button class="back-btn" onclick="backToLanguage()">Back</button>
+<h2>Select tour type</h2>
+<button onclick="playAudioList('old')">Old Town</button><br>
+<button onclick="playAudioList('road')">Road</button><br>
+<button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
 <!-- AUDIO -->
 <div id="audioListDiv" class="container" style="display:none">
-  <h2>Audio Guide</h2>
-  <div id="audioList"></div>
-  <button class="back-btn" onclick="backToTour()">Back</button>
+<h2>Audio Guide</h2>
+<div id="audioList"></div>
+<button class="back-btn" onclick="backToTour()">Back</button>
 </div>
 
 </div>
@@ -131,6 +164,7 @@ function validateForm(){
   }
 
   errorDiv.classList.remove("show");
+
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
@@ -139,9 +173,10 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// 🔒 Excel dio - NETAKNUT
+// 🔒 EXCEL dio - netaknuto
 function sendDataAndPlay(lang){
   selectedLang = lang;
+
   var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
   var params = new URLSearchParams();
   params.append("ime", formData.name);
@@ -150,44 +185,31 @@ function sendDataAndPlay(lang){
   params.append("jezik", lang);
 
   fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(()=>console.log("Data sent:", formData, lang))
-    .catch(err=>console.log("Error sending data:", err));
+    .then(() => console.log("Data sent:", formData, lang))
+    .catch(err => console.log("Error sending data:", err));
 
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
 }
 
 function playAudioList(type){
-  // --- Pošalji i tourType u Excel ---
-  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", type); // <-- NOVO
-
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(()=>console.log("Data sent with tour type:", type))
-    .catch(err=>console.log("Error sending data:", err));
-
-  // --- Prikaži audio ---
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
   var container = document.getElementById("audioList");
   container.innerHTML = "";
+
   var count = tours[selectedLang][type];
-  for(let i=1;i<=count;i++){
+  for(let i=1; i<=count; i++){
     var block = document.createElement("div");
-    block.style.marginBottom="15px";
+    block.style.marginBottom = "15px";
 
     var title = document.createElement("p");
-    title.textContent="Stop " + i;
+    title.textContent = "Stop " + i;
 
     var audio = document.createElement("audio");
     audio.controls = true;
-    audio.src = "audio/"+selectedLang.toLowerCase()+"/"+type+"/"+i+".mp3";
+    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
 
     block.appendChild(title);
     block.appendChild(audio);
