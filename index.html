@@ -9,17 +9,57 @@ body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, san
 .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
 .container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; }
+
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; }
-button { padding:12px 25px; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:5px; cursor:pointer; transition:0.3s; }
+
+button {
+  padding:12px 25px;
+  font-size:16px;
+  background:#0a7cff;
+  color:white;
+  border:none;
+  border-radius:8px;
+  margin:5px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
 button:hover { background:#005ecb; }
+
+/* 🔥 SVI GLAVNI GUMBI ISTI (jezik + tour) */
+#languageDiv button,
+#tourDiv button {
+  width:80%;
+  margin:8px 0;
+}
+
+/* Back gumbi manji */
+#languageDiv button:last-child,
+#tourDiv button:last-child {
+  width:auto;
+}
+
 h2 { margin-bottom:20px; font-size:24px; }
-#languageDiv button { width:80%; margin:8px 0; }
 audio { width:100%; margin-top:10px; }
+
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
+
 .login-container { max-width:500px; padding:40px 30px; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
-.error-message.show { display:block; opacity:1; }
+
+.error-message {
+  color:#ff6961;
+  margin-top:10px;
+  display:none;
+  font-weight:bold;
+  transition:opacity 0.3s;
+  opacity:0;
+}
+
+.error-message.show {
+  display:block;
+  opacity:1;
+}
 </style>
 </head>
 <body>
@@ -59,7 +99,7 @@ audio { width:100%; margin-top:10px; }
 <button onclick="backToForm()">Back</button>
 </div>
 
-<!-- TOUR TYPE -->
+<!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
 <button onclick="playAudioList('old')">Old Town</button><br>
@@ -67,7 +107,7 @@ audio { width:100%; margin-top:10px; }
 <button onclick="backToLanguage()">Back</button>
 </div>
 
-<!-- AUDIO LIST -->
+<!-- AUDIO -->
 <div id="audioListDiv" class="container" style="display:none">
 <h2>Audio Guide</h2>
 <div id="audioList"></div>
@@ -82,21 +122,18 @@ var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 
-// broj audio fajlova po jeziku i turi
 var tours = {
   EN: { old: 4, road: 3 },
   HR: { old: 4, road: 3 },
   DE: { old: 4, road: 2 }
 };
 
-// ENTER za password
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
     if(e.key==="Enter") checkPassword();
   });
 };
 
-// PASSWORD
 function checkPassword(){
   var input=document.getElementById("passwordInput").value;
   var errorDiv=document.getElementById("passwordError");
@@ -110,7 +147,6 @@ function checkPassword(){
   }
 }
 
-// VALIDACIJA
 function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
@@ -145,7 +181,7 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// 🔒 NE DIRATI (EXCEL SPREMANJE)
+// 🔒 EXCEL DIO - NETAKNUT
 function sendDataAndPlay(lang){
   selectedLang = lang;
 
@@ -165,7 +201,6 @@ function sendDataAndPlay(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// GENERIRANJE PLAYERA
 function playAudioList(type){
 
   document.getElementById("tourDiv").style.display="none";
@@ -194,7 +229,6 @@ function playAudioList(type){
   }
 }
 
-// BACK
 function backToForm(){
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("formDiv").style.display="block";
