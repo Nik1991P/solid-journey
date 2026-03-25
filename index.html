@@ -156,16 +156,21 @@ function sendDataAndGoToTour(lang){
 function sendDataToSheet(tourType) {
   var url = "https://script.google.com/macros/s/AKfycbzeAt5Wy1H-tqzkmEHb8HvzcdOx1_QHusK1zqPMHHO1svueETbYr1MSf0FQcG1a1DZ0Nw/exec"; // zamijeni sa svojim Apps Script URL
 
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", tourType);
+  var payload = {
+    ime: formData.name,
+    prezime: formData.surname,
+    phone: formData.phone,
+    jezik: selectedLang,
+    tourType: tourType
+  };
 
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Tour data sent:", tourType))
-    .catch(err => console.log("Error sending tour:", err));
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => console.log("Data sent:", payload))
+  .catch(err => console.log("Error sending data:", err));
 }
 
 function playAudioList(type){
