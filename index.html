@@ -4,211 +4,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
 <style>
-body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
-.background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
-.overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
-.screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
-.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; }
-input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; }
-button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
-button:hover { background:#005ecb; }
-/* Back gumb plavi i iste širine */
-button.back-btn { width:80%; background:#0a7cff; }
-button.back-btn:hover { background:#005ecb; }
-h2 { margin-bottom:20px; font-size:24px; }
-audio { width:100%; margin-top:10px; }
-.main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
-.sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
-.login-container { max-width:500px; padding:40px 30px; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
-.error-message.show { display:block; opacity:1; }
+body { margin:0; padding:0; font-family:'Segoe UI'; }
 </style>
 </head>
 <body>
 
-<div class="background"></div>
-<div class="overlay"></div>
+<h2>Test verzija</h2>
 
-<div class="screen-center">
-
-<!-- PASSWORD -->
-<div id="passwordDiv" class="container login-container">
-<h1 class="main-title">Dubrovnik Audio Guide</h1>
-<h3 class="sub-title">Private Access</h3>
-<p>Enter password to continue:</p>
-<input id="passwordInput" type="password" placeholder="Password"><br>
-<button onclick="checkPassword()">Enter</button>
-<p id="passwordError" class="error-message"></p>
-</div>
-
-<!-- FORM -->
-<div id="formDiv" class="container" style="display:none">
-<h2>Dubrovnik Audio Guide</h2>
-<p>Please enter your details:</p>
 <input id="name" placeholder="Name"><br>
 <input id="surname" placeholder="Surname"><br>
 <input id="phone" placeholder="Phone"><br>
-<button onclick="validateForm()">Submit</button>
-<p id="formError" class="error-message"></p>
-</div>
 
-<!-- LANGUAGE -->
-<div id="languageDiv" class="container" style="display:none">
-<h2>Select your language</h2>
-<button onclick="sendDataAndGoToTour('EN')">English</button><br>
-<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
-<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
-<button class="back-btn" onclick="backToForm()">Back</button>
-</div>
+<button onclick="selectLang('EN')">English</button>
+<button onclick="selectLang('HR')">Hrvatski</button>
 
-<!-- TOUR -->
-<div id="tourDiv" class="container" style="display:none">
-<h2>Select tour type</h2>
-<button onclick="playAudioList('old')">Old Town</button><br>
-<button onclick="playAudioList('road')">Road</button><br>
-<button class="back-btn" onclick="backToLanguage()">Back</button>
-</div>
+<br><br>
 
-<!-- AUDIO -->
-<div id="audioListDiv" class="container" style="display:none">
-<h2>Audio Guide</h2>
-<div id="audioList"></div>
-<button class="back-btn" onclick="backToTour()">Back</button>
-</div>
-
-</div>
+<button onclick="sendTour('old')">Old Town</button>
+<button onclick="sendTour('road')">Road</button>
 
 <script>
-var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2} };
 
-window.onload = function(){
-  document.getElementById("passwordInput").addEventListener("keypress", function(e){
-    if(e.key==="Enter") checkPassword();
-  });
-};
-
-function checkPassword(){
-  var input=document.getElementById("passwordInput").value;
-  var errorDiv=document.getElementById("passwordError");
-  if(input===correctPassword){
-    errorDiv.classList.remove("show");
-    document.getElementById("passwordDiv").style.display="none";
-    document.getElementById("formDiv").style.display="block";
-  }else{
-    errorDiv.textContent="Wrong password";
-    errorDiv.classList.add("show");
-  }
-}
-
-function validateForm(){
-  var name=document.getElementById("name").value.trim();
-  var surname=document.getElementById("surname").value.trim();
-  var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
-  var errorDiv=document.getElementById("formError");
-
-  if(!name || !surname || !phone){
-    errorDiv.textContent="All fields are required";
-    errorDiv.classList.add("show");
-    return false;
-  }
-  if(!/^[0-9]+$/.test(phone)){
-    errorDiv.textContent="Phone must contain only digits";
-    errorDiv.classList.add("show");
-    return false;
-  }
-  if(phone.length < 5){
-    errorDiv.textContent="Phone must be at least 5 digits";
-    errorDiv.classList.add("show");
-    return false;
-  }
-
-  errorDiv.classList.remove("show");
-  formData.name = name;
-  formData.surname = surname;
-  formData.phone = phone;
-
-  document.getElementById("formDiv").style.display="none";
-  document.getElementById("languageDiv").style.display="block";
-}
-
-// 🔒 EXCEL dio - netaknuto, samo šalje jezik prije odabira tour-a
-function sendDataAndGoToTour(lang){
+// SPREMI OSNOVNE PODATKE
+function selectLang(lang){
   selectedLang = lang;
 
-  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+  formData.name = document.getElementById("name").value;
+  formData.surname = document.getElementById("surname").value;
+  formData.phone = document.getElementById("phone").value;
+
+  alert("Language selected: " + lang);
+}
+
+// 🔥 GLAVNO - klik na Old/Road
+function sendTour(tourType){
+  var url = "https://script.google.com/macros/s/AKfycbxQANWTNU01mrqd-SC_UobDQ6NUbT5d0rHBu2XV4RyHh8NP6mIdMhnLiNdfvXlUfjot1g/exec";
+
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
   params.append("phone", formData.phone);
-  params.append("jezik", lang);
+  params.append("jezik", selectedLang);
+  params.append("tourType", tourType);
 
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent:", formData, lang))
-    .catch(err => console.log("Error sending data:", err));
+  fetch(url + "?" + params.toString(), {
+    method: "GET",
+    mode: "no-cors"
+  });
 
-  document.getElementById("languageDiv").style.display="none";
-  document.getElementById("tourDiv").style.display="block";
+  alert("Saved: " + tourType);
 }
-
-// 🔹 Slanje podataka u Sheet POST metodom kada se odabere tourType
-function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-
-  var payload = {
-    ime: formData.name,
-    prezime: formData.surname,
-    phone: formData.phone,
-    jezik: selectedLang,
-    tourType: tourType
-  };
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(() => console.log("Data sent:", payload))
-  .catch(err => console.log("Error sending data:", err));
-}
-
-// Funkcija koja se poziva klikom na Old Town ili Road
-function playAudioList(type){
-  // prvo pošalji podatke u Sheet
-  sendDataToSheet(type);
-
-  // prikaz audio liste
-  document.getElementById("tourDiv").style.display="none";
-  document.getElementById("audioListDiv").style.display="block";
-
-  var container = document.getElementById("audioList");
-  container.innerHTML = "";
-
-  var count = tours[selectedLang][type];
-  for(let i=1; i<=count; i++){
-    var block = document.createElement("div");
-    block.style.marginBottom = "15px";
-
-    var title = document.createElement("p");
-    title.textContent = "Stop " + i;
-
-    var audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-
-    block.appendChild(title);
-    block.appendChild(audio);
-    container.appendChild(block);
-  }
-}
-
-function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
-function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
-function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
 </body>
