@@ -29,14 +29,18 @@ button {
   border-radius:8px;
   margin:8px 0;
   cursor:pointer;
-  width:80%;      /* svi gumbi iste širine */
+  width:80%;
   transition:0.3s;
 }
 
 button:hover { background:#005ecb; }
 
-/* Ako želiš da Back bude malo manji */
-button.back-btn { width:60%; }
+/* Back gumb sada plavi i iste širine */
+button.back-btn {
+  width:80%;
+  background:#0a7cff;
+}
+button.back-btn:hover { background:#005ecb; }
 
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100%; margin-top:10px; }
@@ -102,6 +106,7 @@ audio { width:100%; margin-top:10px; }
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
+<!-- dugmići Old Town i Road sada izgledaju identično kao jezici -->
 <button onclick="playAudioList('old')">Old Town</button><br>
 <button onclick="playAudioList('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
@@ -164,7 +169,6 @@ function validateForm(){
   }
 
   errorDiv.classList.remove("show");
-
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
@@ -192,7 +196,20 @@ function sendDataAndPlay(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
+// 🔹 slanje tourType u Excel
 function playAudioList(type){
+  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
+  var params = new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", selectedLang);
+  params.append("tourType", type);
+
+  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+    .then(() => console.log("Data sent with tour type:", type))
+    .catch(err => console.log("Error sending data:", err));
+
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
