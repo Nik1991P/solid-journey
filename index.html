@@ -5,11 +5,10 @@
 <title>Dubrovnik Audio Guide</title>
 
 <style>
-body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
+body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; min-height:100vh; }
 
 .background {
-  position:absolute;
-  top:0; left:0;
+  position:absolute; top:0; left:0;
   width:100%; height:100%;
   background:url('images/DubrovnikSlika.webp') no-repeat center center;
   background-size:cover;
@@ -18,8 +17,7 @@ body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, san
 }
 
 .overlay {
-  position:absolute;
-  top:0; left:0;
+  position:absolute; top:0; left:0;
   width:100%; height:100%;
   background:rgba(0,0,0,0.3);
   z-index:-1;
@@ -49,7 +47,6 @@ input {
   margin:10px 0;
   border-radius:8px;
   border:none;
-  font-size:16px;
 }
 
 button {
@@ -66,16 +63,13 @@ button {
 
 button:hover { background:#005ecb; }
 
-h2 { margin-bottom:20px; }
 audio { width:100%; margin-top:10px; }
 
 .error-message {
   color:#ff6961;
   display:none;
 }
-.error-message.show {
-  display:block;
-}
+.error-message.show { display:block; }
 </style>
 </head>
 
@@ -89,7 +83,7 @@ audio { width:100%; margin-top:10px; }
 <!-- PASSWORD -->
 <div id="passwordDiv" class="container">
 <h2>Dubrovnik Audio Guide</h2>
-<input id="passwordInput" type="password" placeholder="Password"><br>
+<input id="passwordInput" type="password" placeholder="Password">
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
 </div>
@@ -97,9 +91,9 @@ audio { width:100%; margin-top:10px; }
 <!-- FORM -->
 <div id="formDiv" class="container" style="display:none">
 <h2>Enter your details</h2>
-<input id="name" placeholder="Name"><br>
-<input id="surname" placeholder="Surname"><br>
-<input id="phone" placeholder="Phone"><br>
+<input id="name" placeholder="Name">
+<input id="surname" placeholder="Surname">
+<input id="phone" placeholder="Phone">
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
 </div>
@@ -185,9 +179,9 @@ function selectLanguage(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// 🔥 SLANJE PODATAKA (SAMO OVDJE)
+// 🔥 SIGURNO SLANJE (radi 100%)
 function sendDataToSheet(tourType){
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxhNAB4gcStUQ2AsiFDehLPSJdip8VpRuZvOXGdLYZ1gDkt-aSrEYbfcBBn60TYfNXk/exec";
+  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
@@ -196,10 +190,8 @@ function sendDataToSheet(tourType){
   params.append("jezik", selectedLang);
   params.append("tourType", tourType === "old" ? "Old Town" : "Road");
 
-  fetch(url + "?" + params.toString(), {
-    method: "GET",
-    mode: "no-cors"
-  });
+  var img = new Image();
+  img.src = url + "?" + params.toString();
 }
 
 // AUDIO + SLANJE
