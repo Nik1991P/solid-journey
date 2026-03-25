@@ -9,60 +9,19 @@ body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, san
 .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
 .container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; }
-
-input {
-  width:90%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:8px;
-  border:none;
-  font-size:16px;
-  box-sizing:border-box;
-}
-
-button {
-  padding:12px 0;
-  font-size:16px;
-  background:#0a7cff;
-  color:white;
-  border:none;
-  border-radius:8px;
-  margin:8px 0;
-  cursor:pointer;
-  width:80%;
-  transition:0.3s;
-}
-
+input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; }
+button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
-
-/* Back gumb sada plavi i iste širine */
-button.back-btn {
-  width:80%;
-  background:#0a7cff;
-}
+/* Back gumb plavi i iste širine */
+button.back-btn { width:80%; background:#0a7cff; }
 button.back-btn:hover { background:#005ecb; }
-
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100%; margin-top:10px; }
-
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
-
 .login-container { max-width:500px; padding:40px 30px; }
-
-.error-message {
-  color:#ff6961;
-  margin-top:10px;
-  display:none;
-  font-weight:bold;
-  transition:opacity 0.3s;
-  opacity:0;
-}
-
-.error-message.show {
-  display:block;
-  opacity:1;
-}
+.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
+.error-message.show { display:block; opacity:1; }
 </style>
 </head>
 <body>
@@ -90,23 +49,21 @@ audio { width:100%; margin-top:10px; }
 <input id="surname" placeholder="Surname"><br>
 <input id="phone" placeholder="Phone"><br>
 <button onclick="validateForm()">Submit</button>
-<button class="back-btn" onclick="backToForm()">Back</button>
 <p id="formError" class="error-message"></p>
 </div>
 
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
-<button onclick="sendDataAndPlay('EN')">English</button><br>
-<button onclick="sendDataAndPlay('HR')">Hrvatski</button><br>
-<button onclick="sendDataAndPlay('DE')">Deutsch</button><br>
+<button onclick="sendDataAndGoToTour('EN')">English</button><br>
+<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
+<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 </div>
 
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<!-- dugmići Old Town i Road sada izgledaju identično kao jezici -->
 <button onclick="playAudioList('old')">Old Town</button><br>
 <button onclick="playAudioList('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
@@ -177,11 +134,11 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// 🔒 EXCEL dio - netaknuto
-function sendDataAndPlay(lang){
+// 🔒 EXCEL dio - netaknuto, samo šalje jezik prije odabira tour-a
+function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
+  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -196,20 +153,35 @@ function sendDataAndPlay(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// 🔹 slanje tourType u Excel
+// 🔹 Slanje podataka u Sheet POST metodom kada se odabere tourType
+function sendDataToSheet(tourType) {
+  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+  var payload = {
+    ime: formData.name,
+    prezime: formData.surname,
+    phone: formData.phone,
+    jezik: selectedLang,
+    tourType: tourType
+  };
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(() => console.log("Data sent:", payload))
+  .catch(err => console.log("Error sending data:", err));
+}
+
+// Funkcija koja se poziva klikom na Old Town ili Road
 function playAudioList(type){
-  var url = "https://script.google.com/macros/s/AKfycbzMJ-btB9GKhH9IquoDCPVzRkmZmA0iAtEInZG2mhWXl207tp7NcitRkaTmooNsYp1qKQ/exec";
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", type);
+  // prvo pošalji podatke u Sheet
+  sendDataToSheet(type);
 
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent with tour type:", type))
-    .catch(err => console.log("Error sending data:", err));
-
+  // prikaz audio liste
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
