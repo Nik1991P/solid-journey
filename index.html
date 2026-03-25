@@ -137,7 +137,7 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  var url = "YOUR_SCRIPT_URL"; // zamijeni sa svojim Apps Script URL
+  var url = "https://script.google.com/macros/s/AKfycbwxBNjXyNlP87ejmhiUUrtccMQEI8OIX1EakQI8W4V1hDvcbDUM6WDfRpCaB2DD2qqJEA/exec"; // isti URL kao gore
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -145,8 +145,8 @@ function sendDataAndGoToTour(lang){
   params.append("jezik", lang);
 
   fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent:", formData, lang))
-    .catch(err => console.log("Error sending data:", err));
+    .then(() => console.log("Language data sent:", lang))
+    .catch(err => console.log("Error sending language:", err));
 
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
@@ -154,7 +154,7 @@ function sendDataAndGoToTour(lang){
 
 // 🔹 Slanje podataka u Sheet kada se odabere tour (fix za mobitel)
 function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/AKfycbzY3yX8GcE4wPnvbU7FBVW8da5vAf5p4y2MhNuozE9asB2Rb3JjcWcH1n2PqHGxVVx3wg/exec"; // zamijeni sa tvojim Apps Script URL
+  var url = "https://script.google.com/macros/s/AKfycbwxBNjXyNlP87ejmhiUUrtccMQEI8OIX1EakQI8W4V1hDvcbDUM6WDfRpCaB2DD2qqJEA/exec"; // zamijeni sa tvojim Apps Script URL
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
