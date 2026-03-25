@@ -137,7 +137,7 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  var url = "https://script.google.com/macros/s/AKfycbwxBNjXyNlP87ejmhiUUrtccMQEI8OIX1EakQI8W4V1hDvcbDUM6WDfRpCaB2DD2qqJEA/exec"; // isti URL kao gore
+  var url = "https://script.google.com/macros/s/AKfycbyPMbEhlu2bJdlAAslRdwmOqCDqjUtgZXR61dAmLKpllupOcGuQ9xjyJjpTX7ypSaMTXg/exec"; // isti URL kao gore
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -154,7 +154,7 @@ function sendDataAndGoToTour(lang){
 
 // 🔹 Slanje podataka u Sheet kada se odabere tour (fix za mobitel)
 function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/AKfycbwxBNjXyNlP87ejmhiUUrtccMQEI8OIX1EakQI8W4V1hDvcbDUM6WDfRpCaB2DD2qqJEA/exec"; // zamijeni sa tvojim Apps Script URL
+  var url = "https://script.google.com/macros/s/AKfycbyPMbEhlu2bJdlAAslRdwmOqCDqjUtgZXR61dAmLKpllupOcGuQ9xjyJjpTX7ypSaMTXg/exec"; // zamijeni sa tvojim Apps Script URL
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
