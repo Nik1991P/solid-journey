@@ -15,7 +15,6 @@ button:hover { background:#005ecb; }
 button.back-btn { width:80%; background:#0a7cff; }
 button.back-btn:hover { background:#005ecb; }
 h2 { margin-bottom:20px; font-size:24px; }
-audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
 .login-container { max-width:500px; padding:40px 30px; }
@@ -55,8 +54,10 @@ audio { width:100%; margin-top:10px; }
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
 <button onclick="sendDataAndGoToTour('EN')">English</button><br>
-<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
+<button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
+<button onclick="sendDataAndGoToTour('ES')">Español</button><br>
+<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 </div>
 
@@ -81,7 +82,7 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2} };
+var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:3}, ES:{old:4,road:3} };
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
@@ -140,47 +141,9 @@ function sendDataAndGoToTour(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// 🔹 Slanje podataka u Sheet kada se odabere tour (fix za mobitel)
-function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/AKfycbyPMbEhlu2bJdlAAslRdwmOqCDqjUtgZXR61dAmLKpllupOcGuQ9xjyJjpTX7ypSaMTXg/exec";
-
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", tourType);
-
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent:", tourType))
-    .catch(err => console.log("Error sending tour:", err));
-}
-
 function playAudioList(type){
-  sendDataToSheet(type);
-
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
-
-  var container = document.getElementById("audioList");
-  container.innerHTML = "";
-
-  var count = tours[selectedLang][type];
-  for(let i=1; i<=count; i++){
-    var block = document.createElement("div");
-    block.style.marginBottom = "15px";
-
-    var title = document.createElement("p");
-    title.textContent = "Stop " + i;
-
-    var audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-
-    block.appendChild(title);
-    block.appendChild(audio);
-    container.appendChild(block);
-  }
 }
 
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
@@ -188,16 +151,16 @@ function backToLanguage(){ document.getElementById("tourDiv").style.display="non
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
-<!-- 🔹 Dodatni script za prijevod gumba i naziva Stopova -->
+<!-- 🔹 Dodatni script samo za prijevod gumba -->
 <script>
-// Prijevodi za gumbe ture i nazive stopova
 var tourNames = {
   EN: { old: "Old Town", road: "Road" },
   HR: { old: "Stari Grad", road: "Cesta" },
-  DE: { old: "Altstadt", road: "Straße" }
+  DE: { old: "Altstadt", road: "Straße" },
+  IT: { old: "Centro Storico", road: "Strada" },
+  ES: { old: "Casco Antiguo", road: "Carretera" }
 };
 
-// Funkcija koja ažurira tekst gumba u tourDiv prema jeziku
 function updateTourButtons() {
   var tourDiv = document.getElementById("tourDiv");
   var buttons = tourDiv.querySelectorAll("button:not(.back-btn)");
@@ -207,24 +170,11 @@ function updateTourButtons() {
   }
 }
 
-// Presretni funkciju odabira jezika da odmah ažurira gumbove
+// Presretni funkciju odabira jezika samo za prijevod gumba
 var originalSend = sendDataAndGoToTour;
 sendDataAndGoToTour = function(lang){
   originalSend(lang);
   updateTourButtons();
-};
-
-// Presretni playAudioList da nazivi stopova budu prevedeni
-var originalPlayAudioList = playAudioList;
-playAudioList = function(type){
-  var stopName = tourNames[selectedLang][type];
-  originalPlayAudioList(type);
-  var container = document.getElementById("audioList");
-  var audioBlocks = container.querySelectorAll("div");
-  audioBlocks.forEach((block, index) => {
-    var p = block.querySelector("p");
-    if(p) p.textContent = stopName + " - Stop " + (index+1);
-  });
 };
 </script>
 
