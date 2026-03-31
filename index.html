@@ -57,6 +57,8 @@ h2 { margin-bottom:20px; font-size:24px; }
 <button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
 <button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
 <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
+<button onclick="sendDataAndGoToTour('NL')">Dutch</button><br>
+<button onclick="sendDataAndGoToTour('FR')">Français</button><br>
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 </div>
@@ -82,7 +84,7 @@ h2 { margin-bottom:20px; font-size:24px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:3}, ES:{old:4,road:3} };
+var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:3}, ES:{old:4,road:3}, NL:{old:4,road:3}, FR:{old:4,road:3} };
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
@@ -134,7 +136,7 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// 🔒 EXCEL dio
+// Excel dio
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
   document.getElementById("languageDiv").style.display="none";
@@ -151,26 +153,28 @@ function backToLanguage(){ document.getElementById("tourDiv").style.display="non
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
-<!-- 🔹 Prijevod gumba "Old Town" i "Road" -->
+<!-- Prijevod gumba "Old Town" i "Road" -->
 <script>
 var tourNames = {
   EN: { old: "Old Town", road: "Road" },
   HR: { old: "Stari Grad", road: "Cesta" },
   DE: { old: "Altstadt", road: "Straße" },
   IT: { old: "Centro Storico", road: "Strada" },
-  ES: { old: "Casco Antiguo", road: "Carretera" }
+  ES: { old: "Casco Antiguo", road: "Carretera" },
+  NL: { old: "Oude Stad", road: "Weg" },
+  FR: { old: "Vieille Ville", road: "Route" }
 };
 
 function updateTourButtons() {
   var tourDiv = document.getElementById("tourDiv");
   var buttons = tourDiv.querySelectorAll("button:not(.back-btn)");
   if(buttons.length >= 2){
-    buttons[0].textContent = tourNames[selectedLang].old;
-    buttons[1].textContent = tourNames[selectedLang].road;
+    buttons[0].textContent = tourNames[selectedLang] ? tourNames[selectedLang].old : "Old Town";
+    buttons[1].textContent = tourNames[selectedLang] ? tourNames[selectedLang].road : "Road";
   }
 }
 
-// Presretni funkciju odabira jezika za prijevod gumba
+// Presretni funkciju odabira jezika
 var originalSend = sendDataAndGoToTour;
 sendDataAndGoToTour = function(lang){
   originalSend(lang);
