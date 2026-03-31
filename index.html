@@ -151,7 +151,7 @@ function backToLanguage(){ document.getElementById("tourDiv").style.display="non
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
-<!-- 🔹 Dodatni script samo za prijevod gumba -->
+<!-- 🔹 Prijevod gumba "Old Town" i "Road" -->
 <script>
 var tourNames = {
   EN: { old: "Old Town", road: "Road" },
@@ -170,7 +170,7 @@ function updateTourButtons() {
   }
 }
 
-// Presretni funkciju odabira jezika samo za prijevod gumba
+// Presretni funkciju odabira jezika za prijevod gumba
 var originalSend = sendDataAndGoToTour;
 sendDataAndGoToTour = function(lang){
   originalSend(lang);
