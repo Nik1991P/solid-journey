@@ -63,8 +63,8 @@ audio { width:100%; margin-top:10px; }
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<button onclick="playAudioList('old')">Old town</button><br>
-<button onclick="playAudioList('city')">City walls</button><br>
+<button onclick="playAudioList('old')">Old Town</button><br>
+<button onclick="playAudioList('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -81,7 +81,7 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,city:3}, HR:{old:4,city:3}, DE:{old:4,city:2} };
+var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2} };
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
@@ -142,7 +142,7 @@ function sendDataAndGoToTour(lang){
 
 // 🔹 Slanje podataka u Sheet kada se odabere tour (fix za mobitel)
 function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/AKfycbyPMbEhlu2bJdlAAslRdwmOqCDqjUtgZXR61dAmLKpllupOcGuQ9xjyJjpTX7ypSaMTXg/exec"; // zamijeni sa svojim Apps Script URL
+  var url = "https://script.google.com/macros/s/AKfycbyPMbEhlu2bJdlAAslRdwmOqCDqjUtgZXR61dAmLKpllupOcGuQ9xjyJjpTX7ypSaMTXg/exec";
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
@@ -186,6 +186,46 @@ function playAudioList(type){
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
+</script>
+
+<!-- 🔹 Dodatni script za prijevod gumba i naziva Stopova -->
+<script>
+// Prijevodi za gumbe ture i nazive stopova
+var tourNames = {
+  EN: { old: "Old Town", road: "Road" },
+  HR: { old: "Stari Grad", road: "Cesta" },
+  DE: { old: "Altstadt", road: "Straße" }
+};
+
+// Funkcija koja ažurira tekst gumba u tourDiv prema jeziku
+function updateTourButtons() {
+  var tourDiv = document.getElementById("tourDiv");
+  var buttons = tourDiv.querySelectorAll("button:not(.back-btn)");
+  if(buttons.length >= 2){
+    buttons[0].textContent = tourNames[selectedLang].old;
+    buttons[1].textContent = tourNames[selectedLang].road;
+  }
+}
+
+// Presretni funkciju odabira jezika da odmah ažurira gumbove
+var originalSend = sendDataAndGoToTour;
+sendDataAndGoToTour = function(lang){
+  originalSend(lang);
+  updateTourButtons();
+};
+
+// Presretni playAudioList da nazivi stopova budu prevedeni
+var originalPlayAudioList = playAudioList;
+playAudioList = function(type){
+  var stopName = tourNames[selectedLang][type];
+  originalPlayAudioList(type);
+  var container = document.getElementById("audioList");
+  var audioBlocks = container.querySelectorAll("div");
+  audioBlocks.forEach((block, index) => {
+    var p = block.querySelector("p");
+    if(p) p.textContent = stopName + " - Stop " + (index+1);
+  });
+};
 </script>
 
 </body>
