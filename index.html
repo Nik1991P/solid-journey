@@ -64,7 +64,7 @@ audio { width:100%; margin-top:10px; }
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
 <button onclick="playAudioList('old')">Old town</button><br>
-<button onclick="playAudioList('road')">City walls</button><br>
+<button onclick="playAudioList('city')">City walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -81,7 +81,7 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2} };
+var tours = { EN:{old:4,city:3}, HR:{old:4,city:3}, DE:{old:4,city:2} };
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
