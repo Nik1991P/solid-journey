@@ -140,7 +140,7 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyN0PbPLckDU_nuSOnu1t3-I-Ed29bGil2CpL6T1ccAEooA8VBDkNW63e8X6ffwqn9Bdg/exec/exec"
+  var url = "https://script.google.com/macros/s/AKfycbxJgAtrMzFNg6ufSPTy7ICevPrJoIKI4v5OvFCvN-ugQgkf4zISSY4xD0ENCPwAkZDCbg/exec"
     + "?ime=" + encodeURIComponent(formData.name)
     + "&prezime=" + encodeURIComponent(formData.surname)
     + "&telefon=" + encodeURIComponent(formData.phone)
@@ -150,7 +150,7 @@ function sendDataAndGoToTour(lang){
   fetch(url)
     .then(res => res.text())
     .then(data => console.log("Spremljeno:", data))
-    .catch(err => console.error("Greška:", err));
+    .catch(err => console.log("Greška:", err));
 
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
