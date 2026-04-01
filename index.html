@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
 <style>
+/* tvoji postojeći stilovi */
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
 .background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
 .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
@@ -134,8 +135,7 @@ document.getElementById("btnRoad").textContent=tourTranslations[lang].road;
 }
 
 function submitTour(type){
-formData.tourType=type;
-sendDataToSheet();
+sendDataToSheet(type); // šalje odmah podatke sa svim informacijama
 document.getElementById("tourDiv").style.display="none";
 document.getElementById("audioListDiv").style.display="block";
 
@@ -151,18 +151,18 @@ block.appendChild(title); block.appendChild(audio); container.appendChild(block)
 }
 }
 
-// 🔒 Slanje podataka u Sheet
-function sendDataToSheet(){
-var url="https://script.google.com/macros/s/AKfycbxaA5E2_AFhEP8WdBrFQTYMmmriVPBL2ephamteOYh8qGTP1A51aSj1OBRn0g4RnZW8og/exec"; // zamijeni sa svojim Apps Script URL
+// 🔒 Slanje podataka u Sheet sa GET
+function sendDataToSheet(tourType){
+var url="https://script.google.com/macros/s/AKfycbwLOXjX4hxrVQcacMatmgxqK_gTyxzbL42wwyweIIZ1Z7KtxYE-GkK4VEcxOO1OUaMwSw/exec"; // zamijeni sa svojim Apps Script URL
 var params=new URLSearchParams();
 params.append("ime",formData.name);
 params.append("prezime",formData.surname);
 params.append("phone",formData.phone);
 params.append("jezik",selectedLang);
-params.append("tourType",formData.tourType);
+params.append("tourType",tourType);
 
 fetch(url+"?"+params.toString(), {method:"GET"})
-.then(()=>console.log("Data sent:",formData))
+.then(()=>console.log("Data sent"))
 .catch(err=>console.log("Error:",err));
 }
 
