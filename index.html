@@ -20,6 +20,7 @@ h2 { margin-bottom:20px; font-size:24px; }
 .login-container { max-width:500px; padding:40px 30px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
+audio { width:100%; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -82,12 +83,19 @@ h2 { margin-bottom:20px; font-size:24px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
+var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:3}, ES:{old:4,road:3} };
 var tourTranslations = {
   EN:{old:"Old Town", road:"Road"},
   DE:{old:"Altstadt", road:"Straße"},
   IT:{old:"Centro Storico", road:"Strada"},
   ES:{old:"Casco Antiguo", road:"Carretera"},
   HR:{old:"Stari Grad", road:"Cesta"}
+};
+
+window.onload = function(){
+  document.getElementById("passwordInput").addEventListener("keypress", function(e){
+    if(e.key==="Enter") checkPassword();
+  });
 };
 
 function checkPassword(){
@@ -97,7 +105,7 @@ function checkPassword(){
     errorDiv.classList.remove("show");
     document.getElementById("passwordDiv").style.display="none";
     document.getElementById("formDiv").style.display="block";
-  } else {
+  }else{
     errorDiv.textContent="Wrong password";
     errorDiv.classList.add("show");
   }
@@ -110,15 +118,18 @@ function validateForm(){
   var errorDiv=document.getElementById("formError");
   if(!name || !surname || !phone){
     errorDiv.textContent="All fields are required";
-    errorDiv.classList.add("show"); return false;
+    errorDiv.classList.add("show");
+    return false;
   }
   if(!/^[0-9]+$/.test(phone)){
     errorDiv.textContent="Phone must contain only digits";
-    errorDiv.classList.add("show"); return false;
+    errorDiv.classList.add("show");
+    return false;
   }
   if(phone.length < 5){
     errorDiv.textContent="Phone must be at least 5 digits";
-    errorDiv.classList.add("show"); return false;
+    errorDiv.classList.add("show");
+    return false;
   }
   errorDiv.classList.remove("show");
   formData.name=name; formData.surname=surname; formData.phone=phone;
@@ -134,40 +145,42 @@ function selectLanguage(lang){
   document.getElementById("btnRoad").textContent=tourTranslations[lang].road;
 }
 
-function submitTour(tourType){
-  formData.tourType = tourType;
-
-  // Kreiraj nevidljivu formu i submitaj POST
-  var form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz-WpC2-LYERTnJSo8qIxUjaGEUw_bV6Elmq-pPOLmZabp0jfxCQYn7fL-albzie0mceA/exec/exec"; // tvoj Apps Script URL
-  form.target = "_blank";
-
-  for(var key in formData){
-    var input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = formData[key];
-    form.appendChild(input);
-  }
-
-  // Dodaj jezik
-  var langInput = document.createElement("input");
-  langInput.type="hidden"; langInput.name="jezik"; langInput.value=selectedLang;
-  form.appendChild(langInput);
-
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-
+function submitTour(type){
+  formData.tourType=type;
+  sendDataToSheet(type);
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
+
+  var container=document.getElementById("audioList");
+  container.innerHTML="";
+  var count=tours[selectedLang][type];
+  for(let i=1;i<=count;i++){
+    var block=document.createElement("div"); block.style.marginBottom="15px";
+    var title=document.createElement("p"); title.textContent="Stop "+i;
+    var audio=document.createElement("audio"); audio.controls=true;
+    audio.src="audio/"+selectedLang.toLowerCase()+"/"+type+"/"+i+".mp3";
+    block.appendChild(title); block.appendChild(audio); container.appendChild(block);
+  }
+}
+
+function sendDataToSheet(tourType){
+  formData.tourType=tourType;
+  var url="https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz96837rIjkL88jctKXSSGZdgr-b-jDFeurP7_gn7a08FohrcuBVcX8Js_75qgslBPNyA/exec/exec"; // zamijeni sa svojim Apps Script URL
+  var params=new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", selectedLang);
+  params.append("tourType", formData.tourType);
+  fetch(url+"?"+params.toString(), {method:"GET",mode:"no-cors"})
+    .then(()=>console.log("Data sent:", formData.tourType))
+    .catch(err=>console.log("Error sending tour:",err));
 }
 
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
-
 </script>
+
 </body>
 </html>
