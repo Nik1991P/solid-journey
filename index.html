@@ -147,34 +147,31 @@ function sendDataAndGoToTour(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// Odabrana tura
+// Odabrana tura i spremanje
 function selectTour(type){
-  formData.tourType = type; // Sprema turu
-  sendDataToSheet();       // Spremi sve podatke
+  formData.tourType = type;
+  sendDataToSheet(type);   // Sprema sve podatke uključujući turu
   playAudioList(type);
 }
 
-// Slanje podataka u Sheet (POST)
-function sendDataToSheet() {
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzzBkcTixMynexcc61gi_IFifzhlzdwhmtOg2kEvfBdePRABVZGtEQBAcfZ5pxNso0_dw/exec/exec"; // zamijeni sa svojim Apps Script URL
+function sendDataToSheet(){
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyVKko8HRh5ZYSq3YI78CUi8pAwj4MlyH1fAk7D4DQ3--UjPrNNojBO0cuAmvpoBvsDZg/exec/exec"; // Zamijeni sa tvojim URL
 
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", formData.tourType || "");
+  var formBody = new URLSearchParams();
+  formBody.append("ime", formData.name);
+  formBody.append("prezime", formData.surname);
+  formBody.append("phone", formData.phone);
+  formBody.append("jezik", selectedLang);
+  formBody.append("tourType", formData.tourType || "");
 
   fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
-  })
-  .then(() => console.log("Data sent:", formData))
-  .catch(err => console.log("Error sending data:", err));
+    body: formBody.toString()
+  }).then(()=>console.log("Data sent:", formData))
+    .catch(err=>console.log("Error sending data:", err));
 }
 
-// Audio lista
 function playAudioList(type){
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
@@ -200,7 +197,6 @@ function playAudioList(type){
   }
 }
 
-// Navigacija Back
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
