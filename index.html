@@ -64,8 +64,8 @@ h2 { margin-bottom:20px; font-size:24px; }
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<button id="btnOldTown" onclick="selectTour('old')">Old Town</button><br>
-<button id="btnRoad" onclick="selectTour('road')">Road</button><br>
+<button id="btnOldTown" onclick="submitTour('old')">Old Town</button><br>
+<button id="btnRoad" onclick="submitTour('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -83,11 +83,11 @@ var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 var tourTranslations = {
-  EN: {old:"Old Town", road:"Road"},
-  DE: {old:"Altstadt", road:"Straße"},
-  IT: {old:"Centro Storico", road:"Strada"},
-  ES: {old:"Casco Antiguo", road:"Carretera"},
-  HR: {old:"Stari Grad", road:"Cesta"}
+  EN:{old:"Old Town", road:"Road"},
+  DE:{old:"Altstadt", road:"Straße"},
+  IT:{old:"Centro Storico", road:"Strada"},
+  ES:{old:"Casco Antiguo", road:"Carretera"},
+  HR:{old:"Stari Grad", road:"Cesta"}
 };
 
 function checkPassword(){
@@ -130,39 +130,44 @@ function selectLanguage(lang){
   selectedLang=lang;
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
-  document.getElementById("btnOldTown").textContent = tourTranslations[lang].old;
-  document.getElementById("btnRoad").textContent = tourTranslations[lang].road;
+  document.getElementById("btnOldTown").textContent=tourTranslations[lang].old;
+  document.getElementById("btnRoad").textContent=tourTranslations[lang].road;
 }
 
-function selectTour(tourType){
+function submitTour(tourType){
   formData.tourType = tourType;
-  sendDataToSheet();
+
+  // Kreiraj nevidljivu formu i submitaj POST
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz-WpC2-LYERTnJSo8qIxUjaGEUw_bV6Elmq-pPOLmZabp0jfxCQYn7fL-albzie0mceA/exec/exec"; // tvoj Apps Script URL
+  form.target = "_blank";
+
+  for(var key in formData){
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = formData[key];
+    form.appendChild(input);
+  }
+
+  // Dodaj jezik
+  var langInput = document.createElement("input");
+  langInput.type="hidden"; langInput.name="jezik"; langInput.value=selectedLang;
+  form.appendChild(langInput);
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
-}
-
-function sendDataToSheet(){
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz-WpC2-LYERTnJSo8qIxUjaGEUw_bV6Elmq-pPOLmZabp0jfxCQYn7fL-albzie0mceA/exec/exec"; // tvoj Apps Script URL
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", formData.tourType);
-
-  fetch(url, {
-    method: "POST",
-    headers: {"Content-Type":"application/x-www-form-urlencoded"},
-    body: params.toString()
-  })
-  .then(()=>console.log("Data sent:", formData))
-  .catch(err=>console.log("Error sending data:", err));
 }
 
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
-</script>
 
+</script>
 </body>
 </html>
