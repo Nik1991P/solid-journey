@@ -15,6 +15,7 @@ button:hover { background:#005ecb; }
 button.back-btn { width:80%; background:#0a7cff; }
 button.back-btn:hover { background:#005ecb; }
 h2 { margin-bottom:20px; font-size:24px; }
+audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
 .login-container { max-width:500px; padding:40px 30px; }
@@ -66,8 +67,8 @@ h2 { margin-bottom:20px; font-size:24px; }
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<button onclick="playAudioList('old')">Old Town</button><br>
-<button onclick="playAudioList('road')">Road</button><br>
+<button id="oldBtn" onclick="playAudioList('old')">Old Town</button><br>
+<button id="roadBtn" onclick="playAudioList('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -136,37 +137,15 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// ✅ OVDJE JE UBACEN FETCH (NIŠTA DRUGO NIJE DIRANO)
+// 🔒 EXCEL dio
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
-
-  var url = "https://script.google.com/macros/s/AKfycbxJgAtrMzFNg6ufSPTy7ICevPrJoIKI4v5OvFCvN-ugQgkf4zISSY4xD0ENCPwAkZDCbg/exec"
-    + "?ime=" + encodeURIComponent(formData.name)
-    + "&prezime=" + encodeURIComponent(formData.surname)
-    + "&telefon=" + encodeURIComponent(formData.phone)
-    + "&jezik=" + encodeURIComponent(selectedLang)
-    + "&vrsta_ture=";
-
-  fetch(url)
-    .then(res => res.text())
-    .then(data => console.log("Spremljeno:", data))
-    .catch(err => console.log("Greška:", err));
-
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
+  updateTourButtons();
 }
 
-function playAudioList(type){
-  document.getElementById("tourDiv").style.display="none";
-  document.getElementById("audioListDiv").style.display="block";
-}
-
-function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
-function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
-function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
-</script>
-
-<script>
+// Prijevodi gumba
 var tourNames = {
   EN: { old: "Old Town", road: "Road" },
   HR: { old: "Stari Grad", road: "Cesta" },
@@ -177,20 +156,63 @@ var tourNames = {
   FR: { old: "Vieille Ville", road: "Route" }
 };
 
-function updateTourButtons() {
-  var tourDiv = document.getElementById("tourDiv");
-  var buttons = tourDiv.querySelectorAll("button:not(.back-btn)");
-  if(buttons.length >= 2){
-    buttons[0].textContent = tourNames[selectedLang] ? tourNames[selectedLang].old : "Old Town";
-    buttons[1].textContent = tourNames[selectedLang] ? tourNames[selectedLang].road : "Road";
+function updateTourButtons(){
+  document.getElementById("oldBtn").textContent = tourNames[selectedLang] ? tourNames[selectedLang].old : "Old Town";
+  document.getElementById("roadBtn").textContent = tourNames[selectedLang] ? tourNames[selectedLang].road : "Road";
+}
+
+// 🔹 Slanje podataka u Sheet kada se odabere tour (radi za sve jezike)
+function sendDataToSheet(tourType) {
+  if(!selectedLang) return;
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwbN2XdT3GBIyI3isyBgE7YgT3NixsNV2-hzPI1nrlvTe5yiAWUyPtGkSCRCpNqSdSyRg/exec/exec"; // zamijeni sa svojim Apps Script URL
+
+  var params = new URLSearchParams();
+  params.append("ime", formData.name || "");
+  params.append("prezime", formData.surname || "");
+  params.append("phone", formData.phone || "");
+  params.append("jezik", selectedLang);
+  params.append("tourType", tourType);
+
+  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+    .then(() => console.log("Data sent:", tourType, selectedLang))
+    .catch(err => console.log("Error sending tour:", err));
+}
+
+// Presretni playAudioList da šalje podatke prije prikaza
+var originalPlayAudioList = playAudioList;
+playAudioList = function(type){
+  sendDataToSheet(type);
+  originalPlayAudioList(type);
+};
+
+function playAudioList(type){
+  document.getElementById("tourDiv").style.display="none";
+  document.getElementById("audioListDiv").style.display="block";
+
+  var container = document.getElementById("audioList");
+  container.innerHTML = "";
+
+  var count = tours[selectedLang][type];
+  for(let i=1; i<=count; i++){
+    var block = document.createElement("div");
+    block.style.marginBottom = "15px";
+
+    var title = document.createElement("p");
+    title.textContent = "Stop " + i;
+
+    var audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+
+    block.appendChild(title);
+    block.appendChild(audio);
+    container.appendChild(block);
   }
 }
 
-var originalSend = sendDataAndGoToTour;
-sendDataAndGoToTour = function(lang){
-  originalSend(lang);
-  updateTourButtons();
-};
+function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
+function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
+function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
 </body>
