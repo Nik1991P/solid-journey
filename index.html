@@ -83,7 +83,7 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, HR:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:2}, ES:{old:4,road:2} };
+var tours = { EN:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:2}, ES:{old:4,road:2}, HR:{old:4,road:3} };
 
 // Prevodi gumba
 var btnTexts = {
@@ -158,7 +158,7 @@ function sendDataAndGoToTour(lang){
 
 // Slanje podataka u Sheet kada se klikne turu
 function sendDataToSheet(tourType) {
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxVkk_Zo6ojPFauqbSlaeUzFYa5hOLrQEG6uXSTVPKi6QRD-h49uzhR_P-jlaMVBxIDXg/exec/exec"; // zamijeni s tvojim Apps Script URL
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwguuVNyDXLgDWybwIbXYPpN84uITiIQHW9RHmC2tnPf6CbvdFF0CAOY3VefgTeLzxnvA/exec/exec"; // zamijeni sa tvojim Apps Script URL
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
@@ -167,9 +167,13 @@ function sendDataToSheet(tourType) {
   params.append("jezik", selectedLang);
   params.append("tourType", tourType);
 
-  fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-    .then(() => console.log("Data sent:", tourType))
-    .catch(err => console.log("Error sending tour:", err));
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString()
+  })
+  .then(() => console.log("Data sent:", tourType))
+  .catch(err => console.log("Error sending tour:", err));
 }
 
 function playAudioList(type){
