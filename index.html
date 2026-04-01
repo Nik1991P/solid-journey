@@ -136,9 +136,32 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// Excel dio
+// ✅ OVDJE JE UBACEN FETCH (NIŠTA DRUGO NIJE DIRANO)
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
+
+  fetch("TU_IDE_TVOJ_APPS_SCRIPT_URL", {
+    method: "POST",
+    body: JSON.stringify({
+      ime: formData.name,
+      prezime: formData.surname,
+      telefon: formData.phone,
+      jezik: selectedLang,
+      vrijeme: new Date().toLocaleString(),
+      vrsta_ture: ""
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.text())
+  .then(data => {
+    console.log("Spremljeno:", data);
+  })
+  .catch(err => {
+    console.error("Greška:", err);
+  });
+
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
 }
@@ -153,7 +176,6 @@ function backToLanguage(){ document.getElementById("tourDiv").style.display="non
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
-<!-- Prijevod gumba "Old Town" i "Road" -->
 <script>
 var tourNames = {
   EN: { old: "Old Town", road: "Road" },
@@ -174,7 +196,6 @@ function updateTourButtons() {
   }
 }
 
-// Presretni funkciju odabira jezika
 var originalSend = sendDataAndGoToTour;
 sendDataAndGoToTour = function(lang){
   originalSend(lang);
