@@ -15,7 +15,6 @@ button:hover { background:#005ecb; }
 button.back-btn { width:80%; background:#0a7cff; }
 button.back-btn:hover { background:#005ecb; }
 h2 { margin-bottom:20px; font-size:24px; }
-audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
 .login-container { max-width:500px; padding:40px 30px; }
@@ -91,12 +90,6 @@ var tourTranslations = {
   HR: {old:"Stari Grad", road:"Cesta"}
 };
 
-window.onload = function(){
-  document.getElementById("passwordInput").addEventListener("keypress", function(e){
-    if(e.key==="Enter") checkPassword();
-  });
-};
-
 function checkPassword(){
   var input=document.getElementById("passwordInput").value;
   var errorDiv=document.getElementById("passwordError");
@@ -114,40 +107,29 @@ function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
   var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
-
   var errorDiv=document.getElementById("formError");
-
   if(!name || !surname || !phone){
     errorDiv.textContent="All fields are required";
-    errorDiv.classList.add("show");
-    return false;
+    errorDiv.classList.add("show"); return false;
   }
   if(!/^[0-9]+$/.test(phone)){
     errorDiv.textContent="Phone must contain only digits";
-    errorDiv.classList.add("show");
-    return false;
+    errorDiv.classList.add("show"); return false;
   }
   if(phone.length < 5){
     errorDiv.textContent="Phone must be at least 5 digits";
-    errorDiv.classList.add("show");
-    return false;
+    errorDiv.classList.add("show"); return false;
   }
-
   errorDiv.classList.remove("show");
-  formData.name = name;
-  formData.surname = surname;
-  formData.phone = phone;
-
+  formData.name=name; formData.surname=surname; formData.phone=phone;
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
 }
 
 function selectLanguage(lang){
-  selectedLang = lang;
+  selectedLang=lang;
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
-
-  // Prikaži turu na odabranom jeziku
   document.getElementById("btnOldTown").textContent = tourTranslations[lang].old;
   document.getElementById("btnRoad").textContent = tourTranslations[lang].road;
 }
@@ -159,9 +141,8 @@ function selectTour(tourType){
   document.getElementById("audioListDiv").style.display="block";
 }
 
-// Slanje podataka u Sheet
 function sendDataToSheet(){
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxEBlaZ3COHABBwfKBmQPvXXgT0q-XlEiceEJ1xTsgD-wJHgM0zYhfwR2Bt7zdZwjIJvA/exec/exec"; // zamijeni sa svojim Apps Script URL
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz-WpC2-LYERTnJSo8qIxUjaGEUw_bV6Elmq-pPOLmZabp0jfxCQYn7fL-albzie0mceA/exec/exec"; // tvoj Apps Script URL
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -169,9 +150,13 @@ function sendDataToSheet(){
   params.append("jezik", selectedLang);
   params.append("tourType", formData.tourType);
 
-  fetch(url, { method: "POST", body: params })
-    .then(() => console.log("Data sent:", formData))
-    .catch(err => console.log("Error sending data:", err));
+  fetch(url, {
+    method: "POST",
+    headers: {"Content-Type":"application/x-www-form-urlencoded"},
+    body: params.toString()
+  })
+  .then(()=>console.log("Data sent:", formData))
+  .catch(err=>console.log("Error sending data:", err));
 }
 
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
