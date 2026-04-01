@@ -140,27 +140,17 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  fetch("https://script.google.com/macros/s/AKfycbxZSC9JcE-D2VCEJ2U96f-9tU8gxqZxrNMjQ0AX5hH-cA9_QwnjCsXd7rulAQXR4maHfQ/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      ime: formData.name,
-      prezime: formData.surname,
-      telefon: formData.phone,
-      jezik: selectedLang,
-      vrijeme: new Date().toLocaleString(),
-      vrsta_ture: ""
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.text())
-  .then(data => {
-    console.log("Spremljeno:", data);
-  })
-  .catch(err => {
-    console.error("Greška:", err);
-  });
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyN0PbPLckDU_nuSOnu1t3-I-Ed29bGil2CpL6T1ccAEooA8VBDkNW63e8X6ffwqn9Bdg/exec/exec"
+    + "?ime=" + encodeURIComponent(formData.name)
+    + "&prezime=" + encodeURIComponent(formData.surname)
+    + "&telefon=" + encodeURIComponent(formData.phone)
+    + "&jezik=" + encodeURIComponent(selectedLang)
+    + "&vrsta_ture=";
+
+  fetch(url)
+    .then(res => res.text())
+    .then(data => console.log("Spremljeno:", data))
+    .catch(err => console.error("Greška:", err));
 
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
