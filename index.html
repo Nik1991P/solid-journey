@@ -140,7 +140,7 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
-  fetch("TU_IDE_TVOJ_APPS_SCRIPT_URL", {
+  fetch("https://script.google.com/macros/s/AKfycbw6O6e7dkGQNqej2zVQOg208NL_VmHoJqev2IxCvnBlCLM_4IEi4StbGyDG6q1BBlb7Qg/exec", {
     method: "POST",
     body: JSON.stringify({
       ime: formData.name,
