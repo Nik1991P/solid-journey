@@ -54,19 +54,19 @@ audio { width:100%; margin-top:10px; }
 <!-- LANGUAGE -->
 <div id="languageDiv" class="container" style="display:none">
 <h2>Select your language</h2>
-<button onclick="sendDataAndGoToTour('EN')">English</button><br>
-<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
-<button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
-<button onclick="sendDataAndGoToTour('ES')">Español</button><br>
-<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
+<button onclick="selectLanguage('EN')">English</button><br>
+<button onclick="selectLanguage('DE')">Deutsch</button><br>
+<button onclick="selectLanguage('IT')">Italiano</button><br>
+<button onclick="selectLanguage('ES')">Español</button><br>
+<button onclick="selectLanguage('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 </div>
 
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<button id="oldBtn" onclick="selectTour('old')">Old Town</button><br>
-<button id="roadBtn" onclick="selectTour('road')">Road</button><br>
+<button id="btnOldTown" onclick="selectTour('old')">Old Town</button><br>
+<button id="btnRoad" onclick="selectTour('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -83,10 +83,12 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:2}, ES:{old:4,road:2}, HR:{old:4,road:3} };
-var btnTexts = {
-  old: { EN:"Old Town", DE:"Altstadt", IT:"Centro Storico", ES:"Casco Antiguo", HR:"Stari Grad" },
-  road:{ EN:"Road", DE:"Straße", IT:"Strada", ES:"Camino", HR:"Cesta" }
+var tourTranslations = {
+  EN: {old:"Old Town", road:"Road"},
+  DE: {old:"Altstadt", road:"Straße"},
+  IT: {old:"Centro Storico", road:"Strada"},
+  ES: {old:"Casco Antiguo", road:"Carretera"},
+  HR: {old:"Stari Grad", road:"Cesta"}
 };
 
 window.onload = function(){
@@ -102,7 +104,7 @@ function checkPassword(){
     errorDiv.classList.remove("show");
     document.getElementById("passwordDiv").style.display="none";
     document.getElementById("formDiv").style.display="block";
-  }else{
+  } else {
     errorDiv.textContent="Wrong password";
     errorDiv.classList.add("show");
   }
@@ -112,6 +114,7 @@ function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
   var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
+
   var errorDiv=document.getElementById("formError");
 
   if(!name || !surname || !phone){
@@ -139,62 +142,36 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-function sendDataAndGoToTour(lang){
+function selectLanguage(lang){
   selectedLang = lang;
-  document.getElementById("oldBtn").textContent = btnTexts.old[lang];
-  document.getElementById("roadBtn").textContent = btnTexts.road[lang];
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
+
+  // Prikaži turu na odabranom jeziku
+  document.getElementById("btnOldTown").textContent = tourTranslations[lang].old;
+  document.getElementById("btnRoad").textContent = tourTranslations[lang].road;
 }
 
-// Odabrana tura i spremanje
-function selectTour(type){
-  formData.tourType = type;
-  sendDataToSheet(type);   // Sprema sve podatke uključujući turu
-  playAudioList(type);
-}
-
-function sendDataToSheet(){
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyVKko8HRh5ZYSq3YI78CUi8pAwj4MlyH1fAk7D4DQ3--UjPrNNojBO0cuAmvpoBvsDZg/exec/exec"; // Zamijeni sa tvojim URL
-
-  var formBody = new URLSearchParams();
-  formBody.append("ime", formData.name);
-  formBody.append("prezime", formData.surname);
-  formBody.append("phone", formData.phone);
-  formBody.append("jezik", selectedLang);
-  formBody.append("tourType", formData.tourType || "");
-
-  fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: formBody.toString()
-  }).then(()=>console.log("Data sent:", formData))
-    .catch(err=>console.log("Error sending data:", err));
-}
-
-function playAudioList(type){
+function selectTour(tourType){
+  formData.tourType = tourType;
+  sendDataToSheet();
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
+}
 
-  var container = document.getElementById("audioList");
-  container.innerHTML = "";
+// Slanje podataka u Sheet
+function sendDataToSheet(){
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxEBlaZ3COHABBwfKBmQPvXXgT0q-XlEiceEJ1xTsgD-wJHgM0zYhfwR2Bt7zdZwjIJvA/exec/exec"; // zamijeni sa svojim Apps Script URL
+  var params = new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", selectedLang);
+  params.append("tourType", formData.tourType);
 
-  var count = tours[selectedLang][type];
-  for(let i=1; i<=count; i++){
-    var block = document.createElement("div");
-    block.style.marginBottom = "15px";
-
-    var title = document.createElement("p");
-    title.textContent = "Stop " + i;
-
-    var audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-
-    block.appendChild(title);
-    block.appendChild(audio);
-    container.appendChild(block);
-  }
+  fetch(url, { method: "POST", body: params })
+    .then(() => console.log("Data sent:", formData))
+    .catch(err => console.log("Error sending data:", err));
 }
 
 function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
