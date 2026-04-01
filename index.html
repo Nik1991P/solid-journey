@@ -65,8 +65,8 @@ audio { width:100%; margin-top:10px; }
 <!-- TOUR -->
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
-<button id="oldBtn" onclick="playAudioList('old')">Old Town</button><br>
-<button id="roadBtn" onclick="playAudioList('road')">Road</button><br>
+<button id="oldBtn" onclick="selectTour('old')">Old Town</button><br>
+<button id="roadBtn" onclick="selectTour('road')">Road</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -139,7 +139,6 @@ function validateForm(){
   document.getElementById("languageDiv").style.display="block";
 }
 
-// Odabir jezika i prijevod gumba
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
   document.getElementById("oldBtn").textContent = btnTexts.old[lang];
@@ -148,32 +147,35 @@ function sendDataAndGoToTour(lang){
   document.getElementById("tourDiv").style.display="block";
 }
 
-// Slanje podataka u Sheet
-function sendDataToSheet(tourType) {
-  formData.tourType = tourType; // Sprema turu u formData
+// Odabrana tura
+function selectTour(type){
+  formData.tourType = type; // Sprema turu
+  sendDataToSheet();       // Spremi sve podatke
+  playAudioList(type);
+}
 
-  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwOFfFLb8V9_lmGOyf1-tk1C89tHWulZkrp73KM2CUwSzsl_mH9FsnBVsn6yYX5CUz2bA/exec/exec"; // zamijeni sa svojim Apps Script URL
+// Slanje podataka u Sheet (POST)
+function sendDataToSheet() {
+  var url = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzzBkcTixMynexcc61gi_IFifzhlzdwhmtOg2kEvfBdePRABVZGtEQBAcfZ5pxNso0_dw/exec/exec"; // zamijeni sa svojim Apps Script URL
 
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
   params.append("phone", formData.phone);
   params.append("jezik", selectedLang);
-  params.append("tourType", formData.tourType);
+  params.append("tourType", formData.tourType || "");
 
   fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString()
   })
-  .then(() => console.log("Data sent:", formData.tourType))
-  .catch(err => console.log("Error sending tour:", err));
+  .then(() => console.log("Data sent:", formData))
+  .catch(err => console.log("Error sending data:", err));
 }
 
 // Audio lista
 function playAudioList(type){
-  sendDataToSheet(type);
-
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
