@@ -85,6 +85,7 @@ var formData = {};
 var selectedLang = "";
 var tours = { EN:{old:4,walls:3}, DE:{old:4,walls:2}, IT:{old:4,walls:3}, ES:{old:4,walls:3}, HR:{old:4,walls:3} };
 
+// prijevodi gumbova
 var tourTranslations = {
   EN: {old:"Old Town", walls:"Walls"},
   DE: {old:"Altstadt", walls:"Stadtmauern"},
@@ -146,6 +147,7 @@ function validateForm(){
 function sendDataAndGoToTour(lang){
   selectedLang = lang;
 
+  // postavi prijevod gumbova
   document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
   document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
 
@@ -154,8 +156,12 @@ function sendDataAndGoToTour(lang){
 }
 
 function submitTour(type){
-  var url = "https://script.google.com/macros/s/AKfycbzoi4uXHZV31RC1IIctuVBwLDvZSJqIdht-OziioKzmsYB8BANDF6QPebp4OnbPao3wuw/exec";
+  if(!formData.name || !formData.surname || !formData.phone || !selectedLang){
+    alert("Please fill all fields and select language!");
+    return;
+  }
 
+  var url = "https://script.google.com/macros/s/YOUR_SCRIPT_URL/exec"; // zamijeni sa stvarnim URL-om
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -163,7 +169,9 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
 
-  fetch(url + "?" + params.toString(), { method:"GET" });
+  fetch(url + "?" + params.toString(), { method:"GET" })
+    .then(() => console.log("Data sent:", type))
+    .catch(err => console.log("Error sending:", err));
 
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
