@@ -66,7 +66,7 @@ audio { width:100%; margin-top:10px; }
 <div id="tourDiv" class="container" style="display:none">
 <h2>Select tour type</h2>
 <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
-<button id="roadBtn" onclick="submitTour('road')">Road</button><br>
+<button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 </div>
 
@@ -83,15 +83,15 @@ audio { width:100%; margin-top:10px; }
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:4,road:3}, DE:{old:4,road:2}, IT:{old:4,road:3}, ES:{old:4,road:3}, HR:{old:4,road:3} };
+var tours = { EN:{old:4,walls:3}, DE:{old:4,walls:2}, IT:{old:4,walls:3}, ES:{old:4,walls:3}, HR:{old:4,walls:3} };
 
 // prijevodi gumbova
 var tourTranslations = {
-  EN: {old:"Old Town", road:"Road"},
-  DE: {old:"Altstadt", road:"Straße"},
-  IT: {old:"Centro Storico", road:"Strada"},
-  ES: {old:"Ciudad Vieja", road:"Camino"},
-  HR: {old:"Stari Grad", road:"Cesta"}
+  EN: {old:"Old Town", walls:"Walls"},
+  DE: {old:"Altstadt", walls:"Straße"},
+  IT: {old:"Centro Storico", walls:"Strada"},
+  ES: {old:"Ciudad Vieja", walls:"Camino"},
+  HR: {old:"Stari Grad", walls:"Cesta"}
 };
 
 window.onload = function(){
@@ -149,7 +149,7 @@ function sendDataAndGoToTour(lang){
 
   // postavi prijevod gumbova
   document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
-  document.getElementById("roadBtn").textContent = tourTranslations[lang].road;
+  document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
 
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
