@@ -8,7 +8,7 @@ body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, san
 .background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
 .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
 .screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
-.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; }
+.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; position: relative; }
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -21,6 +21,27 @@ audio { width:100%; margin-top:10px; }
 .login-container { max-width:500px; padding:40px 30px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
+
+/* NOVO: Stilovi za social ikone */
+.social-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 15px;
+}
+.social-links a {
+  transition: transform 0.3s ease;
+}
+.social-links a:hover {
+  transform: scale(1.2);
+}
+.social-icon {
+  width: 28px;
+  height: 28px;
+  filter: invert(1); /* Pretvara crne ikone u bijele da bolje izgledaju na tamnoj pozadini */
+}
 </style>
 </head>
 <body>
@@ -37,6 +58,12 @@ audio { width:100%; margin-top:10px; }
 <input id="passwordInput" type="password" placeholder="Password"><br>
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
+
+<div class="social-links">
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon" alt="Facebook"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon" alt="Instagram"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon" alt="Booking"></a>
+</div>
 </div>
 
 <div id="formDiv" class="container" style="display:none">
@@ -47,6 +74,12 @@ audio { width:100%; margin-top:10px; }
 <input id="phone" placeholder="Phone"><br>
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
+
+<div class="social-links">
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+</div>
 </div>
 
 <div id="languageDiv" class="container" style="display:none">
@@ -57,6 +90,12 @@ audio { width:100%; margin-top:10px; }
 <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
+
+<div class="social-links">
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+</div>
 </div>
 
 <div id="tourDiv" class="container" style="display:none">
@@ -64,12 +103,24 @@ audio { width:100%; margin-top:10px; }
 <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
+
+<div class="social-links">
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+</div>
 </div>
 
 <div id="audioListDiv" class="container" style="display:none">
 <h2>Audio Guide</h2>
 <div id="audioList"></div>
 <button class="back-btn" onclick="backToTour()">Back</button>
+
+<div class="social-links">
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
+  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+</div>
 </div>
 
 </div>
@@ -79,7 +130,6 @@ var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 
-// Podesi broj zapisa prema onome što stvarno imaš na GitHubu
 var tours = { 
   EN:{old:2, walls:3}, 
   DE:{old:4, walls:2}, 
@@ -145,7 +195,6 @@ function sendDataAndGoToTour(lang){
 }
 
 function submitTour(type){
-  // 1. VAŠ NOVI GOOGLE SCRIPT URL
   var scriptUrl = "https://script.google.com/macros/s/AKfycbza1righTopeYjGweA8ZaFWDdj7Q9qCWxCzCDyHLgt4d5Sx-zgDP5EwywSheFU55KalrQ/exec";
   
   var params = new URLSearchParams();
@@ -155,7 +204,6 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
 
-  // Slanje podataka uz no-cors način za izbjegavanje blokade
   fetch(scriptUrl + "?" + params.toString(), { 
     method: "GET",
     mode: "no-cors"
@@ -163,7 +211,6 @@ function submitTour(type){
   .then(() => console.log("Podaci su poslani u tablicu!"))
   .catch(err => console.log("Greška pri slanju:", err));
 
-  // 2. PRIKAZ AUDIO ZAPISA
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
@@ -171,7 +218,6 @@ function submitTour(type){
   container.innerHTML = "";
   
   var count = tours[selectedLang][type];
-  // Puna putanja do vašeg GitHub Pages-a
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
 
   for(let i=1; i<=count; i++){
@@ -187,7 +233,6 @@ function submitTour(type){
     var audio = document.createElement("audio"); 
     audio.controls = true;
     audio.preload = "none";
-    // Sastavljanje putanje: audio/en/old/1.mp3
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
     
     block.appendChild(title); 
