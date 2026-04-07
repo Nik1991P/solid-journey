@@ -22,15 +22,15 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* REVIDIRANI STILOVI - CILJANO POVEĆANJE BOOKINGA */
+/* REVIDIRANI STILOVI - POVEĆANJE INSTAGRAMA I PORAVNANJE */
 .social-links {
   margin-top: 25px !important;
   display: flex !important;
   justify-content: center !important;
-  gap: 15px !important; /* Razmak između ikona */
+  gap: 25px !important; /* Povećan razmak između ikona */
   border-top: 1px solid rgba(255,255,255,0.2) !important;
   padding-top: 15px !important;
-  align-items: center !important; /* Osigurava da su sve ikone poravnate po sredini */
+  align-items: center !important; /* Vertikalno poravnanje po sredini */
 }
 .social-links a {
   text-decoration: none !important;
@@ -38,7 +38,7 @@ audio { width:100%; margin-top:10px; }
   border: none !important;
   padding: 0 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: center !important; /* Poravnanje unutar linka */
 }
 .social-links a:hover {
   transform: scale(1.1); /* Blago povećanje na hover */
@@ -48,19 +48,25 @@ audio { width:100%; margin-top:10px; }
   border-radius: 0 !important;
   background-color: transparent !important;
   box-shadow: none !important;
-  object-fit: contain !important;
+  object-fit: contain !important; /* Osigurava da se slika cijela vidi unutar okvira */
 }
 
-/* ZAJEDNIČKA VELIČINA ZA FB I IG */
-.icon-fb, .icon-ig {
+/* ZAJEDNIČKA VELIČINA ZA FB (Najmanja) */
+.icon-fb {
   width: 25px !important;
   height: 25px !important;
 }
 
-/* CILJANO POVEĆANJE SAMO ZA BOOKING */
-.icon-booking {
-  width: 35px !important;  /* Povećano na 35px kako bi bio čitljiv */
+/* POVEĆANA VELIČINA ZA IG (Srednja - 35px) */
+.icon-ig {
+  width: 35px !important;  /* POVEĆANO na 35px */
   height: 35px !important;
+}
+
+/* CILJANA VELIČINA ZA BOOKING (Najveća - 45px) */
+.icon-booking {
+  width: 45px !important;  /* POVEĆANO na 45px radi čitljivosti teksta */
+  height: 45px !important;
 }
 </style>
 </head>
