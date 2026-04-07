@@ -22,65 +22,33 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* REVIDIRANI STILOVI - DODATNO POVEĆANJE I PRIMICANJE IKONA */
+/* SIMETRIČNI STILOVI ZA SVE TRI IKONE */
 .social-links {
   margin-top: 25px !important;
   display: flex !important;
   justify-content: center !important;
+  gap: 20px !important; /* ISTI RAZMAK između svih ikona */
   border-top: 1px solid rgba(255,255,255,0.2) !important;
   padding-top: 15px !important;
-  align-items: center !important; /* Vertikalno poravnanje po sredini */
-  gap: 0 !important; /* Uklanjamo globalni gap kako bismo kontrolirali razmak ručno */
+  align-items: center !important;
 }
 .social-links a {
   text-decoration: none !important;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
   display: flex !important;
-  align-items: center !important; /* Poravnanje unutar linka */
+  align-items: center !important;
   transition: transform 0.2s ease !important;
 }
 .social-links a:hover {
-  transform: scale(1.05); /* Vrlo blago povećanje na hover radi povratne informacije */
+  transform: scale(1.1) !important;
 }
 .app-icon {
+  width: 40px !important;  /* ISTA VELIČINA za sve */
+  height: 40px !important; /* ISTA VELIČINA za sve */
   border: none !important;
   border-radius: 0 !important;
   background-color: transparent !important;
   box-shadow: none !important;
-  object-fit: contain !important; /* Osigurava da se slika cijela vidi unutar okvira */
-}
-
-/* ZAJEDNIČKA VELIČINA ZA FB (Najmanja - 25px) i RAZMAK OD OSTALIH */
-.icon-fb {
-  width: 25px !important;
-  height: 25px !important;
-  margin-right: 25px !important; /* Razmak od Facebooka do Instagrama */
-}
-
-/* POVEĆANA VELIČINA ZA IG (Srednja - 45px) */
-.icon-ig {
-  width: 45px !important;  /* POVEĆANO na 45px */
-  height: 45px !important;
-}
-
-/* CILJANA VELIČINA ZA BOOKING (Najveća - 60px) */
-.icon-booking {
-  width: 60px !important;  /* POVEĆANO na 60px radi maksimalne čitljivosti */
-  height: 60px !important;
-}
-
-/* KONTREJNERI ZA IG I BOOKING - KLJUČNO ZA PRIMICANJE */
-.icon-ig-container {
-  display: flex !important;
-  align-items: center !important;
-}
-
-.icon-booking-container {
-  display: flex !important;
-  align-items: center !important;
-  margin-left: 8px !important; /* MALI RAZMAK: Ovo vizualno primiče Booking Instagramu (pomak ulijevo) */
+  object-fit: contain !important;
 }
 </style>
 </head>
@@ -99,14 +67,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  
-  <div class="icon-ig-container">
-    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon" alt="Facebook"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon" alt="Instagram"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon" alt="Booking"></a>
 </div>
 </div>
 
@@ -119,13 +82,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -138,13 +97,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -154,13 +109,9 @@ audio { width:100%; margin-top:10px; }
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -169,24 +120,19 @@ audio { width:100%; margin-top:10px; }
 <div id="audioList"></div>
 <button class="back-btn" onclick="backToTour()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
 </div>
 
 <script>
-// (Ovaj dio JavaScripta ostaje isti kao u vašem izvornom kodu)
+// (JavaScript ostaje isti kao u prethodnim verzijama)
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-
 var tours = { EN:{old:2, walls:3}, DE:{old:4, walls:2}, IT:{old:4, walls:3}, ES:{old:4, walls:3}, HR:{old:4, walls:3} };
 var tourTranslations = { EN: {old:"Old Town", walls:"Walls"}, DE: {old:"Altstadt", walls:"Stadtmauern"}, IT: {old:"Centro Storico", walls:"Mura"}, ES: {old:"Ciudad Vieja", walls:"Murallas"}, HR: {old:"Stari Grad", walls:"Zidine"} };
 
@@ -243,19 +189,15 @@ function submitTour(type){
   params.append("phone", formData.phone);
   params.append("jezik", selectedLang);
   params.append("tourType", type);
-
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
   .then(() => console.log("Podaci su poslani!"))
   .catch(err => console.log("Greška:", err));
-
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
-
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
-
   for(let i=1; i<=count; i++){
     var block = document.createElement("div"); 
     block.style.marginBottom="20px";
