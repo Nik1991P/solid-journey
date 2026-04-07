@@ -23,7 +23,7 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* STILOVI ZA IKONE */
+/* SLUŽBENE BOJE I STILOVI ZA IKONE */
 .social-links {
   margin-top: 25px;
   display: flex;
@@ -33,26 +33,36 @@ audio { width:100%; margin-top:10px; }
   padding-top: 20px;
 }
 .social-links a {
-  color: white; /* Ikone će biti bijele */
   text-decoration: none;
-  font-size: 30px; /* Veličina ikona */
-  transition: 0.3s;
+  font-size: 32px;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 .social-links a:hover {
   transform: scale(1.2);
-  color: #0a7cff; /* Ikona poplavi kad se prođe mišem */
 }
-/* Posebna ikona za Booking jer nema službeni font-icon svugdje */
-.booking-icon {
-  font-family: sans-serif;
+
+/* Facebook - Službena plava */
+.fa-facebook { color: #1877F2; }
+
+/* Instagram - Službeni gradijent efekt */
+.fa-instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Booking.com - Službena tamnoplava s bijelim slovom */
+.booking-logo {
+  background-color: #003580;
+  color: white;
+  font-family: Arial, sans-serif;
   font-weight: bold;
-  font-size: 14px;
-  border: 2px solid white;
-  padding: 2px 5px;
+  font-size: 18px;
+  padding: 4px 8px;
   border-radius: 4px;
-  display: inline-block;
   line-height: 1;
-  vertical-align: middle;
 }
 </style>
 </head>
@@ -72,9 +82,9 @@ audio { width:100%; margin-top:10px; }
 <p id="passwordError" class="error-message"></p>
 
 <div class="social-links">
-  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" target="_blank"><span class="booking-logo">Booking.com</span></a>
 </div>
 </div>
 
@@ -88,9 +98,9 @@ audio { width:100%; margin-top:10px; }
 <p id="formError" class="error-message"></p>
 
 <div class="social-links">
-  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" target="_blank"><span class="booking-logo">Booking.com</span></a>
 </div>
 </div>
 
@@ -104,9 +114,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToForm()">Back</button>
 
 <div class="social-links">
-  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" target="_blank"><span class="booking-logo">Booking.com</span></a>
 </div>
 </div>
 
@@ -117,9 +127,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 
 <div class="social-links">
-  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" target="_blank"><span class="booking-logo">Booking.com</span></a>
 </div>
 </div>
 
@@ -129,9 +139,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToTour()">Back</button>
 
 <div class="social-links">
-  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" target="_blank"><span class="booking-logo">Booking.com</span></a>
 </div>
 </div>
 
