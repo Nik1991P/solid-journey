@@ -22,28 +22,30 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* NOVO: Stilovi za originalne ikone aplikacija */
+/* PRILAGOĐENI STILOVI ZA MANJE IKONE BEZ OKVIRA */
 .social-links {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 20px; /* Mali razmak između ikona */
   border-top: 1px solid rgba(255,255,255,0.2);
   padding-top: 15px;
 }
 .social-links a {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
   display: flex;
   align-items: center;
+  text-decoration: none; /* Uklanja podvlačenje linka */
 }
 .social-links a:hover {
-  transform: scale(1.15); /* Mali efekt povećanja na hover */
+  transform: scale(1.1); /* Blago povećanje na hover */
 }
 .app-icon {
-  width: 40px;  /* Veličina ikona (prilagodite po želji) */
-  height: 40px;
-  border-radius: 8px; /* Blago zaobljeni uglovi, kao na mobitelu */
-  object-fit: cover; /* Osigurava da se slika ne izobliči */
+  width: 30px;  /* SMANJENO: Nova veličina ikona */
+  height: 30px; /* SMANJENO: Nova veličina ikona */
+  object-fit: contain; /* Osigurava da se slika cijela vidi unutar okvira */
+  display: block;
+  /* UKLONJENO: border-radius i bilo kakvi okviri */
 }
 </style>
 </head>
