@@ -3,6 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
 .background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
@@ -22,25 +23,36 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* NOVO: Stilovi za social ikone */
+/* STILOVI ZA IKONE */
 .social-links {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
   border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 15px;
+  padding-top: 20px;
 }
 .social-links a {
-  transition: transform 0.3s ease;
+  color: white; /* Ikone će biti bijele */
+  text-decoration: none;
+  font-size: 30px; /* Veličina ikona */
+  transition: 0.3s;
 }
 .social-links a:hover {
   transform: scale(1.2);
+  color: #0a7cff; /* Ikona poplavi kad se prođe mišem */
 }
-.social-icon {
-  width: 28px;
-  height: 28px;
-  filter: invert(1); /* Pretvara crne ikone u bijele da bolje izgledaju na tamnoj pozadini */
+/* Posebna ikona za Booking jer nema službeni font-icon svugdje */
+.booking-icon {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid white;
+  padding: 2px 5px;
+  border-radius: 4px;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
 }
 </style>
 </head>
@@ -60,9 +72,9 @@ audio { width:100%; margin-top:10px; }
 <p id="passwordError" class="error-message"></p>
 
 <div class="social-links">
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon" alt="Facebook"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon" alt="Instagram"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon" alt="Booking"></a>
+  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
 </div>
 </div>
 
@@ -76,9 +88,9 @@ audio { width:100%; margin-top:10px; }
 <p id="formError" class="error-message"></p>
 
 <div class="social-links">
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
 </div>
 </div>
 
@@ -92,9 +104,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToForm()">Back</button>
 
 <div class="social-links">
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
 </div>
 </div>
 
@@ -105,9 +117,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 
 <div class="social-links">
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
 </div>
 </div>
 
@@ -117,9 +129,9 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToTour()">Back</button>
 
 <div class="social-links">
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="social-icon"></a>
-  <a href="#" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/732/732192.png" class="social-icon"></a>
+  <a href="VAŠ_FB_LINK" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+  <a href="VAŠ_IG_LINK" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="VAŠ_BOOKING_LINK" target="_blank"><span class="booking-icon">B.</span></a>
 </div>
 </div>
 
