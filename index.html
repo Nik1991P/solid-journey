@@ -22,30 +22,29 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* PRILAGOĐENI STILOVI ZA MANJE IKONE BEZ OKVIRA */
+/* REVIDIRANI STILOVI - FORSIRANO SMANJIVANJE I UKLANJANJE OKVIRA */
 .social-links {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  gap: 20px; /* Mali razmak između ikona */
-  border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 15px;
+  margin-top: 25px !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 15px !important;
+  border-top: 1px solid rgba(255,255,255,0.2) !important;
+  padding-top: 15px !important;
 }
 .social-links a {
-  transition: transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  text-decoration: none; /* Uklanja podvlačenje linka */
-}
-.social-links a:hover {
-  transform: scale(1.1); /* Blago povećanje na hover */
+  text-decoration: none !important;
+  background: none !important; /* Uklanja bilo kakvu pozadinu linka */
+  border: none !important;     /* Uklanja bilo kakav okvir linka */
+  padding: 0 !important;
 }
 .app-icon {
-  width: 30px;  /* SMANJENO: Nova veličina ikona */
-  height: 30px; /* SMANJENO: Nova veličina ikona */
-  object-fit: contain; /* Osigurava da se slika cijela vidi unutar okvira */
-  display: block;
-  /* UKLONJENO: border-radius i bilo kakvi okviri */
+  width: 25px !important;  /* Forsirano smanjeno na 25px */
+  height: 25px !important;
+  border: none !important;        /* Eksplicitno uklanja okvir */
+  border-radius: 0 !important;    /* Uklanja zaobljene rubove */
+  background-color: transparent !important; /* Forsira prozirnu pozadinu */
+  box-shadow: none !important;    /* Uklanja sjenu ako postoji */
+  object-fit: contain !important;
 }
 </style>
 </head>
@@ -63,17 +62,10 @@ audio { width:100%; margin-top:10px; }
 <input id="passwordInput" type="password" placeholder="Password"><br>
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
-
 <div class="social-links">
-  <a href="https://facebook.com/TVOJA_STRANICA" target="_blank">
-    <img src="images/facebook-icon.png" class="app-icon" alt="Facebook">
-  </a>
-  <a href="https://instagram.com/TVOJA_STRANICA" target="_blank">
-    <img src="images/instagram-icon.png" class="app-icon" alt="Instagram">
-  </a>
-  <a href="https://booking.com/TVOJ_LINK" target="_blank">
-    <img src="images/booking-icon.png" class="app-icon" alt="Booking">
-  </a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -85,11 +77,10 @@ audio { width:100%; margin-top:10px; }
 <input id="phone" placeholder="Phone"><br>
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
-
 <div class="social-links">
-  <a href="https://facebook.com/TVOJA_STRANICA" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="https://instagram.com/TVOJA_STRANICA" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="https://booking.com/TVOJ_LINK" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -101,11 +92,10 @@ audio { width:100%; margin-top:10px; }
 <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
-
 <div class="social-links">
-  <a href="https://facebook.com/TVOJA_STRANICA" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="https://instagram.com/TVOJA_STRANICA" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="https://booking.com/TVOJ_LINK" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -114,11 +104,10 @@ audio { width:100%; margin-top:10px; }
 <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
-
 <div class="social-links">
-  <a href="https://facebook.com/TVOJA_STRANICA" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="https://instagram.com/TVOJA_STRANICA" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="https://booking.com/TVOJ_LINK" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
@@ -126,37 +115,22 @@ audio { width:100%; margin-top:10px; }
 <h2>Audio Guide</h2>
 <div id="audioList"></div>
 <button class="back-btn" onclick="backToTour()">Back</button>
-
 <div class="social-links">
-  <a href="https://facebook.com/TVOJA_STRANICA" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="https://instagram.com/TVOJA_STRANICA" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="https://booking.com/TVOJ_LINK" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
 </div>
 </div>
 
 </div>
 
 <script>
-// (Ovaj dio JavaScripta ostaje isti kao u vašem izvornom kodu)
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 
-var tours = { 
-  EN:{old:2, walls:3}, 
-  DE:{old:4, walls:2}, 
-  IT:{old:4, walls:3}, 
-  ES:{old:4, walls:3}, 
-  HR:{old:4, walls:3} 
-};
-
-var tourTranslations = {
-  EN: {old:"Old Town", walls:"Walls"},
-  DE: {old:"Altstadt", walls:"Stadtmauern"},
-  IT: {old:"Centro Storico", walls:"Mura"},
-  ES: {old:"Ciudad Vieja", walls:"Murallas"},
-  HR: {old:"Stari Grad", walls:"Zidine"}
-};
+var tours = { EN:{old:2, walls:3}, DE:{old:4, walls:2}, IT:{old:4, walls:3}, ES:{old:4, walls:3}, HR:{old:4, walls:3} };
+var tourTranslations = { EN: {old:"Old Town", walls:"Walls"}, DE: {old:"Altstadt", walls:"Stadtmauern"}, IT: {old:"Centro Storico", walls:"Mura"}, ES: {old:"Ciudad Vieja", walls:"Murallas"}, HR: {old:"Stari Grad", walls:"Zidine"} };
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
@@ -182,18 +156,15 @@ function validateForm(){
   var surname=document.getElementById("surname").value.trim();
   var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
   var errorDiv=document.getElementById("formError");
-
   if(!name || !surname || !phone){
     errorDiv.textContent="All fields are required";
     errorDiv.classList.add("show");
     return false;
   }
-  
   errorDiv.classList.remove("show");
   formData.name = name;
   formData.surname = surname;
   formData.phone = phone;
-
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
 }
@@ -208,7 +179,6 @@ function sendDataAndGoToTour(lang){
 
 function submitTour(type){
   var scriptUrl = "https://script.google.com/macros/s/AKfycbza1righTopeYjGweA8ZaFWDdj7Q9qCWxCzCDyHLgt4d5Sx-zgDP5EwywSheFU55KalrQ/exec";
-  
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -216,19 +186,15 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
 
-  fetch(scriptUrl + "?" + params.toString(), { 
-    method: "GET",
-    mode: "no-cors"
-  })
-  .then(() => console.log("Podaci su poslani u tablicu!"))
-  .catch(err => console.log("Greška pri slanju:", err));
+  fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+  .then(() => console.log("Podaci su poslani!"))
+  .catch(err => console.log("Greška:", err));
 
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
 
   var container = document.getElementById("audioList");
   container.innerHTML = "";
-  
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
 
@@ -237,16 +203,13 @@ function submitTour(type){
     block.style.marginBottom="20px";
     block.style.paddingBottom="10px";
     block.style.borderBottom="1px solid #555";
-    
     var title = document.createElement("p"); 
     title.textContent = "Stop " + i;
     title.style.fontWeight = "bold";
-    
     var audio = document.createElement("audio"); 
     audio.controls = true;
     audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-    
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
