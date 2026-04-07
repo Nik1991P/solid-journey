@@ -22,29 +22,45 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* REVIDIRANI STILOVI - FORSIRANO SMANJIVANJE I UKLANJANJE OKVIRA */
+/* REVIDIRANI STILOVI - CILJANO POVEĆANJE BOOKINGA */
 .social-links {
   margin-top: 25px !important;
   display: flex !important;
   justify-content: center !important;
-  gap: 15px !important;
+  gap: 15px !important; /* Razmak između ikona */
   border-top: 1px solid rgba(255,255,255,0.2) !important;
   padding-top: 15px !important;
+  align-items: center !important; /* Osigurava da su sve ikone poravnate po sredini */
 }
 .social-links a {
   text-decoration: none !important;
-  background: none !important; /* Uklanja bilo kakvu pozadinu linka */
-  border: none !important;     /* Uklanja bilo kakav okvir linka */
+  background: none !important;
+  border: none !important;
   padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.social-links a:hover {
+  transform: scale(1.1); /* Blago povećanje na hover */
 }
 .app-icon {
-  width: 25px !important;  /* Forsirano smanjeno na 25px */
-  height: 25px !important;
-  border: none !important;        /* Eksplicitno uklanja okvir */
-  border-radius: 0 !important;    /* Uklanja zaobljene rubove */
-  background-color: transparent !important; /* Forsira prozirnu pozadinu */
-  box-shadow: none !important;    /* Uklanja sjenu ako postoji */
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
   object-fit: contain !important;
+}
+
+/* ZAJEDNIČKA VELIČINA ZA FB I IG */
+.icon-fb, .icon-ig {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+/* CILJANO POVEĆANJE SAMO ZA BOOKING */
+.icon-booking {
+  width: 35px !important;  /* Povećano na 35px kako bi bio čitljiv */
+  height: 35px !important;
 }
 </style>
 </head>
@@ -63,9 +79,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -78,9 +94,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="validateForm()">Submit</button>
 <p id="formError" class="error-message"></p>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -93,9 +109,9 @@ audio { width:100%; margin-top:10px; }
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -105,9 +121,9 @@ audio { width:100%; margin-top:10px; }
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -116,15 +132,16 @@ audio { width:100%; margin-top:10px; }
 <div id="audioList"></div>
 <button class="back-btn" onclick="backToTour()">Back</button>
 <div class="social-links">
-  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon"></a>
+  <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
 </div>
 
 <script>
+// (Ovaj dio JavaScripta ostaje isti kao u vašem izvornom kodu)
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
