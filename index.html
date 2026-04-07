@@ -22,7 +22,6 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* STARI STIL S BLAGIM SMANJENJEM */
 .social-links {
   margin-top: 25px !important;
   display: flex !important;
@@ -48,33 +47,9 @@ audio { width:100%; margin-top:10px; }
   object-fit: contain !important;
 }
 
-/* VELIČINE IKONA */
-.icon-fb {
-  width: 25px !important;
-  height: 25px !important;
-  margin-right: 20px !important;
-}
-
-.icon-ig {
-  width: 30px !important; 
-  height: 30px !important;
-  /*margin-right: 20px !important;*/
-}
-
-.icon-booking {
-  width: 45px !important;  
-  height: 45px !important;
-  margin-left: 12px !important;
-}
-
-.icon-ig-container, .icon-booking-container {
- /* display: flex !important;
-  align-items: center !important;*/
-}
-
-/*.icon-booking-container {
-  margin-left: 5px !important; BLIZU Instagrama (pomaknuto ulijevo)
-} */
+.icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
+.icon-ig { width: 30px !important; height: 30px !important; }
+.icon-booking { width: 45px !important; height: 45px !important; margin-left: 12px !important; }
 </style>
 </head>
 <body>
@@ -93,12 +68,8 @@ audio { width:100%; margin-top:10px; }
 <p id="passwordError" class="error-message"></p>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -112,12 +83,8 @@ audio { width:100%; margin-top:10px; }
 <p id="formError" class="error-message"></p>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -131,12 +98,8 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToForm()">Back</button>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -144,15 +107,11 @@ audio { width:100%; margin-top:10px; }
 <h2>Select tour type</h2>
 <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
-<button class="back-btn" onclick="backToLanguage()">Back</button>
+<button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> <button class="back-btn" onclick="backToLanguage()">Back</button>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
@@ -162,24 +121,35 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToTour()">Back</button>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <div class="icon-ig-container">
-    <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  </div>
-  <div class="icon-booking-container">
-    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-  </div>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
 </div>
 </div>
 
 </div>
 
 <script>
-// Sav JavaScript ostaje nepromijenjen
 var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
-var tours = { EN:{old:2, walls:3}, DE:{old:4, walls:2}, IT:{old:4, walls:3}, ES:{old:4, walls:3}, HR:{old:4, walls:3} };
-var tourTranslations = { EN: {old:"Old Town", walls:"Walls"}, DE: {old:"Altstadt", walls:"Stadtmauern"}, IT: {old:"Centro Storico", walls:"Mura"}, ES: {old:"Ciudad Vieja", walls:"Murallas"}, HR: {old:"Stari Grad", walls:"Zidine"} };
+
+// Dodan broj audio stanica za cabrio turu (npr. 3)
+var tours = { 
+  EN:{old:2, walls:3, cabrio:3}, 
+  DE:{old:4, walls:2, cabrio:3}, 
+  IT:{old:4, walls:3, cabrio:3}, 
+  ES:{old:4, walls:3, cabrio:3}, 
+  HR:{old:4, walls:3, cabrio:3} 
+};
+
+// Dodani prijevodi za Cabrio tour
+var tourTranslations = { 
+  EN: {old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, 
+  DE: {old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
+  IT: {old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
+  ES: {old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
+  HR: {old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
+};
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){
@@ -222,6 +192,7 @@ function sendDataAndGoToTour(lang){
   selectedLang = lang;
   document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
   document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
+  document.getElementById("cabrioBtn").textContent = tourTranslations[lang].cabrio; // Postavlja prijevod za Cabrio
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
 }
@@ -235,8 +206,9 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-  .then(() => console.log("Podaci poslani"))
+  .then(() => console.log("Podaci poslani: " + type))
   .catch(err => console.log("Greška", err));
+
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
   var container = document.getElementById("audioList");
