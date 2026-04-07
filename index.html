@@ -22,15 +22,15 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-/* REVIDIRANI STILOVI - POVEĆANJE INSTAGRAMA I PORAVNANJE */
+/* REVIDIRANI STILOVI - DODATNO POVEĆANJE I PRIMICANJE IKONA */
 .social-links {
   margin-top: 25px !important;
   display: flex !important;
   justify-content: center !important;
-  gap: 25px !important; /* Povećan razmak između ikona */
   border-top: 1px solid rgba(255,255,255,0.2) !important;
   padding-top: 15px !important;
   align-items: center !important; /* Vertikalno poravnanje po sredini */
+  gap: 0 !important; /* Uklanjamo globalni gap kako bismo kontrolirali razmak ručno */
 }
 .social-links a {
   text-decoration: none !important;
@@ -39,9 +39,10 @@ audio { width:100%; margin-top:10px; }
   padding: 0 !important;
   display: flex !important;
   align-items: center !important; /* Poravnanje unutar linka */
+  transition: transform 0.2s ease !important;
 }
 .social-links a:hover {
-  transform: scale(1.1); /* Blago povećanje na hover */
+  transform: scale(1.05); /* Vrlo blago povećanje na hover radi povratne informacije */
 }
 .app-icon {
   border: none !important;
@@ -51,22 +52,35 @@ audio { width:100%; margin-top:10px; }
   object-fit: contain !important; /* Osigurava da se slika cijela vidi unutar okvira */
 }
 
-/* ZAJEDNIČKA VELIČINA ZA FB (Najmanja) */
+/* ZAJEDNIČKA VELIČINA ZA FB (Najmanja - 25px) i RAZMAK OD OSTALIH */
 .icon-fb {
   width: 25px !important;
   height: 25px !important;
+  margin-right: 25px !important; /* Razmak od Facebooka do Instagrama */
 }
 
-/* POVEĆANA VELIČINA ZA IG (Srednja - 35px) */
+/* POVEĆANA VELIČINA ZA IG (Srednja - 45px) */
 .icon-ig {
-  width: 35px !important;  /* POVEĆANO na 35px */
-  height: 35px !important;
+  width: 45px !important;  /* POVEĆANO na 45px */
+  height: 45px !important;
 }
 
-/* CILJANA VELIČINA ZA BOOKING (Najveća - 45px) */
+/* CILJANA VELIČINA ZA BOOKING (Najveća - 60px) */
 .icon-booking {
-  width: 45px !important;  /* POVEĆANO na 45px radi čitljivosti teksta */
-  height: 45px !important;
+  width: 60px !important;  /* POVEĆANO na 60px radi maksimalne čitljivosti */
+  height: 60px !important;
+}
+
+/* KONTREJNERI ZA IG I BOOKING - KLJUČNO ZA PRIMICANJE */
+.icon-ig-container {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.icon-booking-container {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 8px !important; /* MALI RAZMAK: Ovo vizualno primiče Booking Instagramu (pomak ulijevo) */
 }
 </style>
 </head>
@@ -86,8 +100,13 @@ audio { width:100%; margin-top:10px; }
 <p id="passwordError" class="error-message"></p>
 <div class="social-links">
   <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  
+  <div class="icon-ig-container">
+    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  </div>
+  <div class="icon-booking-container">
+    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  </div>
 </div>
 </div>
 
@@ -101,8 +120,12 @@ audio { width:100%; margin-top:10px; }
 <p id="formError" class="error-message"></p>
 <div class="social-links">
   <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  <div class="icon-ig-container">
+    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  </div>
+  <div class="icon-booking-container">
+    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  </div>
 </div>
 </div>
 
@@ -116,8 +139,12 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToForm()">Back</button>
 <div class="social-links">
   <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  <div class="icon-ig-container">
+    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  </div>
+  <div class="icon-booking-container">
+    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  </div>
 </div>
 </div>
 
@@ -128,8 +155,12 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToLanguage()">Back</button>
 <div class="social-links">
   <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  <div class="icon-ig-container">
+    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  </div>
+  <div class="icon-booking-container">
+    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  </div>
 </div>
 </div>
 
@@ -139,8 +170,12 @@ audio { width:100%; margin-top:10px; }
 <button class="back-btn" onclick="backToTour()">Back</button>
 <div class="social-links">
   <a href="#" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  <div class="icon-ig-container">
+    <a href="#" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  </div>
+  <div class="icon-booking-container">
+    <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+  </div>
 </div>
 </div>
 
