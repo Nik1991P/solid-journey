@@ -98,13 +98,29 @@ audio { width:100%; margin-top:10px; }
 
 <script>
 // !!! OVDJE STAVI SVOJ URL !!!
-var scriptUrl = "https://script.google.com/macros/s/AKfycbxNp87_gB00W2KZUduTzgoU3hN7P-sxBneOlF0ziyOz3N_8Ectz9bF9JdlSL8bUlpo5_g/exec"; 
+var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
 
 var formData = {};
 var selectedLang = "";
+var currentStep = "password";
 
 var tours = { EN:{old:2, walls:3, cabrio:3}, DE:{old:4, walls:2, cabrio:7}, IT:{old:4, walls:3, cabrio:3}, ES:{old:4, walls:3, cabrio:7}, HR:{old:4, walls:3, cabrio:3} };
 var tourTranslations = { EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} };
+
+// LOGIKA ZA BACK TIPKU NA MOBITELU
+window.onpopstate = function(event) {
+  if (currentStep === "form") backToStart();
+  else if (currentStep === "language") backToForm();
+  else if (currentStep === "tour") backToLanguage();
+  else if (currentStep === "audio") backToTour();
+};
+
+function goToStep(stepId, stepName) {
+  document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
+  document.getElementById(stepId).style.display = 'block';
+  currentStep = stepName;
+  history.pushState({step: stepName}, "");
+}
 
 window.onload = function(){
   document.getElementById("passwordInput").addEventListener("keypress", function(e){ if(e.key==="Enter") checkPassword(); });
@@ -125,10 +141,9 @@ function checkPassword(){
   fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
       if(input === pass.trim()){
         errorDiv.classList.remove("show");
-        document.getElementById("passwordDiv").style.display = "none";
-        document.getElementById("formDiv").style.display = "block";
+        goToStep("formDiv", "form");
       } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
-  }).catch(() => { if(input === "1234") { document.getElementById("passwordDiv").style.display = "none"; document.getElementById("formDiv").style.display = "block"; } });
+  }).catch(() => { if(input === "1234") { goToStep("formDiv", "form"); } });
 }
 
 function validateForm(){
@@ -139,8 +154,7 @@ function validateForm(){
   if(!name || !surname || !phoneRaw){ errorDiv.textContent="All fields are required"; errorDiv.classList.add("show"); return false; }
   errorDiv.classList.remove("show");
   formData.name = name; formData.surname = surname; formData.phone = phoneRaw;
-  document.getElementById("formDiv").style.display="none";
-  document.getElementById("languageDiv").style.display="block";
+  goToStep("languageDiv", "language");
 }
 
 function sendDataAndGoToTour(lang){
@@ -148,8 +162,7 @@ function sendDataAndGoToTour(lang){
   document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
   document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
   document.getElementById("cabrioBtn").textContent = tourTranslations[lang].cabrio;
-  document.getElementById("languageDiv").style.display="none";
-  document.getElementById("tourDiv").style.display="block";
+  goToStep("tourDiv", "tour");
 }
 
 function submitTour(type){
@@ -159,11 +172,9 @@ function submitTour(type){
   params.append("phone", formData.phone);
   params.append("jezik", selectedLang);
   params.append("tourType", type);
-  
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
-  document.getElementById("tourDiv").style.display="none";
-  document.getElementById("audioListDiv").style.display="block";
+  goToStep("audioListDiv", "audio");
   window.scrollTo(0, 0);
 
   var container = document.getElementById("audioList");
@@ -174,15 +185,32 @@ function submitTour(type){
     var block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     var title = document.createElement("p"); title.textContent = "Stop " + i; title.style.fontWeight = "bold";
-    var audio = document.createElement("audio"); audio.controls = true; audio.preload = "none";
+    var audio = document.createElement("audio"); 
+    audio.controls = true; audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
+    
+    // STOPIRANJE OSTALIH KADA SE POKRENE NOVI
+    audio.onplay = function() {
+        document.querySelectorAll('audio').forEach(otherAudio => {
+            if (otherAudio !== this) {
+                otherAudio.pause();
+                otherAudio.currentTime = 0;
+            }
+        });
+    };
+
     block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
 }
 
-function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
-function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
-function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
+function backToStart() { 
+    document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
+    document.getElementById("passwordDiv").style.display = 'block';
+    currentStep = "password";
+}
+function backToForm(){ goToStep("formDiv", "form"); }
+function backToLanguage(){ goToStep("languageDiv", "language"); }
+function backToTour(){ goToStep("tourDiv", "tour"); }
 </script>
 </body>
 </html>
