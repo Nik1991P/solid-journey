@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* ZAKLJUČAVAMO BAZU STRANICE */
+/* FIKSNA BAZA */
 html, body {
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ body {
     background-color: #000;
 }
 
-/* POZADINA BEZ BLURA */
+/* POZADINA */
 .background-fixed {
     position: fixed;
     top: 0;
@@ -28,7 +28,7 @@ body {
     height: 100%;
     background: url('images/DubrovnikSlika.webp') no-repeat center center;
     background-size: cover;
-    z-index: -2; /* Nema više filtra za blur */
+    z-index: -2;
 }
 
 .overlay {
@@ -37,35 +37,36 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.2); /* Blago zatamnjenje preko cijele slike */
+    background: rgba(0,0,0,0.2);
     z-index: -1;
 }
 
-/* CENTRIRANJE SADRŽAJA */
+/* POPRAVLJENO SKROLANJE */
 .scroll-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll; /* Forsira skrolanje */
     -webkit-overflow-scrolling: touch;
-    display: flex;
-    justify-content: center; /* Horizontano centriranje */
-    align-items: center; /* Vertikalno centriranje */
+    display: block; /* Promijenjeno s flex na block radi prirodnog skrola dugih lista */
 }
 
 .screen-center {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
-    padding: 20px 0;
+    min-height: 100%; /* Osigurava centriranje na kratkim stranicama */
+    padding: 40px 0 80px 0; /* DODAN VELIKI PADDING NA DNU (80px) DA SE SVE VIDI */
+    box-sizing: border-box;
 }
 
-/* ZATAMNJENA FORMA */
+/* TAMNA FORMA */
 .container {
-    background: rgba(0,0,0,0.85); /* Jače zatamnjenje za bolji kontrast */
+    background: rgba(0,0,0,0.85);
     padding: 30px;
     border-radius: 15px;
     width: 85%;
@@ -73,10 +74,11 @@ body {
     text-align: center;
     color: #fff;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    backdrop-filter: blur(2px); /* Lagani blur samo na staklu forme */
+    backdrop-filter: blur(2px);
+    margin: 20px auto; /* Razmak između elemenata */
 }
 
-/* Gumbi, polja i ostalo ostaju isti kako si tražila */
+/* Tvoji standardni stilovi - NETAKNUTO */
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -181,7 +183,7 @@ audio { width:100%; margin-top:10px; }
 </div>
 
 <script>
-// Sav JavaScript ostaje isti kao u prethodnom koraku
+/* JAVASCRIPT OSTAJE ISTI */
 var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
 var formData = {};
 var selectedLang = "";
@@ -200,6 +202,7 @@ window.onpopstate = function(event) {
 function goToStep(stepId, stepName) {
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
   document.getElementById(stepId).style.display = 'block';
+  // Vraćanje skrola na vrh kod promjene stranice
   document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
   history.pushState({step: stepName}, "");
