@@ -1,41 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* POTPUNA STABILIZACIJA ZA MOBITELE */
+/* 1. ZAKLJUČAVAMO CIJELI EKRAN */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    /* Sprječava "skakanje" cijele stranice */
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden; /* Sprječava skrolanje cijelog prozora */
+    position: fixed; /* "Zaleđuje" bazu stranice */
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #000; /* Crna podloga dok se slika ne učita */
-}
-
-/* FIKSNI SLOJ ZA SLIKU - NE POMIČE SE */
-.background {
+/* 2. FIKSNA POZADINA KOJA SE NIKADA NE MIČE */
+.background-fixed {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
     background: url('images/DubrovnikSlika.webp') no-repeat center center;
     background-size: cover;
     filter: blur(4px);
     z-index: -2;
-    /* Forsira GPU ubrzanje za stabilnost */
-    transform: translate3d(0,0,0);
-    -webkit-transform: translate3d(0,0,0);
+    /* Sprječava bilo kakve promjene veličine pri skrolanju */
+    will-change: transform;
 }
 
 .overlay {
@@ -48,18 +39,26 @@ body {
     z-index: -1;
 }
 
-/* KONTEJNER KOJI SE SKROLA UMJESTO CIJELE STRANICE */
-.screen-center {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Počinjemo od vrha da ne pobjegne polje */
-    min-height: 100vh;
+/* 3. SLOJ KOJI SE SKROLA (Sadržaj) */
+.scroll-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    overflow-y: auto; /* Samo se ovaj dio skrola */
+    -webkit-overflow-scrolling: touch; /* Glatko skrolanje na iPhoneu */
+    display: flex;
     flex-direction: column;
-    z-index: 1;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    align-items: center;
+}
+
+.screen-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 40px 0; /* Prostor na vrhu i dnu */
 }
 
 .container {
@@ -70,12 +69,11 @@ body {
     max-width: 450px;
     text-align: center;
     color: #fff;
-    margin: 0 auto 20px auto; /* Centriranje polja */
+    margin-bottom: 20px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    backdrop-filter: blur(5px); /* Dodatni efekt za moderan izgled */
 }
 
-/* Ostatak tvojih stilova za gumbe i inpute - NETAKNUTO */
+/* Ostatak tvojih stilova (Input, Button, Social) - POTPUNO ISTI */
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -99,85 +97,84 @@ audio { width:100%; margin-top:10px; }
 </head>
 <body>
 
-<div class="background"></div>
+<div class="background-fixed"></div>
 <div class="overlay"></div>
 
-<div class="screen-center">
+<div class="scroll-container">
+  <div class="screen-center">
 
-<div id="passwordDiv" class="container">
-<h1 class="main-title">Dubrovnik Audio Guide</h1>
-<h3 class="sub-title">Private Access</h3>
-<p>Enter password to continue:</p>
-<div class="password-wrapper">
-    <input id="passwordInput" type="password" placeholder="Password">
-    <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
-</div>
-<button onclick="checkPassword()">Enter</button>
-<p id="passwordError" class="error-message"></p>
-<div class="social-links">
-  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
-</div>
+    <div id="passwordDiv" class="container">
+      <h1 class="main-title">Dubrovnik Audio Guide</h1>
+      <h3 class="sub-title">Private Access</h3>
+      <p>Enter password to continue:</p>
+      <div class="password-wrapper">
+          <input id="passwordInput" type="password" placeholder="Password">
+          <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+      </div>
+      <button onclick="checkPassword()">Enter</button>
+      <p id="passwordError" class="error-message"></p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+      </div>
+    </div>
 
-<div id="formDiv" class="container" style="display:none">
-<h2>Dubrovnik Audio Guide</h2>
-<p>Please enter your details:</p>
-<input id="name" placeholder="Name"><br>
-<input id="surname" placeholder="Surname"><br>
-<input id="phone" type="tel" placeholder="Phone (numbers only)"><br>
-<button onclick="validateForm()">Submit</button>
-<p id="formError" class="error-message"></p>
-<div class="social-links">
-  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
-</div>
+    <div id="formDiv" class="container" style="display:none">
+      <h2>Dubrovnik Audio Guide</h2>
+      <p>Please enter your details:</p>
+      <input id="name" placeholder="Name"><br>
+      <input id="surname" placeholder="Surname"><br>
+      <input id="phone" type="tel" placeholder="Phone (numbers only)"><br>
+      <button onclick="validateForm()">Submit</button>
+      <p id="formError" class="error-message"></p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+      </div>
+    </div>
 
-<div id="languageDiv" class="container" style="display:none">
-<h2>Select your language</h2>
-<button onclick="sendDataAndGoToTour('EN')">English</button><br>
-<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
-<button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
-<button onclick="sendDataAndGoToTour('ES')">Español</button><br>
-<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
-<button class="back-btn" onclick="backToForm()">Back</button>
-<div class="social-links">
-<a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-<a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-<a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
-</div>
+    <div id="languageDiv" class="container" style="display:none">
+      <h2>Select your language</h2>
+      <button onclick="sendDataAndGoToTour('EN')">English</button><br>
+      <button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
+      <button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
+      <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
+      <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
+      <button class="back-btn" onclick="backToForm()">Back</button>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+      </div>
+    </div>
 
-<div id="tourDiv" class="container" style="display:none">
-<h2>Select tour type</h2>
-<button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
-<button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
-<button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
-<button class="back-btn" onclick="backToLanguage()">Back</button>
-<div class="social-links">
-<a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-<a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-<a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
-</div>
+    <div id="tourDiv" class="container" style="display:none">
+      <h2>Select tour type</h2>
+      <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
+      <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
+      <button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
+      <button class="back-btn" onclick="backToLanguage()">Back</button>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+      </div>
+    </div>
 
-<div id="audioListDiv" class="container" style="display:none">
-<h2>Audio Guide</h2>
-<div id="audioList"></div>
-<button class="back-btn" onclick="backToTour()">Back</button>
-<div class="social-links">
-<a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-<a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-<a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
-</div>
+    <div id="audioListDiv" class="container" style="display:none">
+      <h2>Audio Guide</h2>
+      <div id="audioList"></div>
+      <button class="back-btn" onclick="backToTour()">Back</button>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+      </div>
+    </div>
 
-</div>
-
-<script>
+  </div> </div> <script>
 /* SAV TVOJ JAVASCRIPT - NETAKNUT I IDENTIČAN */
 var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
 var formData = {};
@@ -197,6 +194,8 @@ window.onpopstate = function(event) {
 function goToStep(stepId, stepName) {
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
   document.getElementById(stepId).style.display = 'block';
+  // VRAĆANJE NA VRH PRILIKOM PROMJENE KORAKA
+  document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
   history.pushState({step: stepName}, "");
 }
@@ -254,7 +253,6 @@ function submitTour(type){
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
   goToStep("audioListDiv", "audio");
-  window.scrollTo(0, 0);
 
   var container = document.getElementById("audioList");
   container.innerHTML = "";
@@ -282,9 +280,7 @@ function submitTour(type){
 }
 
 function backToStart() { 
-    document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
-    document.getElementById("passwordDiv").style.display = 'block';
-    currentStep = "password";
+    goToStep("passwordDiv", "password");
 }
 function backToForm(){ goToStep("formDiv", "form"); }
 function backToLanguage(){ goToStep("languageDiv", "language"); }
