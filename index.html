@@ -4,17 +4,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* 1. ZAKLJUČAVAMO CIJELI EKRAN */
+/* ZAKLJUČAVAMO BAZU STRANICE */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Sprječava skrolanje cijelog prozora */
-    position: fixed; /* "Zaleđuje" bazu stranice */
+    overflow: hidden;
+    position: fixed;
 }
 
-/* 2. FIKSNA POZADINA KOJA SE NIKADA NE MIČE */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000;
+}
+
+/* POZADINA BEZ BLURA */
 .background-fixed {
     position: fixed;
     top: 0;
@@ -23,10 +28,7 @@ html, body {
     height: 100%;
     background: url('images/DubrovnikSlika.webp') no-repeat center center;
     background-size: cover;
-    filter: blur(4px);
-    z-index: -2;
-    /* Sprječava bilo kakve promjene veličine pri skrolanju */
-    will-change: transform;
+    z-index: -2; /* Nema više filtra za blur */
 }
 
 .overlay {
@@ -35,22 +37,22 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.2); /* Blago zatamnjenje preko cijele slike */
     z-index: -1;
 }
 
-/* 3. SLOJ KOJI SE SKROLA (Sadržaj) */
+/* CENTRIRANJE SADRŽAJA */
 .scroll-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* Samo se ovaj dio skrola */
-    -webkit-overflow-scrolling: touch; /* Glatko skrolanje na iPhoneu */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center; /* Horizontano centriranje */
+    align-items: center; /* Vertikalno centriranje */
 }
 
 .screen-center {
@@ -58,22 +60,23 @@ html, body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 40px 0; /* Prostor na vrhu i dnu */
+    padding: 20px 0;
 }
 
+/* ZATAMNJENA FORMA */
 .container {
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.85); /* Jače zatamnjenje za bolji kontrast */
     padding: 30px;
     border-radius: 15px;
     width: 85%;
     max-width: 450px;
     text-align: center;
     color: #fff;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px); /* Lagani blur samo na staklu forme */
 }
 
-/* Ostatak tvojih stilova (Input, Button, Social) - POTPUNO ISTI */
+/* Gumbi, polja i ostalo ostaju isti kako si tražila */
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -85,7 +88,7 @@ audio { width:100%; margin-top:10px; }
 .password-wrapper { position: relative; width: 90%; margin: 10px auto; }
 .password-wrapper input { width: 100% !important; margin: 0 !important; }
 .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; opacity:0; }
+.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
 .error-message.show { display:block; opacity:1; }
 .social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; }
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
@@ -174,8 +177,11 @@ audio { width:100%; margin-top:10px; }
       </div>
     </div>
 
-  </div> </div> <script>
-/* SAV TVOJ JAVASCRIPT - NETAKNUT I IDENTIČAN */
+  </div>
+</div>
+
+<script>
+// Sav JavaScript ostaje isti kao u prethodnom koraku
 var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
 var formData = {};
 var selectedLang = "";
@@ -194,7 +200,6 @@ window.onpopstate = function(event) {
 function goToStep(stepId, stepName) {
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
   document.getElementById(stepId).style.display = 'block';
-  // VRAĆANJE NA VRH PRILIKOM PROMJENE KORAKA
   document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
   history.pushState({step: stepName}, "");
