@@ -129,7 +129,9 @@ audio { width:100%; margin-top:10px; }
 </div>
 
 <script>
-var correctPassword = "1234";
+// OVDJE ZAMIJENI SVOJIM URL-OM
+var scriptUrl = "TVOJ_SCRIPT_URL"; 
+
 var formData = {};
 var selectedLang = "";
 
@@ -156,16 +158,35 @@ window.onload = function(){
 };
 
 function checkPassword(){
-  var input=document.getElementById("passwordInput").value;
-  var errorDiv=document.getElementById("passwordError");
-  if(input===correctPassword){
-    errorDiv.classList.remove("show");
-    document.getElementById("passwordDiv").style.display="none";
-    document.getElementById("formDiv").style.display="block";
-  }else{
-    errorDiv.textContent="Wrong password";
-    errorDiv.classList.add("show");
-  }
+  var input = document.getElementById("passwordInput").value;
+  var errorDiv = document.getElementById("passwordError");
+
+  errorDiv.textContent = "Checking...";
+  errorDiv.classList.add("show");
+
+  fetch(scriptUrl + "?checkPass=true")
+    .then(response => response.text())
+    .then(correctPasswordFromSheet => {
+      if(input === correctPasswordFromSheet.trim()){
+        errorDiv.classList.remove("show");
+        document.getElementById("passwordDiv").style.display = "none";
+        document.getElementById("formDiv").style.display = "block";
+      } else {
+        errorDiv.textContent = "Wrong password";
+        errorDiv.classList.add("show");
+      }
+    })
+    .catch(err => {
+      console.log("Greška pri provjeri lozinke", err);
+      // Fallback ako Google skripta ne odgovori
+      if(input === "1234") { 
+         document.getElementById("passwordDiv").style.display = "none";
+         document.getElementById("formDiv").style.display = "block";
+      } else {
+         errorDiv.textContent = "Connection error. Try 1234.";
+         errorDiv.classList.add("show");
+      }
+    });
 }
 
 function validateForm(){
@@ -173,8 +194,6 @@ function validateForm(){
   var surname=document.getElementById("surname").value.trim();
   var phoneRaw=document.getElementById("phone").value.trim().replace(/\s+/g,'');
   var errorDiv=document.getElementById("formError");
-  
-  // ISPRAVAK: Provjera da su unesene samo brojke (i opcionalno + na početku)
   var phonePattern = /^\+?[0-9]+$/;
 
   if(!name || !surname || !phoneRaw){
@@ -182,7 +201,6 @@ function validateForm(){
     errorDiv.classList.add("show");
     return false;
   }
-  
   if(!phonePattern.test(phoneRaw)){
     errorDiv.textContent="Phone must contain only numbers";
     errorDiv.classList.add("show");
@@ -207,20 +225,19 @@ function sendDataAndGoToTour(lang){
 }
 
 function submitTour(type){
-  var scriptUrl = "https://script.google.com/macros/s/AKfycbza1righTopeYjGweA8ZaFWDdj7Q9qCWxCzCDyHLgt4d5Sx-zgDP5EwywSheFU55KalrQ/exec";
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
   params.append("phone", formData.phone);
   params.append("jezik", selectedLang);
   params.append("tourType", type);
+  
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
   .then(() => console.log("Podaci poslani: " + type))
   .catch(err => console.log("Greška", err));
 
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
-  
   window.scrollTo(0, 0);
 
   var container = document.getElementById("audioList");
@@ -239,10 +256,7 @@ function submitTour(type){
     var audio = document.createElement("audio"); 
     audio.controls = true;
     audio.preload = "none";
-    
-    // Putanja koja podržava GitHub strukturu "de/cabrio" pomoću %2F
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
-    
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
