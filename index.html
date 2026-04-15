@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<html lang="hr">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dubrovnik Audio Guide</title>
 <style>
-    body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; background-color: #222; }
-    .background { position:fixed; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
-    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:-1; }
-    .screen-center { display:flex; justify-content:center; align-items:center; min-height:100vh; flex-direction:column; position:relative; z-index:0; padding: 20px 0; }
-    
-    .container { background:rgba(0,0,0,0.75); padding:30px; border-radius:15px; width:90%; max-width:450px; text-align:center; color:#fff; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; margin-bottom: 20px; }
-    
-    input { width:100%; padding:14px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; outline: none; }
-    
-    button { padding:14px 0; font-size:16px; font-weight: 600; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:100%; transition:0.3s; }
-    button:hover { background:#005ecb; transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    button.back-btn { background:#555; margin-top: 15px; }
-    
-    h2 { margin-bottom:20px; font-size:24px; }
-    audio { width:100%; margin-top:10px; border-radius: 5px; }
-    
-    .main-title { font-size:36px; margin-bottom:5px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 10px rgba(0,0,0,0.7); }
-    .sub-title { font-size:18px; margin-bottom:25px; color:#ccc; text-transform: uppercase; letter-spacing: 2px; }
-    
-    .error-message { color:#ff6961; margin-top:10px; display:none; font-size: 14px; font-weight:bold; }
-    .error-message.show { display:block; }
+body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
+.background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
+.overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
+.screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
+.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; position: relative; }
+input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
+button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
+button:hover { background:#005ecb; }
+button.back-btn { width:80%; background:#0a7cff; }
+button.back-btn:hover { background:#005ecb; }
+h2 { margin-bottom:20px; font-size:24px; }
+audio { width:100%; margin-top:10px; }
+.main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
+.sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
+.login-container { max-width:500px; padding:40px 30px; }
+.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
+.error-message.show { display:block; opacity:1; }
 
-    .social-links { margin-top: 25px; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; align-items: center; gap: 15px; }
-    .social-links a { transition: opacity 0.3s; }
-    .social-links a:hover { opacity: 0.7; }
-    .app-icon { object-fit: contain; }
-    .icon-fb { width: 25px; height: 25px; }
-    .icon-ig { width: 30px; height: 30px; }
-    .icon-booking { width: 45px; height: 45px; }
+.social-links {
+  margin-top: 25px !important;
+  display: flex !important;
+  justify-content: center !important;
+  border-top: 1px solid rgba(255,255,255,0.2) !important;
+  padding-top: 15px !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+.social-links a {
+  text-decoration: none !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.app-icon {
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+}
+
+.icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
+.icon-ig { width: 30px !important; height: 30px !important; }
+.icon-booking { width: 45px !important; height: 45px !important; margin-left: 12px !important; }
 </style>
 </head>
 <body>
@@ -44,169 +59,183 @@
 
 <div class="screen-center">
 
-    <div id="passwordDiv" class="container">
-        <h1 class="main-title">Dubrovnik</h1>
-        <h3 class="sub-title">Audio Guide</h3>
-        <p>Unesite lozinku za pristup:</p>
-        <input id="passwordInput" type="password" placeholder="Lozinka">
-        <button onclick="provjeriLozinku()">Pristupi</button>
-        <p id="passwordError" class="error-message"></p>
-        
-        <div class="social-links">
-            <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb" alt="FB"></a>
-            <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig" alt="IG"></a>
-            <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking" alt="Booking"></a>
-        </div>
-    </div>
+<div id="passwordDiv" class="container login-container">
+<h1 class="main-title">Dubrovnik Audio Guide</h1>
+<h3 class="sub-title">Private Access</h3>
+<p>Enter password to continue:</p>
+<input id="passwordInput" type="password" placeholder="Password"><br>
+<button onclick="checkPassword()">Enter</button>
+<p id="passwordError" class="error-message"></p>
+<div class="social-links">
+  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+</div>
+</div>
 
-    <div id="formDiv" class="container" style="display:none">
-        <h2>Vaši podaci</h2>
-        <input id="name" placeholder="Ime">
-        <input id="surname" placeholder="Prezime">
-        <input id="phone" type="tel" placeholder="Broj mobitela">
-        <button onclick="validirajFormu()">Nastavi</button>
-        <p id="formError" class="error-message"></p>
-    </div>
+<div id="formDiv" class="container" style="display:none">
+<h2>Dubrovnik Audio Guide</h2>
+<p>Please enter your details:</p>
+<input id="name" placeholder="Name"><br>
+<input id="surname" placeholder="Surname"><br>
+<input id="phone" placeholder="Phone"><br>
+<button onclick="validateForm()">Submit</button>
+<p id="formError" class="error-message"></p>
+<div class="social-links">
+  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+</div>
+</div>
 
-    <div id="languageDiv" class="container" style="display:none">
-        <h2>Odaberite jezik</h2>
-        <button onclick="odaberiJezik('EN')">English</button>
-        <button onclick="odaberiJezik('DE')">Deutsch</button>
-        <button onclick="odaberiJezik('IT')">Italiano</button>
-        <button onclick="odaberiJezik('ES')">Español</button>
-        <button onclick="odaberiJezik('HR')">Hrvatski</button>
-        <button class="back-btn" onclick="prikaziSekciju('formDiv')">Povratak</button>
-    </div>
+<div id="languageDiv" class="container" style="display:none">
+<h2>Select your language</h2>
+<button onclick="sendDataAndGoToTour('EN')">English</button><br>
+<button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
+<button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
+<button onclick="sendDataAndGoToTour('ES')">Español</button><br>
+<button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
+<button class="back-btn" onclick="backToForm()">Back</button>
+<div class="social-links">
+  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+</div>
+</div>
 
-    <div id="tourDiv" class="container" style="display:none">
-        <h2>Odaberite turu</h2>
-        <button id="oldBtn" onclick="pokreniTuru('old')"></button>
-        <button id="wallsBtn" onclick="pokreniTuru('walls')"></button>
-        <button id="cabrioBtn" onclick="pokreniTuru('cabrio')"></button>
-        <button class="back-btn" onclick="prikaziSekciju('languageDiv')">Povratak</button>
-    </div>
+<div id="tourDiv" class="container" style="display:none">
+<h2>Select tour type</h2>
+<button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
+<button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
+<button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> <button class="back-btn" onclick="backToLanguage()">Back</button>
+<div class="social-links">
+  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+</div>
+</div>
 
-    <div id="audioListDiv" class="container" style="display:none">
-        <h2 id="tourTitle">Audio Vodič</h2>
-        <div id="audioList"></div>
-        <button class="back-btn" onclick="prikaziSekciju('tourDiv')">Nazad na ture</button>
-    </div>
+<div id="audioListDiv" class="container" style="display:none">
+<h2>Audio Guide</h2>
+<div id="audioList"></div>
+<button class="back-btn" onclick="backToTour()">Back</button>
+<div class="social-links">
+  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+</div>
+</div>
 
 </div>
 
 <script>
-const tocnaLozinka = "1234";
-let podaciKorisnika = {};
-let odabraniJezik = "";
+var correctPassword = "1234";
+var formData = {};
+var selectedLang = "";
 
-const brojAudioStanica = { 
-    EN:{old:2, walls:3, cabrio:3}, 
-    DE:{old:4, walls:2, cabrio:3}, 
-    IT:{old:4, walls:3, cabrio:3}, 
-    ES:{old:4, walls:3, cabrio:3}, 
-    HR:{old:4, walls:3, cabrio:3} 
+// Dodan broj audio stanica za cabrio turu (npr. 3)
+var tours = { 
+  EN:{old:2, walls:3, cabrio:3}, 
+  DE:{old:4, walls:2, cabrio:3}, 
+  IT:{old:4, walls:3, cabrio:3}, 
+  ES:{old:4, walls:3, cabrio:3}, 
+  HR:{old:4, walls:3, cabrio:3} 
 };
 
-const prijevodiTura = { 
-    EN: {old:"Old Town", walls:"City Walls", cabrio:"Cabrio Tour"}, 
-    DE: {old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
-    IT: {old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
-    ES: {old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
-    HR: {old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
+// Dodani prijevodi za Cabrio tour
+var tourTranslations = { 
+  EN: {old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, 
+  DE: {old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
+  IT: {old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
+  ES: {old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
+  HR: {old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
 };
-
-// Pomoćna funkcija za promjenu ekrana
-function prikaziSekciju(id) {
-    document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-    window.scrollTo(0,0);
-}
 
 window.onload = function(){
-    document.getElementById("passwordInput").addEventListener("keypress", (e) => {
-        if(e.key === "Enter") provjeriLozinku();
-    });
+  document.getElementById("passwordInput").addEventListener("keypress", function(e){
+    if(e.key==="Enter") checkPassword();
+  });
 };
 
-function provjeriLozinku(){
-    const unos = document.getElementById("passwordInput").value;
-    const errorDiv = document.getElementById("passwordError");
-    if(unos === tocnaLozinka){
-        prikaziSekciju("formDiv");
-    } else {
-        errorDiv.textContent = "Pogrešna lozinka";
-        errorDiv.classList.add("show");
-    }
+function checkPassword(){
+  var input=document.getElementById("passwordInput").value;
+  var errorDiv=document.getElementById("passwordError");
+  if(input===correctPassword){
+    errorDiv.classList.remove("show");
+    document.getElementById("passwordDiv").style.display="none";
+    document.getElementById("formDiv").style.display="block";
+  }else{
+    errorDiv.textContent="Wrong password";
+    errorDiv.classList.add("show");
+  }
 }
 
-function validirajFormu(){
-    const ime = document.getElementById("name").value.trim();
-    const prezime = document.getElementById("surname").value.trim();
-    const mobitel = document.getElementById("phone").value.trim();
-    const errorDiv = document.getElementById("formError");
-
-    if(!ime || !prezime || !mobitel){
-        errorDiv.textContent = "Sva polja su obavezna";
-        errorDiv.classList.add("show");
-        return;
-    }
-
-    podaciKorisnika = { ime, prezime, mobitel };
-    prikaziSekciju("languageDiv");
+function validateForm(){
+  var name=document.getElementById("name").value.trim();
+  var surname=document.getElementById("surname").value.trim();
+  var phone=document.getElementById("phone").value.trim().replace(/\s+/g,'');
+  var errorDiv=document.getElementById("formError");
+  if(!name || !surname || !phone){
+    errorDiv.textContent="All fields are required";
+    errorDiv.classList.add("show");
+    return false;
+  }
+  errorDiv.classList.remove("show");
+  formData.name = name;
+  formData.surname = surname;
+  formData.phone = phone;
+  document.getElementById("formDiv").style.display="none";
+  document.getElementById("languageDiv").style.display="block";
 }
 
-function odaberiJezik(jezik){
-    odabraniJezik = jezik;
-    document.getElementById("oldBtn").textContent = prijevodiTura[jezik].old;
-    document.getElementById("wallsBtn").textContent = prijevodiTura[jezik].walls;
-    document.getElementById("cabrioBtn").textContent = prijevodiTura[jezik].cabrio;
-    prikaziSekciju("tourDiv");
+function sendDataAndGoToTour(lang){
+  selectedLang = lang;
+  document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
+  document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
+  document.getElementById("cabrioBtn").textContent = tourTranslations[lang].cabrio; // Postavlja prijevod za Cabrio
+  document.getElementById("languageDiv").style.display="none";
+  document.getElementById("tourDiv").style.display="block";
 }
 
-function pokreniTuru(tip){
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbza1righTopeYjGweA8ZaFWDdj7Q9qCWxCzCDyHLgt4d5Sx-zgDP5EwywSheFU55KalrQ/exec";
-    const parametri = new URLSearchParams({
-        ime: podaciKorisnika.ime,
-        prezime: podaciKorisnika.prezime,
-        phone: podaciKorisnika.mobitel,
-        jezik: odabraniJezik,
-        tourType: tip
-    });
+function submitTour(type){
+  var scriptUrl = "https://script.google.com/macros/s/AKfycbza1righTopeYjGweA8ZaFWDdj7Q9qCWxCzCDyHLgt4d5Sx-zgDP5EwywSheFU55KalrQ/exec";
+  var params = new URLSearchParams();
+  params.append("ime", formData.name);
+  params.append("prezime", formData.surname);
+  params.append("phone", formData.phone);
+  params.append("jezik", selectedLang);
+  params.append("tourType", type);
+  fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+  .then(() => console.log("Podaci poslani: " + type))
+  .catch(err => console.log("Greška", err));
 
-    // Slanje podataka u Google Sheets (pozadinski)
-    fetch(`${scriptUrl}?${parametri.toString()}`, { method: "GET", mode: "no-cors" })
-    .catch(err => console.error("Greška kod slanja:", err));
-
-    const listaAudio = document.getElementById("audioList");
-    listaAudio.innerHTML = "";
-    document.getElementById("tourTitle").textContent = prijevodiTura[odabraniJezik][tip];
-    
-    const brojStanica = brojAudioStanica[odabraniJezik][tip];
-    const baseUrl = "https://nik1991p.github.io/solid-journey/";
-
-    for(let i=1; i<=brojStanica; i++){
-        const block = document.createElement("div"); 
-        block.style.marginBottom="25px";
-        block.style.textAlign="left";
-        block.style.borderBottom="1px solid rgba(255,255,255,0.1)";
-        block.style.paddingBottom="15px";
-        
-        const title = document.createElement("p"); 
-        title.innerHTML = `<strong>Stanica ${i}</strong>`;
-        title.style.margin = "0 0 8px 5px";
-
-        const audio = document.createElement("audio"); 
-        audio.controls = true;
-        audio.preload = "none";
-        audio.controlsList = "nodownload"; 
-        audio.src = `${baseUrl}audio/${odabraniJezik.toLowerCase()}/${tip}/${i}.mp3`;
-        
-        block.appendChild(title); 
-        block.appendChild(audio); 
-        listaAudio.appendChild(block);
-    }
-    prikaziSekciju("audioListDiv");
+  document.getElementById("tourDiv").style.display="none";
+  document.getElementById("audioListDiv").style.display="block";
+  var container = document.getElementById("audioList");
+  container.innerHTML = "";
+  var count = tours[selectedLang][type];
+  var baseUrl = "https://nik1991p.github.io/solid-journey/";
+  for(let i=1; i<=count; i++){
+    var block = document.createElement("div"); 
+    block.style.marginBottom="20px";
+    block.style.paddingBottom="10px";
+    block.style.borderBottom="1px solid #555";
+    var title = document.createElement("p"); 
+    title.textContent = "Stop " + i;
+    title.style.fontWeight = "bold";
+    var audio = document.createElement("audio"); 
+    audio.controls = true;
+    audio.preload = "none";
+    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+    block.appendChild(title); 
+    block.appendChild(audio); 
+    container.appendChild(block);
+  }
 }
+
+function backToForm(){ document.getElementById("languageDiv").style.display="none"; document.getElementById("formDiv").style.display="block"; }
+function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
+function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
 
 </body>
