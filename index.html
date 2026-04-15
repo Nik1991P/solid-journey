@@ -18,35 +18,18 @@ h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
-.login-container { max-width:500px; padding:40px 30px; }
+
+/* Password polje s okom */
+.password-wrapper { position: relative; width: 90%; margin: 10px auto; }
+.password-wrapper input { width: 100% !important; margin: 0 !important; }
+.toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
+
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 
-.social-links {
-  margin-top: 25px !important;
-  display: flex !important;
-  justify-content: center !important;
-  border-top: 1px solid rgba(255,255,255,0.2) !important;
-  padding-top: 15px !important;
-  align-items: center !important;
-  gap: 0 !important;
-}
-.social-links a {
-  text-decoration: none !important;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-}
-.app-icon {
-  border: none !important;
-  border-radius: 0 !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  object-fit: contain !important;
-}
-
+.social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; }
+.social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
+.app-icon { border: none !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; object-fit: contain !important; }
 .icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
 .icon-ig { width: 30px !important; height: 30px !important; }
 .icon-booking { width: 45px !important; height: 45px !important; margin-left: 12px !important; }
@@ -59,11 +42,14 @@ audio { width:100%; margin-top:10px; }
 
 <div class="screen-center">
 
-<div id="passwordDiv" class="container login-container">
+<div id="passwordDiv" class="container">
 <h1 class="main-title">Dubrovnik Audio Guide</h1>
 <h3 class="sub-title">Private Access</h3>
 <p>Enter password to continue:</p>
-<input id="passwordInput" type="password" placeholder="Password"><br>
+<div class="password-wrapper">
+    <input id="passwordInput" type="password" placeholder="Password">
+    <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+</div>
 <button onclick="checkPassword()">Enter</button>
 <p id="passwordError" class="error-message"></p>
 <div class="social-links">
@@ -107,7 +93,8 @@ audio { width:100%; margin-top:10px; }
 <h2>Select tour type</h2>
 <button id="oldBtn" onclick="submitTour('old')">Old Town</button><br>
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
-<button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> <button class="back-btn" onclick="backToLanguage()">Back</button>
+<button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
+<button class="back-btn" onclick="backToLanguage()">Back</button>
 <div class="social-links">
   <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
   <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
@@ -129,8 +116,8 @@ audio { width:100%; margin-top:10px; }
 </div>
 
 <script>
-// OVDJE ZAMIJENI SVOJIM URL-OM
-var scriptUrl = "https://script.google.com/macros/s/AKfycbx6Ryyjyw-jaLxK6aWhTIpsnMFl38Nlql-juhI-z1wfLsBd7lQPC0kdpU4mhpn4OojzvQ/exec"; 
+// !!! OVDJE ZAMIJENI SVOJIM URL-OM IZ APPS SCRIPTA !!!
+var scriptUrl = "https://script.google.com/macros/s/AKfycbxDXZpM6BdQ6cQ3WveRTK8jY6ck6Dml4AmiD6rncgcyuRu0K4v2sutBCfSjr6DokU8oRQ/exec"; 
 
 var formData = {};
 var selectedLang = "";
@@ -157,10 +144,21 @@ window.onload = function(){
   });
 };
 
+function togglePasswordVisibility() {
+  var input = document.getElementById("passwordInput");
+  var icon = document.querySelector(".toggle-password");
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "🙈";
+  } else {
+    input.type = "password";
+    icon.textContent = "👁️";
+  }
+}
+
 function checkPassword(){
   var input = document.getElementById("passwordInput").value;
   var errorDiv = document.getElementById("passwordError");
-
   errorDiv.textContent = "Checking...";
   errorDiv.classList.add("show");
 
@@ -177,13 +175,11 @@ function checkPassword(){
       }
     })
     .catch(err => {
-      console.log("Greška pri provjeri lozinke", err);
-      // Fallback ako Google skripta ne odgovori
-      if(input === "1234") { 
+      if(input === "1234") { // Rezervna lozinka
          document.getElementById("passwordDiv").style.display = "none";
          document.getElementById("formDiv").style.display = "block";
       } else {
-         errorDiv.textContent = "Connection error. Try 1234.";
+         errorDiv.textContent = "Error. Try 1234.";
          errorDiv.classList.add("show");
       }
     });
@@ -206,7 +202,6 @@ function validateForm(){
     errorDiv.classList.add("show");
     return false;
   }
-
   errorDiv.classList.remove("show");
   formData.name = name;
   formData.surname = surname;
@@ -232,9 +227,7 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
   
-  fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" })
-  .then(() => console.log("Podaci poslani: " + type))
-  .catch(err => console.log("Greška", err));
+  fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
@@ -247,18 +240,13 @@ function submitTour(type){
   
   for(let i=1; i<=count; i++){
     var block = document.createElement("div"); 
-    block.style.marginBottom="20px";
-    block.style.paddingBottom="10px";
-    block.style.borderBottom="1px solid #555";
+    block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     var title = document.createElement("p"); 
-    title.textContent = "Stop " + i;
-    title.style.fontWeight = "bold";
+    title.textContent = "Stop " + i; title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
-    audio.controls = true;
-    audio.preload = "none";
+    audio.controls = true; audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
-    block.appendChild(title); 
-    block.appendChild(audio); 
+    block.appendChild(title); block.appendChild(audio); 
     container.appendChild(block);
   }
 }
