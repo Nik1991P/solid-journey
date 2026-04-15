@@ -5,10 +5,12 @@
 <title>Dubrovnik Audio Guide</title>
 <style>
 body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x:hidden; position:relative; min-height:100vh; }
-.background { position:absolute; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
-.overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
-.screen-center { display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; position:relative; z-index:0; }
-.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; position: relative; }
+.background { position:fixed; top:0; left:0; width:100%; height:100%; background:url('images/DubrovnikSlika.webp') no-repeat center center; background-size:cover; filter:blur(4px); z-index:-2; }
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
+/* PROMJENA: min-height umjesto height i dodan padding za skrolanje */
+.screen-center { display:flex; justify-content:center; align-items:center; min-height:100vh; flex-direction:column; position:relative; z-index:0; padding: 20px 0; }
+/* PROMJENA: dodan margin da kontejner ne dira rubove ekrana */
+.container { background:rgba(0,0,0,0.6); padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; color:#fff; position: relative; margin: 20px 0; }
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -133,7 +135,6 @@ var correctPassword = "1234";
 var formData = {};
 var selectedLang = "";
 
-// Dodan broj audio stanica za cabrio turu (npr. 3)
 var tours = { 
   EN:{old:2, walls:3, cabrio:3}, 
   DE:{old:4, walls:2, cabrio:7}, 
@@ -142,7 +143,6 @@ var tours = {
   HR:{old:4, walls:3, cabrio:3} 
 };
 
-// Dodani prijevodi za Cabrio tour
 var tourTranslations = { 
   EN: {old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, 
   DE: {old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
@@ -192,7 +192,7 @@ function sendDataAndGoToTour(lang){
   selectedLang = lang;
   document.getElementById("oldBtn").textContent = tourTranslations[lang].old;
   document.getElementById("wallsBtn").textContent = tourTranslations[lang].walls;
-  document.getElementById("cabrioBtn").textContent = tourTranslations[lang].cabrio; // Postavlja prijevod za Cabrio
+  document.getElementById("cabrioBtn").textContent = tourTranslations[lang].cabrio;
   document.getElementById("languageDiv").style.display="none";
   document.getElementById("tourDiv").style.display="block";
 }
@@ -211,10 +211,15 @@ function submitTour(type){
 
   document.getElementById("tourDiv").style.display="none";
   document.getElementById("audioListDiv").style.display="block";
+  
+  // PROMJENA: vraćanje na vrh stranice čim se otvori lista
+  window.scrollTo(0, 0);
+
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
+  
   for(let i=1; i<=count; i++){
     var block = document.createElement("div"); 
     block.style.marginBottom="20px";
@@ -226,7 +231,10 @@ function submitTour(type){
     var audio = document.createElement("audio"); 
     audio.controls = true;
     audio.preload = "none";
+    
+    // PROMJENA: Putanja koja podržava GitHub strukturu "de/cabrio" pomoću %2F
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
+    
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
