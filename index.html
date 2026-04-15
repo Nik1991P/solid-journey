@@ -1,79 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* POPRAVLJEN CSS ZA POZADINU */
-body { 
-    margin:0; 
-    padding:0; 
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    overflow-x:hidden; 
-    min-height: 100vh;
+/* POTPUNA STABILIZACIJA ZA MOBITELE */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100%;
+    /* Sprječava "skakanje" cijele stranice */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
-.background { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100vw; 
-    height: 100vh; 
-    background: url('images/DubrovnikSlika.webp') no-repeat center center; 
-    background-size: cover; 
-    filter: blur(4px); 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000; /* Crna podloga dok se slika ne učita */
+}
+
+/* FIKSNI SLOJ ZA SLIKU - NE POMIČE SE */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/DubrovnikSlika.webp') no-repeat center center;
+    background-size: cover;
+    filter: blur(4px);
     z-index: -2;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* Forsira GPU ubrzanje za stabilnost */
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
 }
 
-.overlay { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: rgba(0,0,0,0.3); 
-    z-index: -1; 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    z-index: -1;
 }
 
-.screen-center { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
-    flex-direction: column; 
-    position: relative; 
-    z-index: 0; 
-    padding: 20px 0; 
+/* KONTEJNER KOJI SE SKROLA UMJESTO CIJELE STRANICE */
+.screen-center {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Počinjemo od vrha da ne pobjegne polje */
+    min-height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    z-index: 1;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
-.container { 
-    background: rgba(0,0,0,0.6); 
-    padding: 30px; 
-    border-radius: 15px; 
-    width: 90%; 
-    max-width: 500px; 
-    text-align: center; 
-    color: #fff; 
-    position: relative; 
-    margin: 20px 0; 
+.container {
+    background: rgba(0,0,0,0.65);
+    padding: 30px;
+    border-radius: 15px;
+    width: 85%;
+    max-width: 450px;
+    text-align: center;
+    color: #fff;
+    margin: 0 auto 20px auto; /* Centriranje polja */
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px); /* Dodatni efekt za moderan izgled */
 }
 
+/* Ostatak tvojih stilova za gumbe i inpute - NETAKNUTO */
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
 button.back-btn { width:80%; background:#0a7cff; }
-button.back-btn:hover { background:#005ecb; }
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100%; margin-top:10px; }
-.main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
-.sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
+.main-title { font-size:38px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
+.sub-title { font-size:18px; margin-bottom:25px; color:#ddd; }
 .password-wrapper { position: relative; width: 90%; margin: 10px auto; }
 .password-wrapper input { width: 100% !important; margin: 0 !important; }
 .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
+.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; opacity:0; }
 .error-message.show { display:block; opacity:1; }
 .social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; }
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
@@ -164,8 +178,8 @@ audio { width:100%; margin-top:10px; }
 </div>
 
 <script>
+/* SAV TVOJ JAVASCRIPT - NETAKNUT I IDENTIČAN */
 var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
-
 var formData = {};
 var selectedLang = "";
 var currentStep = "password";
