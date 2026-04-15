@@ -97,7 +97,9 @@ audio { width:100%; margin-top:10px; }
 </div>
 
 <script>
-var scriptUrl = "https://script.google.com/macros/s/AKfycbzzIzeZ5zwkl0_GMQSLdsdMyIBcKiw0BTIH-_j2XVrS-PuUlDJf6godpG96c9w8fk6g9Q/exec"; 
+// !!! OVDJE STAVI SVOJ URL !!!
+var scriptUrl = "https://script.google.com/macros/s/AKfycbxNp87_gB00W2KZUduTzgoU3hN7P-sxBneOlF0ziyOz3N_8Ectz9bF9JdlSL8bUlpo5_g/exec"; 
+
 var formData = {};
 var selectedLang = "";
 
@@ -158,7 +160,6 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
   
-  // BITNO: Ovo šalje podatke u tablicu
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
   document.getElementById("tourDiv").style.display="none";
