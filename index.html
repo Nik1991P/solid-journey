@@ -226,7 +226,7 @@ function submitTour(type){
     var audio = document.createElement("audio"); 
     audio.controls = true;
     audio.preload = "none";
-    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
