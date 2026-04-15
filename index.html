@@ -18,15 +18,11 @@ h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100%; margin-top:10px; }
 .main-title { font-size:42px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
 .sub-title { font-size:20px; margin-bottom:25px; color:#ddd; }
-
-/* Password polje s okom */
 .password-wrapper { position: relative; width: 90%; margin: 10px auto; }
 .password-wrapper input { width: 100% !important; margin: 0 !important; }
 .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
-
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; transition:opacity 0.3s; opacity:0; }
 .error-message.show { display:block; opacity:1; }
-
 .social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; }
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
 .app-icon { border: none !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; object-fit: contain !important; }
@@ -82,11 +78,6 @@ audio { width:100%; margin-top:10px; }
 <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
 <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
 <button class="back-btn" onclick="backToForm()">Back</button>
-<div class="social-links">
-  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
 </div>
 
 <div id="tourDiv" class="container" style="display:none">
@@ -95,65 +86,33 @@ audio { width:100%; margin-top:10px; }
 <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
 <button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
 <button class="back-btn" onclick="backToLanguage()">Back</button>
-<div class="social-links">
-  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
 </div>
 
 <div id="audioListDiv" class="container" style="display:none">
 <h2>Audio Guide</h2>
 <div id="audioList"></div>
 <button class="back-btn" onclick="backToTour()">Back</button>
-<div class="social-links">
-  <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-  <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-  <a href="#" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-</div>
 </div>
 
 </div>
 
 <script>
-// !!! OVDJE ZAMIJENI SVOJIM URL-OM IZ APPS SCRIPTA !!!
-var scriptUrl = "https://script.google.com/macros/s/AKfycbxDXZpM6BdQ6cQ3WveRTK8jY6ck6Dml4AmiD6rncgcyuRu0K4v2sutBCfSjr6DokU8oRQ/exec"; 
-
+var scriptUrl = "https://script.google.com/macros/s/AKfycbzzIzeZ5zwkl0_GMQSLdsdMyIBcKiw0BTIH-_j2XVrS-PuUlDJf6godpG96c9w8fk6g9Q/exec"; 
 var formData = {};
 var selectedLang = "";
 
-var tours = { 
-  EN:{old:2, walls:3, cabrio:3}, 
-  DE:{old:4, walls:2, cabrio:7}, 
-  IT:{old:4, walls:3, cabrio:3}, 
-  ES:{old:4, walls:3, cabrio:7}, 
-  HR:{old:4, walls:3, cabrio:3} 
-};
-
-var tourTranslations = { 
-  EN: {old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, 
-  DE: {old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
-  IT: {old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
-  ES: {old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
-  HR: {old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
-};
+var tours = { EN:{old:2, walls:3, cabrio:3}, DE:{old:4, walls:2, cabrio:7}, IT:{old:4, walls:3, cabrio:3}, ES:{old:4, walls:3, cabrio:7}, HR:{old:4, walls:3, cabrio:3} };
+var tourTranslations = { EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} };
 
 window.onload = function(){
-  document.getElementById("passwordInput").addEventListener("keypress", function(e){
-    if(e.key==="Enter") checkPassword();
-  });
+  document.getElementById("passwordInput").addEventListener("keypress", function(e){ if(e.key==="Enter") checkPassword(); });
 };
 
 function togglePasswordVisibility() {
   var input = document.getElementById("passwordInput");
   var icon = document.querySelector(".toggle-password");
-  if (input.type === "password") {
-    input.type = "text";
-    icon.textContent = "🙈";
-  } else {
-    input.type = "password";
-    icon.textContent = "👁️";
-  }
+  if (input.type === "password") { input.type = "text"; icon.textContent = "🙈"; } 
+  else { input.type = "password"; icon.textContent = "👁️"; }
 }
 
 function checkPassword(){
@@ -161,28 +120,13 @@ function checkPassword(){
   var errorDiv = document.getElementById("passwordError");
   errorDiv.textContent = "Checking...";
   errorDiv.classList.add("show");
-
-  fetch(scriptUrl + "?checkPass=true")
-    .then(response => response.text())
-    .then(correctPasswordFromSheet => {
-      if(input === correctPasswordFromSheet.trim()){
+  fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
+      if(input === pass.trim()){
         errorDiv.classList.remove("show");
         document.getElementById("passwordDiv").style.display = "none";
         document.getElementById("formDiv").style.display = "block";
-      } else {
-        errorDiv.textContent = "Wrong password";
-        errorDiv.classList.add("show");
-      }
-    })
-    .catch(err => {
-      if(input === "1234") { // Rezervna lozinka
-         document.getElementById("passwordDiv").style.display = "none";
-         document.getElementById("formDiv").style.display = "block";
-      } else {
-         errorDiv.textContent = "Error. Try 1234.";
-         errorDiv.classList.add("show");
-      }
-    });
+      } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
+  }).catch(() => { if(input === "1234") { document.getElementById("passwordDiv").style.display = "none"; document.getElementById("formDiv").style.display = "block"; } });
 }
 
 function validateForm(){
@@ -190,22 +134,9 @@ function validateForm(){
   var surname=document.getElementById("surname").value.trim();
   var phoneRaw=document.getElementById("phone").value.trim().replace(/\s+/g,'');
   var errorDiv=document.getElementById("formError");
-  var phonePattern = /^\+?[0-9]+$/;
-
-  if(!name || !surname || !phoneRaw){
-    errorDiv.textContent="All fields are required";
-    errorDiv.classList.add("show");
-    return false;
-  }
-  if(!phonePattern.test(phoneRaw)){
-    errorDiv.textContent="Phone must contain only numbers";
-    errorDiv.classList.add("show");
-    return false;
-  }
+  if(!name || !surname || !phoneRaw){ errorDiv.textContent="All fields are required"; errorDiv.classList.add("show"); return false; }
   errorDiv.classList.remove("show");
-  formData.name = name;
-  formData.surname = surname;
-  formData.phone = phoneRaw;
+  formData.name = name; formData.surname = surname; formData.phone = phoneRaw;
   document.getElementById("formDiv").style.display="none";
   document.getElementById("languageDiv").style.display="block";
 }
@@ -227,6 +158,7 @@ function submitTour(type){
   params.append("jezik", selectedLang);
   params.append("tourType", type);
   
+  // BITNO: Ovo šalje podatke u tablicu
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
   document.getElementById("tourDiv").style.display="none";
@@ -237,17 +169,13 @@ function submitTour(type){
   container.innerHTML = "";
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
-  
   for(let i=1; i<=count; i++){
     var block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
-    var title = document.createElement("p"); 
-    title.textContent = "Stop " + i; title.style.fontWeight = "bold";
-    var audio = document.createElement("audio"); 
-    audio.controls = true; audio.preload = "none";
+    var title = document.createElement("p"); title.textContent = "Stop " + i; title.style.fontWeight = "bold";
+    var audio = document.createElement("audio"); audio.controls = true; audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
-    block.appendChild(title); block.appendChild(audio); 
-    container.appendChild(block);
+    block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
 }
 
@@ -255,6 +183,5 @@ function backToForm(){ document.getElementById("languageDiv").style.display="non
 function backToLanguage(){ document.getElementById("tourDiv").style.display="none"; document.getElementById("languageDiv").style.display="block"; }
 function backToTour(){ document.getElementById("audioListDiv").style.display="none"; document.getElementById("tourDiv").style.display="block"; }
 </script>
-
 </body>
 </html>
