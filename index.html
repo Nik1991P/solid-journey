@@ -48,9 +48,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow-y: scroll; /* Forsira skrolanje */
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    display: block; /* Promijenjeno s flex na block radi prirodnog skrola dugih lista */
+    display: block;
 }
 
 .screen-center {
@@ -59,8 +59,8 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 100%; /* Osigurava centriranje na kratkim stranicama */
-    padding: 40px 0 80px 0; /* DODAN VELIKI PADDING NA DNU (80px) DA SE SVE VIDI */
+    min-height: 100%;
+    padding: 40px 0 80px 0;
     box-sizing: border-box;
 }
 
@@ -75,9 +75,8 @@ body {
     color: #fff;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     backdrop-filter: blur(2px);
-    margin: 20px auto; /* Razmak između elemenata */
+    margin: 20px auto;
 }
-
 
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
@@ -92,12 +91,37 @@ audio { width:100%; margin-top:10px; }
 .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
 .error-message.show { display:block; opacity:1; }
-.social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; }
+
+/* SOCIJALNE IKONE I NOVA SLIKA */
+.social-links { 
+    margin-top: 25px !important; 
+    display: flex !important; 
+    justify-content: center !important; 
+    border-top: 1px solid rgba(255,255,255,0.2) !important; 
+    padding-top: 15px !important; 
+    align-items: center !important; 
+    gap: 0 !important;
+    flex-wrap: wrap !important; /* Omogućuje novi red */
+}
+
+.booking-link-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 15px !important;
+}
+
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
 .app-icon { border: none !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; object-fit: contain !important; }
 .icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
 .icon-ig { width: 30px !important; height: 30px !important; }
-.icon-booking { width: 45px !important; height: 45px !important; margin-left: 12px !important; }
+
+.icon-booking { 
+    width: 140px !important; /* Prilagodi širinu po želji */
+    height: auto !important; 
+    margin-left: 0 !important; 
+    filter: invert(1) brightness(0.8); /* Pretvara bijelu u crnu/tamnu */
+}
 </style>
 </head>
 <body>
@@ -120,8 +144,10 @@ audio { width:100%; margin-top:10px; }
       <p id="passwordError" class="error-message"></p>
       <div class="social-links">
         <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a><br></br>
-        <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
       </div>
     </div>
 
@@ -136,7 +162,9 @@ audio { width:100%; margin-top:10px; }
       <div class="social-links">
         <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
         <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
       </div>
     </div>
 
@@ -151,7 +179,9 @@ audio { width:100%; margin-top:10px; }
       <div class="social-links">
         <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
         <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
       </div>
     </div>
 
@@ -164,7 +194,9 @@ audio { width:100%; margin-top:10px; }
       <div class="social-links">
         <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
         <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
       </div>
     </div>
 
@@ -175,7 +207,9 @@ audio { width:100%; margin-top:10px; }
       <div class="social-links">
         <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
         <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
       </div>
     </div>
 
@@ -201,7 +235,6 @@ window.onpopstate = function(event) {
 function goToStep(stepId, stepName) {
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
   document.getElementById(stepId).style.display = 'block';
-  // Vraćanje skrola na vrh kod promjene stranice
   document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
   history.pushState({step: stepName}, "");
