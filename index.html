@@ -223,7 +223,7 @@ var selectedLang = "";
 var currentStep = "password";
 
 var tours = { 
-    EN:{old:37, walls:16, cabrio:3}, 
+    EN:{old:2, walls:3, cabrio:3}, 
     DE:{old:4, walls:2, cabrio:7}, 
     IT:{old:4, walls:3, cabrio:9}, 
     ES:{old:4, walls:3, cabrio:7}, 
@@ -312,13 +312,32 @@ function submitTour(type){
   container.innerHTML = "";
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
+  
   for(let i=1; i<=count; i++){
     var block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     var title = document.createElement("p"); title.textContent = "Stop " + i; title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
-    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
+    
+    // VARIJANTA 1: audio/en/walls/1.mp3 (3 mape)
+    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+    // VARIJANTA 2: audio/en%2Fwalls/1.mp3 (2 mape, spojen naziv)
+    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
+    // VARIJANTA 3: audio/en/walls/1.MP3 (Velika ekstenzija)
+    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".MP3";
+
+    audio.src = path1;
+
+    audio.onerror = function() {
+        if (this.src.includes(encodeURIComponent(type))) {
+             // Ako ni path2 nije radio, probaj veliku ekstenziju
+             this.src = path3;
+        } else if (this.src === path1) {
+             // Ako path1 nije radio, probaj spojenu mapu (path2)
+             this.src = path2;
+        }
+    };
     
     audio.onplay = function() {
         document.querySelectorAll('audio').forEach(otherAudio => {
