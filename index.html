@@ -174,6 +174,12 @@ audio { width:100%; margin-top:10px; }
       <button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
       <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
       <button onclick="sendDataAndGoToTour('FR')">Français</button><br>
+      <button onclick="sendDataAndGoToTour('RU')">Pусский</button><br>
+      <button onclick="sendDataAndGoToTour('PL')">Polski</button><br>
+      <button onclick="sendDataAndGoToTour('SV')">Svenska</button><br>
+      <button onclick="sendDataAndGoToTour('CS')">Čeština</button><br>
+      <button onclick="sendDataAndGoToTour('ZH')">中文 (Chinese)</button><br>
+      <button onclick="sendDataAndGoToTour('TR')">Türkçe</button><br>
       <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
       <button class="back-btn" onclick="backToForm()">Back</button>
       <div class="social-links">
@@ -228,6 +234,12 @@ var tours = {
     IT:{old:4, walls:3, cabrio:9}, 
     ES:{old:4, walls:3, cabrio:7}, 
     FR:{old:4, walls:3, cabrio:6}, 
+    RU:{old:4, walls:3, cabrio:3},
+    PL:{old:4, walls:3, cabrio:3},
+    SV:{old:4, walls:3, cabrio:3},
+    CS:{old:4, walls:3, cabrio:3},
+    ZH:{old:4, walls:3, cabrio:3},
+    TR:{old:4, walls:3, cabrio:3},
     HR:{old:4, walls:3, cabrio:3} 
 };
 var tourTranslations = { 
@@ -236,6 +248,12 @@ var tourTranslations = {
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio"}, 
+    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур"},
+    PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio"},
+    SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour"},
+    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour"},
+    ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅"},
+    TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu"},
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
 };
 
