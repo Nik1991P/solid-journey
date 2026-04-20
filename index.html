@@ -337,21 +337,21 @@ function submitTour(type){
 
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
-  
-  for(let i=0; i<=count; i++){
+
+  function createAudioBlock(index) {
     let block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     
     var title = document.createElement("p"); 
-    title.textContent = (i === 0) ? introTranslations[selectedLang] : "Stop " + i;
+    title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
     title.style.fontWeight = "bold";
     
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
     
-    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
-    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".MP3";
+    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
+    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + index + ".mp3";
+    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".MP3";
 
     audio.src = path1;
 
@@ -361,9 +361,7 @@ function submitTour(type){
         } else if (this.src === path2) {
              this.src = path3;
         } else {
-             if(i === 0) {
-                 block.remove();
-             }
+             if(index === 0) { block.remove(); }
         }
     };
     
@@ -378,6 +376,22 @@ function submitTour(type){
 
     block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
+
+  // PRVO PROVJERI UVOD
+  let testIntro = new Audio();
+  let introPath = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3";
+  testIntro.src = introPath;
+
+  testIntro.oncanplaythrough = function() {
+      createAudioBlock(0);
+      for(let i=1; i<=count; i++) { createAudioBlock(i); }
+      testIntro.oncanplaythrough = null;
+  };
+
+  testIntro.onerror = function() {
+      for(let i=1; i<=count; i++) { createAudioBlock(i); }
+      testIntro.onerror = null;
+  };
 }
 
 function backToStart() { 
