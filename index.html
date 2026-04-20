@@ -18,21 +18,35 @@ button.back-btn { width:80%; background:#0a7cff; }
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100% !important; margin-top:10px; display: block; }
 
-/* UNIFORMNE IKONE I FOOTER */
-.footer-section { 
-    margin-top: 25px; 
-    border-top: 1px solid rgba(255,255,255,0.2); 
-    padding-top: 20px; 
-}
+/* TOTALNI FIX ZA IKONE */
+.footer-section { margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
 .follow-us-text { font-size: 13px; color: #aaa; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
-.social-links { display: flex; justify-content: center; align-items: center; gap: 25px; margin-bottom: 20px; }
-.app-icon { 
-    height: 35px !important; 
-    width: 35px !important;  
-    object-fit: contain !important; 
-    display: block;
+
+.social-links { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 15px; 
+    margin-bottom: 20px; 
+    flex-wrap: nowrap; 
 }
-.icon-booking { width: auto !important; max-width: 80px; }
+
+.icon-wrapper {
+    width: 45px; 
+    height: 45px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-icon { 
+    max-height: 100%; 
+    max-width: 100%; 
+    object-fit: contain; 
+}
+
+/* Posebna širina za Booking jer je horizontalan */
+.wide-wrapper { width: 90px; }
 
 .contact-info { font-size: 14px; line-height: 1.8; margin-top: 10px; color: #ddd; }
 .contact-info a { color: #0a7cff; text-decoration: none; font-weight: bold; }
@@ -68,9 +82,15 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <div class="footer-section">
         <p class="follow-us-text">Follow us</p>
         <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper">
+            <img src="images/facebook-icon.png" class="app-icon">
+          </a>
+          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
+            <img src="images/instagram-icon.png" class="app-icon">
+          </a>
+          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper wide-wrapper">
+            <img src="images/booking-icon.png" class="app-icon">
+          </a>
         </div>
         <div class="contact-info">
           Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
@@ -122,9 +142,15 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <div class="footer-section">
         <p class="follow-us-text">Follow us</p>
         <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon"></a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon"></a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper">
+            <img src="images/facebook-icon.png" class="app-icon">
+          </a>
+          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
+            <img src="images/instagram-icon.png" class="app-icon">
+          </a>
+          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper wide-wrapper">
+            <img src="images/booking-icon.png" class="app-icon">
+          </a>
         </div>
         <div class="contact-info">
           Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
@@ -137,6 +163,7 @@ audio { width:100% !important; margin-top:10px; display: block; }
 </div>
 
 <script>
+// Sav JS ostaje isti kao u prethodnoj verziji
 var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv2DCQsPxtoUXSW-1jFvxB2y_Lxta3i-0b_Dw3KzgiArbseg/exec"; 
 var formData = {};
 var selectedLang = "";
