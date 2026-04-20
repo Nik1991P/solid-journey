@@ -230,12 +230,12 @@ var currentStep = "password";
 
 var tours = { 
     EN:{old:37, walls:16, cabrio:0}, 
-    DE:{old:37, walls:16, cabrio:7}, 
+    DE:{old:38, walls:16, cabrio:7}, 
     IT:{old:37, walls:16, cabrio:9}, 
     ES:{old:37, walls:16, cabrio:7}, 
     FR:{old:37, walls:16, cabrio:6}, 
     RU:{old:37, walls:16, cabrio:0},
-    PL:{old:36, walls:27, cabrio:0},
+    PL:{old:37, walls:27, cabrio:0},
     SV:{old:38, walls:27, cabrio:0},
     CS:{old:37, walls:27, cabrio:0},
     ZH:{old:37, walls:16, cabrio:0},
@@ -339,7 +339,7 @@ function submitTour(type){
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
   
   for(let i=0; i<=count; i++){
-    var block = document.createElement("div"); 
+    let block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     
     var title = document.createElement("p"); 
@@ -356,13 +356,13 @@ function submitTour(type){
     audio.src = path1;
 
     audio.onerror = function() {
-        if (this.src.includes(encodeURIComponent(type))) {
-             this.src = path3;
-        } else if (this.src === path1) {
+        if (this.src === path1) {
              this.src = path2;
+        } else if (this.src === path2) {
+             this.src = path3;
         } else {
              if(i === 0) {
-                 block.style.display = "none";
+                 block.remove();
              }
         }
     };
