@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Dubrovnik Audio Guide</title>
 <style>
+/* TVOJA ORIGINALNA BAZA - NETAKNUTO */
 html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; position: fixed; }
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000; }
 .background-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('images/DubrovnikSlika.webp') no-repeat center center; background-size: cover; z-index: -2; }
@@ -17,16 +18,8 @@ button:hover { background:#005ecb; }
 button.back-btn { width:80%; background:#0a7cff; }
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100% !important; margin-top:10px; display: block; }
-.main-title { font-size:38px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
-.sub-title { font-size:18px; margin-bottom:25px; color:#ddd; }
-.password-wrapper { position: relative; width: 90%; margin: 10px auto; }
-.password-wrapper input { width: 100% !important; margin: 0 !important; }
-.toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
-.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
-.error-message.show { display:block; opacity:1; }
-.map-btn { background: #28a745 !important; margin-bottom: 25px !important; }
 
-/* IKONE STIL */
+/* TVOJE IKONE */
 .social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; flex-wrap: wrap !important; }
 .booking-link-wrapper { width: 100% !important; display: flex !important; justify-content: center !important; margin-top: 15px !important; }
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
@@ -35,9 +28,14 @@ audio { width:100% !important; margin-top:10px; display: block; }
 .icon-ig { width: 30px !important; height: 30px !important; }
 .icon-booking { width: 80px !important; height: auto !important; margin-left: 0 !important; }
 
-/* MAPA STIL */
-#mapDisplayImg { width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px; display: block; }
-#audioList { width: 100%; }
+.main-title { font-size:38px; margin-bottom:10px; font-weight:bold; letter-spacing:1px; text-shadow:0 4px 15px rgba(0,0,0,0.7); }
+.sub-title { font-size:18px; margin-bottom:25px; color:#ddd; }
+.password-wrapper { position: relative; width: 90%; margin: 10px auto; }
+.password-wrapper input { width: 100% !important; margin: 0 !important; }
+.toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
+.error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
+.error-message.show { display:block; opacity:1; }
+.map-btn { background: #28a745 !important; margin-bottom: 25px !important; }
 </style>
 </head>
 <body>
@@ -97,6 +95,13 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button onclick="sendDataAndGoToTour('TR')">Türkçe</button><br>
       <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
       <button class="back-btn" onclick="backToForm()">Back</button>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
+      </div>
     </div>
 
     <div id="tourDiv" class="container" style="display:none">
@@ -105,6 +110,13 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
       <button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
       <button class="back-btn" onclick="backToLanguage()">Back</button>
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
+        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
+        <div class="booking-link-wrapper">
+            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
+        </div>
+      </div>
     </div>
 
     <div id="audioListDiv" class="container" style="display:none">
@@ -119,12 +131,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
             <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
         </div>
       </div>
-    </div>
-
-    <div id="mapViewDiv" class="container" style="display:none">
-      <h2 id="mapTitleText">Map</h2>
-      <img id="mapDisplayImg" src="" alt="Map">
-      <button class="back-btn" onclick="backToAudio()">Back to Audio</button>
     </div>
 
   </div>
@@ -145,13 +151,14 @@ var tours = {
     CS:{old:37, walls:27, cabrio:0}, ZH:{old:37, walls:16, cabrio:0},
     TR:{old:37, walls:0, cabrio:0}, HR:{old:37, walls:16, cabrio:0} 
 };
+
 var tourTranslations = { 
     EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour", map:"View Map"}, 
     DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour", map:"Karte ansehen"}, 
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
-    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур", map:"Посмотреть карту"},
+    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
@@ -165,7 +172,6 @@ window.onpopstate = function(event) {
   else if (currentStep === "language") backToForm();
   else if (currentStep === "tour") backToLanguage();
   else if (currentStep === "audio") backToTour();
-  else if (currentStep === "mapView") backToAudio();
 };
 
 function goToStep(stepId, stepName) {
@@ -206,16 +212,32 @@ function sendDataAndGoToTour(lang){
   goToStep("tourDiv", "tour");
 }
 
+// OTVARANJE U NOVOM TABU BEZ ZOOMIRANJA CIJELE STRANICE
 function openMap() {
-    var mapUrl = "";
-    if (currentTourType === "old") mapUrl = "images/map-old.jpg"; 
-    else if (currentTourType === "walls") mapUrl = "images/map-walls.jpg";
-    else if (currentTourType === "cabrio") mapUrl = "images/map-cabrio.jpg";
+    var mapPath = "";
+    if (currentTourType === "old") mapPath = "images/map-old.jpg"; 
+    else if (currentTourType === "walls") mapPath = "images/map-walls.jpg";
+    else if (currentTourType === "cabrio") mapPath = "images/map-cabrio.jpg";
     
-    if(mapUrl) {
-        document.getElementById("mapDisplayImg").src = mapUrl;
-        document.getElementById("mapTitleText").textContent = tourTranslations[selectedLang].map;
-        goToStep("mapViewDiv", "mapView");
+    if(mapPath) {
+        // Otvaramo novi prozor i u njega "ubrizgavamo" sliku koja se može normalno zumirati
+        // bez da utječe na glavnu aplikaciju
+        var mapWindow = window.open("");
+        mapWindow.document.write(`
+            <html>
+            <head>
+                <title>Map</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+                    img { max-width: 100%; height: auto; }
+                </style>
+            </head>
+            <body>
+                <img src="${mapPath}" />
+            </body>
+            </html>
+        `);
     }
 }
 
@@ -257,7 +279,6 @@ function backToStart() { goToStep("passwordDiv", "password"); }
 function backToForm(){ goToStep("formDiv", "form"); }
 function backToLanguage(){ goToStep("languageDiv", "language"); }
 function backToTour(){ goToStep("tourDiv", "tour"); }
-function backToAudio() { goToStep("audioListDiv", "audio"); }
 </script>
 </body>
 </html>
