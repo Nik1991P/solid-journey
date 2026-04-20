@@ -92,7 +92,11 @@ audio { width:100%; margin-top:10px; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
 .error-message.show { display:block; opacity:1; }
 
-/* SOCIJALNE IKONE I NOVA STRUKTURA ZA BOOKING SLIKU */
+/* KARTA GUMB STIL */
+.map-btn { background: #28a745 !important; margin-bottom: 25px !important; }
+.map-btn:hover { background: #218838 !important; }
+
+/* SOCIJALNE IKONE */
 .social-links { 
     margin-top: 25px !important; 
     display: flex !important; 
@@ -115,12 +119,7 @@ audio { width:100%; margin-top:10px; }
 .app-icon { border: none !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; object-fit: contain !important; }
 .icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
 .icon-ig { width: 30px !important; height: 30px !important; }
-
-.icon-booking { 
-    width: 80px !important; 
-    height: auto !important; 
-    margin-left: 0 !important; 
-}
+.icon-booking { width: 80px !important; height: auto !important; margin-left: 0 !important; }
 </style>
 </head>
 <body>
@@ -207,7 +206,8 @@ audio { width:100%; margin-top:10px; }
     </div>
 
     <div id="audioListDiv" class="container" style="display:none">
-      <h2>Audio Guide</h2>
+      <h2 id="audioTitle">Audio Guide</h2>
+      <button id="mapBtn" class="map-btn" onclick="openMap()">View Map</button>
       <div id="audioList"></div>
       <button class="back-btn" onclick="backToTour()">Back</button>
       <div class="social-links">
@@ -227,6 +227,7 @@ var scriptUrl = "https://script.google.com/macros/s/AKfycbz8PYiMtbWsQxJ7hP_hBEtv
 var formData = {};
 var selectedLang = "";
 var currentStep = "password";
+var currentTourType = "";
 
 var tours = { 
     EN:{old:37, walls:16, cabrio:0}, 
@@ -243,18 +244,18 @@ var tours = {
     HR:{old:37, walls:16, cabrio:0} 
 };
 var tourTranslations = { 
-    EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour"}, 
-    DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour"}, 
-    IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio"}, 
-    ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio"}, 
-    FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio"}, 
-    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур"},
-    PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio"},
-    SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour"},
-    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour"},
-    ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅"},
-    TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu"},
-    HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura"} 
+    EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour", map:"View Map"}, 
+    DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour", map:"Karte ansehen"}, 
+    IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
+    ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
+    FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
+    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур", map:"Посмотреть карту"},
+    PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
+    SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
+    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
+    ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
+    TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
+    HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
 };
 
 window.onpopstate = function(event) {
@@ -315,7 +316,16 @@ function sendDataAndGoToTour(lang){
   goToStep("tourDiv", "tour");
 }
 
+function openMap() {
+    var mapUrl = "";
+    if (currentTourType === "old") mapUrl = "images/map-old.jpg"; 
+    else if (currentTourType === "walls") mapUrl = "images/map-walls.jpg";
+    else if (currentTourType === "cabrio") mapUrl = "images/map-cabrio.webp";
+    if(mapUrl) window.open(mapUrl, '_blank');
+}
+
 function submitTour(type){
+  currentTourType = type;
   var params = new URLSearchParams();
   params.append("ime", formData.name);
   params.append("prezime", formData.surname);
@@ -325,6 +335,7 @@ function submitTour(type){
   fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
 
   goToStep("audioListDiv", "audio");
+  document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
 
   var container = document.getElementById("audioList");
   container.innerHTML = "";
@@ -337,23 +348,28 @@ function submitTour(type){
 
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
-
-  function createAudioBlock(index) {
+  
+  for(let i=0; i<=count; i++){
     let block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
-    
+    if (i === 0) { block.style.display = "none"; }
+
     var title = document.createElement("p"); 
-    title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
+    title.textContent = (i === 0) ? introTranslations[selectedLang] : "Stop " + i;
     title.style.fontWeight = "bold";
     
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
     
-    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
-    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + index + ".mp3";
-    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".MP3";
+    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
+    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
+    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".MP3";
 
     audio.src = path1;
+
+    audio.onloadeddata = function() {
+        if (i === 0) block.style.display = "block";
+    };
 
     audio.onerror = function() {
         if (this.src === path1) {
@@ -361,7 +377,7 @@ function submitTour(type){
         } else if (this.src === path2) {
              this.src = path3;
         } else {
-             if(index === 0) { block.remove(); }
+             if(i === 0) { block.remove(); }
         }
     };
     
@@ -376,27 +392,9 @@ function submitTour(type){
 
     block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
-
-  // PRVO PROVJERI UVOD
-  let testIntro = new Audio();
-  let introPath = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3";
-  testIntro.src = introPath;
-
-  testIntro.oncanplaythrough = function() {
-      createAudioBlock(0);
-      for(let i=1; i<=count; i++) { createAudioBlock(i); }
-      testIntro.oncanplaythrough = null;
-  };
-
-  testIntro.onerror = function() {
-      for(let i=1; i<=count; i++) { createAudioBlock(i); }
-      testIntro.onerror = null;
-  };
 }
 
-function backToStart() { 
-    goToStep("passwordDiv", "password");
-}
+function backToStart() { goToStep("passwordDiv", "password"); }
 function backToForm(){ goToStep("formDiv", "form"); }
 function backToLanguage(){ goToStep("languageDiv", "language"); }
 function backToTour(){ goToStep("tourDiv", "tour"); }
