@@ -133,7 +133,6 @@ audio { width:100%; margin-top:10px; }
     <div id="passwordDiv" class="container">
       <h1 class="main-title">Dubrovnik Audio Guide</h1>
       <h3 class="sub-title">Private Access</h3>
-      <p>Enter password to continue:</p>
       <div class="password-wrapper">
           <input id="passwordInput" type="password" placeholder="Password">
           <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
@@ -151,7 +150,6 @@ audio { width:100%; margin-top:10px; }
 
     <div id="formDiv" class="container" style="display:none">
       <h2>Dubrovnik Audio Guide</h2>
-      <p>Please enter your details:</p>
       <input id="name" placeholder="Name"><br>
       <input id="surname" placeholder="Surname"><br>
       <input id="phone" type="tel" placeholder="Phone (numbers only)"><br>
@@ -181,13 +179,6 @@ audio { width:100%; margin-top:10px; }
       <button onclick="sendDataAndGoToTour('TR')">Türkçe</button><br>
       <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
       <button class="back-btn" onclick="backToForm()">Back</button>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <div class="booking-link-wrapper">
-            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-        </div>
-      </div>
     </div>
 
     <div id="tourDiv" class="container" style="display:none">
@@ -196,13 +187,6 @@ audio { width:100%; margin-top:10px; }
       <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
       <button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
       <button class="back-btn" onclick="backToLanguage()">Back</button>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <div class="booking-link-wrapper">
-            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-        </div>
-      </div>
     </div>
 
     <div id="audioListDiv" class="container" style="display:none">
@@ -210,13 +194,6 @@ audio { width:100%; margin-top:10px; }
       <button id="mapBtn" class="map-btn" onclick="openMap()">View Map</button>
       <div id="audioList"></div>
       <button class="back-btn" onclick="backToTour()">Back</button>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <div class="booking-link-wrapper">
-            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -230,18 +207,12 @@ var currentStep = "password";
 var currentTourType = "";
 
 var tours = { 
-    EN:{old:37, walls:16, cabrio:0}, 
-    DE:{old:38, walls:16, cabrio:7}, 
-    IT:{old:37, walls:16, cabrio:9}, 
-    ES:{old:37, walls:16, cabrio:7}, 
-    FR:{old:37, walls:16, cabrio:6}, 
-    RU:{old:37, walls:16, cabrio:0},
-    PL:{old:37, walls:27, cabrio:0},
-    SV:{old:38, walls:27, cabrio:0},
-    CS:{old:37, walls:27, cabrio:0},
-    ZH:{old:37, walls:16, cabrio:0},
-    TR:{old:37, walls:0, cabrio:0},
-    HR:{old:37, walls:16, cabrio:0} 
+    EN:{old:37, walls:16, cabrio:0}, DE:{old:38, walls:16, cabrio:7}, 
+    IT:{old:37, walls:16, cabrio:9}, ES:{old:37, walls:16, cabrio:7}, 
+    FR:{old:37, walls:16, cabrio:6}, RU:{old:37, walls:16, cabrio:0},
+    PL:{old:37, walls:27, cabrio:0}, SV:{old:38, walls:27, cabrio:0},
+    CS:{old:37, walls:27, cabrio:0}, ZH:{old:37, walls:16, cabrio:0},
+    TR:{old:37, walls:0, cabrio:0}, HR:{old:37, walls:16, cabrio:0} 
 };
 var tourTranslations = { 
     EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour", map:"View Map"}, 
@@ -258,30 +229,11 @@ var tourTranslations = {
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
 };
 
-window.onpopstate = function(event) {
-  if (currentStep === "form") backToStart();
-  else if (currentStep === "language") backToForm();
-  else if (currentStep === "tour") backToLanguage();
-  else if (currentStep === "audio") backToTour();
-};
-
 function goToStep(stepId, stepName) {
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
   document.getElementById(stepId).style.display = 'block';
   document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
-  history.pushState({step: stepName}, "");
-}
-
-window.onload = function(){
-  document.getElementById("passwordInput").addEventListener("keypress", function(e){ if(e.key==="Enter") checkPassword(); });
-};
-
-function togglePasswordVisibility() {
-  var input = document.getElementById("passwordInput");
-  var icon = document.querySelector(".toggle-password");
-  if (input.type === "password") { input.type = "text"; icon.textContent = "🙈"; } 
-  else { input.type = "password"; icon.textContent = "👁️"; }
 }
 
 function checkPassword(){
@@ -294,17 +246,15 @@ function checkPassword(){
         errorDiv.classList.remove("show");
         goToStep("formDiv", "form");
       } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
-  }).catch(() => { if(input === "1234") { goToStep("formDiv", "form"); } });
+  });
 }
 
 function validateForm(){
   var name=document.getElementById("name").value.trim();
   var surname=document.getElementById("surname").value.trim();
-  var phoneRaw=document.getElementById("phone").value.trim().replace(/\s+/g,'');
-  var errorDiv=document.getElementById("formError");
-  if(!name || !surname || !phoneRaw){ errorDiv.textContent="All fields are required"; errorDiv.classList.add("show"); return false; }
-  errorDiv.classList.remove("show");
-  formData.name = name; formData.surname = surname; formData.phone = phoneRaw;
+  var phoneRaw=document.getElementById("phone").value.trim();
+  if(!name || !surname || !phoneRaw){ return; }
+  formData = {name, surname, phone: phoneRaw};
   goToStep("languageDiv", "language");
 }
 
@@ -318,33 +268,23 @@ function sendDataAndGoToTour(lang){
 
 function openMap() {
     var mapUrl = "";
-    if (currentTourType === "old") mapUrl = "images/map-old.jpg"; 
-    else if (currentTourType === "walls") mapUrl = "images/map-walls.jpg";
+    if (currentTourType === "old") mapUrl = "images/map-old.webp"; 
+    else if (currentTourType === "walls") mapUrl = "images/map-walls.webp";
     else if (currentTourType === "cabrio") mapUrl = "images/map-cabrio.webp";
-    if(mapUrl) window.open(mapUrl, '_blank');
+    if(mapUrl) {
+        var win = window.open(mapUrl, '_blank');
+        if(win) win.focus();
+    }
 }
 
 function submitTour(type){
   currentTourType = type;
-  var params = new URLSearchParams();
-  params.append("ime", formData.name);
-  params.append("prezime", formData.surname);
-  params.append("phone", formData.phone);
-  params.append("jezik", selectedLang);
-  params.append("tourType", type);
-  fetch(scriptUrl + "?" + params.toString(), { method: "GET", mode: "no-cors" });
-
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
-
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   
-  var introTranslations = { 
-    EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", 
-    FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", 
-    CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" 
-  };
+  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
 
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
@@ -352,7 +292,7 @@ function submitTour(type){
   for(let i=0; i<=count; i++){
     let block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
-    if (i === 0) { block.style.display = "none"; }
+    if (i === 0) block.style.display = "none";
 
     var title = document.createElement("p"); 
     title.textContent = (i === 0) ? introTranslations[selectedLang] : "Stop " + i;
@@ -360,41 +300,24 @@ function submitTour(type){
     
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
-    
-    var path1 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-    var path2 = baseUrl + "audio/" + selectedLang.toLowerCase() + "%2F" + type + "/" + i + ".mp3";
-    var path3 = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".MP3";
+    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
 
-    audio.src = path1;
-
-    audio.onloadeddata = function() {
-        if (i === 0) block.style.display = "block";
-    };
-
-    audio.onerror = function() {
-        if (this.src === path1) {
-             this.src = path2;
-        } else if (this.src === path2) {
-             this.src = path3;
-        } else {
-             if(i === 0) { block.remove(); }
-        }
-    };
+    audio.onloadeddata = function() { if (i === 0) block.style.display = "block"; };
+    audio.onerror = function() { if (i === 0) block.remove(); };
     
     audio.onplay = function() {
-        document.querySelectorAll('audio').forEach(otherAudio => {
-            if (otherAudio !== this) {
-                otherAudio.pause();
-                otherAudio.currentTime = 0;
-            }
-        });
+        document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); });
     };
 
     block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
 }
 
-function backToStart() { goToStep("passwordDiv", "password"); }
+function togglePasswordVisibility() {
+  var input = document.getElementById("passwordInput");
+  input.type = (input.type === "password") ? "text" : "password";
+}
+
 function backToForm(){ goToStep("formDiv", "form"); }
 function backToLanguage(){ goToStep("languageDiv", "language"); }
 function backToTour(){ goToStep("tourDiv", "tour"); }
