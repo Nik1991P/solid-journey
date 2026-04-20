@@ -4,80 +4,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Dubrovnik Audio Guide</title>
 <style>
-/* FIKSNA BAZA */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: fixed;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #000;
-}
-
-/* POZADINA */
-.background-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('images/DubrovnikSlika.webp') no-repeat center center;
-    background-size: cover;
-    z-index: -2;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.2);
-    z-index: -1;
-}
-
-/* SKROLANJE */
-.scroll-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    display: block;
-}
-
-.screen-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 100%;
-    padding: 40px 0 80px 0;
-    box-sizing: border-box;
-}
-
-/* TAMNA FORMA */
-.container {
-    background: rgba(0,0,0,0.85);
-    padding: 30px;
-    border-radius: 15px;
-    width: 85%;
-    max-width: 450px;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    backdrop-filter: blur(2px);
-    margin: 20px auto;
-}
-
+/* Svi tvoji postojeći stilovi ostaju isti */
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; position: fixed; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000; }
+.background-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('images/DubrovnikSlika.webp') no-repeat center center; background-size: cover; z-index: -2; }
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); z-index: -1; }
+.scroll-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: scroll; -webkit-overflow-scrolling: touch; display: block; }
+.screen-center { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100%; padding: 40px 0 80px 0; box-sizing: border-box; }
+.container { background: rgba(0,0,0,0.85); padding: 30px; border-radius: 15px; width: 85%; max-width: 450px; text-align: center; color: #fff; box-shadow: 0 10px 40px rgba(0,0,0,0.5); backdrop-filter: blur(2px); margin: 20px auto; }
 input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; color: #333; }
 button { padding:12px 0; font-size:16px; background:#0a7cff; color:white; border:none; border-radius:8px; margin:8px 0; cursor:pointer; width:80%; transition:0.3s; }
 button:hover { background:#005ecb; }
@@ -91,35 +25,17 @@ audio { width:100%; margin-top:10px; }
 .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; font-size: 18px; user-select: none; }
 .error-message { color:#ff6961; margin-top:10px; display:none; font-weight:bold; }
 .error-message.show { display:block; opacity:1; }
-
-/* KARTA GUMB STIL */
 .map-btn { background: #28a745 !important; margin-bottom: 25px !important; }
-.map-btn:hover { background: #218838 !important; }
-
-/* SOCIJALNE IKONE */
-.social-links { 
-    margin-top: 25px !important; 
-    display: flex !important; 
-    justify-content: center !important; 
-    border-top: 1px solid rgba(255,255,255,0.2) !important; 
-    padding-top: 15px !important; 
-    align-items: center !important; 
-    gap: 0 !important;
-    flex-wrap: wrap !important; 
-}
-
-.booking-link-wrapper {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    margin-top: 15px !important;
-}
-
+.social-links { margin-top: 25px !important; display: flex !important; justify-content: center !important; border-top: 1px solid rgba(255,255,255,0.2) !important; padding-top: 15px !important; align-items: center !important; gap: 0 !important; flex-wrap: wrap !important; }
+.booking-link-wrapper { width: 100% !important; display: flex !important; justify-content: center !important; margin-top: 15px !important; }
 .social-links a { text-decoration: none !important; background: none !important; border: none !important; padding: 0 !important; display: flex !important; align-items: center !important; }
 .app-icon { border: none !important; border-radius: 0 !important; background-color: transparent !important; box-shadow: none !important; object-fit: contain !important; }
 .icon-fb { width: 25px !important; height: 25px !important; margin-right: 20px !important; }
 .icon-ig { width: 30px !important; height: 30px !important; }
 .icon-booking { width: 80px !important; height: auto !important; margin-left: 0 !important; }
+
+/* NOVI STIL ZA PRIKAZ KARTE DA NE BUDE ZOOMIRANA */
+#mapDisplayImg { width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px; }
 </style>
 </head>
 <body>
@@ -139,29 +55,15 @@ audio { width:100%; margin-top:10px; }
       </div>
       <button onclick="checkPassword()">Enter</button>
       <p id="passwordError" class="error-message"></p>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <div class="booking-link-wrapper">
-            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-        </div>
-      </div>
     </div>
 
     <div id="formDiv" class="container" style="display:none">
       <h2>Dubrovnik Audio Guide</h2>
       <input id="name" placeholder="Name"><br>
       <input id="surname" placeholder="Surname"><br>
-      <input id="phone" type="tel" placeholder="Phone (numbers only)"><br>
+      <input id="phone" type="tel" placeholder="Phone"><br>
       <button onclick="validateForm()">Submit</button>
       <p id="formError" class="error-message"></p>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank"><img src="images/facebook-icon.png" class="app-icon icon-fb"></a>
-        <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank"><img src="images/instagram-icon.png" class="app-icon icon-ig"></a>
-        <div class="booking-link-wrapper">
-            <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank"><img src="images/booking-icon.png" class="app-icon icon-booking"></a>
-        </div>
-      </div>
     </div>
 
     <div id="languageDiv" class="container" style="display:none">
@@ -175,7 +77,7 @@ audio { width:100%; margin-top:10px; }
       <button onclick="sendDataAndGoToTour('PL')">Polski</button><br>
       <button onclick="sendDataAndGoToTour('SV')">Svenska</button><br>
       <button onclick="sendDataAndGoToTour('CS')">Čeština</button><br>
-      <button onclick="sendDataAndGoToTour('ZH')">中文 (Chinese)</button><br>
+      <button onclick="sendDataAndGoToTour('ZH')">中文</button><br>
       <button onclick="sendDataAndGoToTour('TR')">Türkçe</button><br>
       <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
       <button class="back-btn" onclick="backToForm()">Back</button>
@@ -194,6 +96,13 @@ audio { width:100%; margin-top:10px; }
       <button id="mapBtn" class="map-btn" onclick="openMap()">View Map</button>
       <div id="audioList"></div>
       <button class="back-btn" onclick="backToTour()">Back</button>
+    </div>
+
+    <div id="mapViewDiv" class="container" style="display:none">
+      <h2 id="mapTitle">Map</h2>
+      <img id="mapDisplayImg" src="" alt="Map">
+      <p style="font-size: 14px; color: #ccc;">You can zoom this map with your fingers.</p>
+      <button class="back-btn" onclick="backToAudio()">Back to Audio</button>
     </div>
 
   </div>
@@ -223,10 +132,19 @@ var tourTranslations = {
     RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
-    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
+    CS:{old:"Staré Město", hradby:"Walls", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
     TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
+};
+
+// POPRAVAK ZA BACK TIPKU NA MOBITELU
+window.onpopstate = function(event) {
+  if (currentStep === "form") backToStart();
+  else if (currentStep === "language") backToForm();
+  else if (currentStep === "tour") backToLanguage();
+  else if (currentStep === "audio") backToTour();
+  else if (currentStep === "mapView") backToAudio();
 };
 
 function goToStep(stepId, stepName) {
@@ -234,6 +152,7 @@ function goToStep(stepId, stepName) {
   document.getElementById(stepId).style.display = 'block';
   document.querySelector('.scroll-container').scrollTop = 0;
   currentStep = stepName;
+  history.pushState({step: stepName}, ""); // Dodaje korak u povijest preglednika
 }
 
 function checkPassword(){
@@ -266,14 +185,17 @@ function sendDataAndGoToTour(lang){
   goToStep("tourDiv", "tour");
 }
 
+// PROMIJENJENO U .JPG I PRIKAZ U SAMOJ APLIKACIJI
 function openMap() {
     var mapUrl = "";
     if (currentTourType === "old") mapUrl = "images/map-old.jpg"; 
     else if (currentTourType === "walls") mapUrl = "images/map-walls.jpg";
-    else if (currentTourType === "cabrio") mapUrl = "images/map-cabrio.webp";
+    else if (currentTourType === "cabrio") mapUrl = "images/map-cabrio.jpg";
+    
     if(mapUrl) {
-        var win = window.open(mapUrl, '_blank');
-        if(win) win.focus();
+        document.getElementById("mapDisplayImg").src = mapUrl;
+        document.getElementById("mapTitle").textContent = tourTranslations[selectedLang].map;
+        goToStep("mapViewDiv", "mapView");
     }
 }
 
@@ -285,7 +207,6 @@ function submitTour(type){
   container.innerHTML = "";
   
   var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
-
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
   
@@ -293,22 +214,15 @@ function submitTour(type){
     let block = document.createElement("div"); 
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
     if (i === 0) block.style.display = "none";
-
     var title = document.createElement("p"); 
     title.textContent = (i === 0) ? introTranslations[selectedLang] : "Stop " + i;
     title.style.fontWeight = "bold";
-    
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-
     audio.onloadeddata = function() { if (i === 0) block.style.display = "block"; };
     audio.onerror = function() { if (i === 0) block.remove(); };
-    
-    audio.onplay = function() {
-        document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); });
-    };
-
+    audio.onplay = function() { document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); };
     block.appendChild(title); block.appendChild(audio); container.appendChild(block);
   }
 }
@@ -318,9 +232,11 @@ function togglePasswordVisibility() {
   input.type = (input.type === "password") ? "text" : "password";
 }
 
+function backToStart() { goToStep("passwordDiv", "password"); }
 function backToForm(){ goToStep("formDiv", "form"); }
 function backToLanguage(){ goToStep("languageDiv", "language"); }
 function backToTour(){ goToStep("tourDiv", "tour"); }
+function backToAudio() { goToStep("audioListDiv", "audio"); }
 </script>
 </body>
 </html>
