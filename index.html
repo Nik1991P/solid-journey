@@ -225,7 +225,7 @@ var tourTranslations = {
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
-    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур", map:"Посмотреть карту"},
+    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
@@ -293,15 +293,15 @@ function openMap() {
 function submitTour(type){
   currentTourType = type;
 
-  // Slanje svih podataka (Ime, Prezime, Tel, Jezik, Tura) u Google Sheets
+  // --- IZMJENA ZA EXCEL (usklađivanje sa skriptom) ---
   var url = scriptUrl + 
-    "?name=" + encodeURIComponent(formData.name) + 
-    "&surname=" + encodeURIComponent(formData.surname) + 
+    "?ime=" + encodeURIComponent(formData.name) + 
+    "&prezime=" + encodeURIComponent(formData.surname) + 
     "&phone=" + encodeURIComponent(formData.phone) + 
-    "&lang=" + encodeURIComponent(selectedLang) +
-    "&tour=" + encodeURIComponent(type);
+    "&jezik=" + encodeURIComponent(selectedLang) +
+    "&tourType=" + encodeURIComponent(type);
     
-  fetch(url).catch(e => console.log("Error logging to spreadsheet"));
+  fetch(url).catch(e => console.log("Excel error"));
 
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
