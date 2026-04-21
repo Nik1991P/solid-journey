@@ -205,12 +205,18 @@ var currentStep = "password";
 var currentTourType = "";
 
 var tours = { 
-    EN:{old:37, walls:16, cabrio:0}, DE:{old:37, walls:16, cabrio:7}, 
-    IT:{old:37, walls:16, cabrio:9}, ES:{old:37, walls:16, cabrio:7}, 
-    FR:{old:37, walls:16, cabrio:6}, RU:{old:37, walls:16, cabrio:0},
-    PL:{old:37, walls:27, cabrio:0}, SV:{old:38, walls:27, cabrio:0},
-    CS:{old:37, walls:27, cabrio:0}, ZH:{old:37, walls:16, cabrio:0},
-    TR:{old:37, walls:0, cabrio:0}, HR:{old:37, walls:16, cabrio:0} 
+    EN:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}}, 
+    DE:{old:{count:37, intro:true}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
+    IT:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:9, intro:false}}, 
+    ES:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
+    FR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:6, intro:false}}, 
+    RU:{old:{count:37, intro:true}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}},
+    PL:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}}, 
+    SV:{old:{count:38, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}},
+    CS:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}}, 
+    ZH:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}},
+    TR:{old:{count:37, intro:false}, walls:{count:0, intro:false}, cabrio:{count:0, intro:false}}, 
+    HR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}} 
 };
 
 var tourTranslations = { 
@@ -284,16 +290,29 @@ function openMap() {
     }
 }
 
-// ASINKRONO UCITAVANJE BEZ BLINKANJA I REDOSLIJEDA
-async function submitTour(type){
+function submitTour(type){
   currentTourType = type;
+
+  // Slanje svih podataka (Ime, Prezime, Tel, Jezik, Tura) u Google Sheets
+  var url = scriptUrl + 
+    "?name=" + encodeURIComponent(formData.name) + 
+    "&surname=" + encodeURIComponent(formData.surname) + 
+    "&phone=" + encodeURIComponent(formData.phone) + 
+    "&lang=" + encodeURIComponent(selectedLang) +
+    "&tour=" + encodeURIComponent(type);
+    
+  fetch(url).catch(e => console.log("Error logging to spreadsheet"));
+
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   
   var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
-  var count = tours[selectedLang][type];
+  
+  var tourData = tours[selectedLang][type];
+  var count = tourData.count;
+  var hasIntro = tourData.intro;
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
 
   function createAudioBlock(index) {
@@ -320,21 +339,8 @@ async function submitTour(type){
     container.appendChild(block);
   }
 
-  // 1. Prvo provjeravamo uvod (0.mp3)
-  var introUrl = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3";
-  try {
-      let response = await fetch(introUrl, { method: 'HEAD' });
-      if(response.ok) {
-          createAudioBlock(0); // Ako postoji, crtamo ga prvog
-      }
-  } catch (e) {
-      console.log("Intro not found or error");
-  }
-
-  // 2. Nakon toga crtamo sve ostale
-  for(let i=1; i<=count; i++){
-    createAudioBlock(i);
-  }
+  if(hasIntro) { createAudioBlock(0); }
+  for(let i=1; i<=count; i++){ createAudioBlock(i); }
 }
 
 function togglePasswordVisibility() {
