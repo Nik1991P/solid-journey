@@ -44,8 +44,8 @@ audio { width:100% !important; margin-top:10px; display: block; }
 }
 
 /* Individualne korekcije za optičku jednakost */
-.fb-fix { transform: scale(0.85); } /* Smanjuje FB da paše uz Instagram */
-.book-fix { transform: scale(1.3); }  /* Povećava Booking */
+.fb-fix { transform: scale(0.85); } 
+.book-fix { transform: scale(1.3); }  
 
 .contact-info { font-size: 14px; line-height: 1.8; margin-top: 10px; color: #ddd; }
 .contact-info a { color: #0a7cff; text-decoration: none; font-weight: bold; }
@@ -316,21 +316,45 @@ function submitTour(type){
   var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
-  
-  for(let i=0; i<=count; i++){
+
+  // Funkcija za kreiranje bloka audio zapisa
+  function createAudioBlock(index) {
     let block = document.createElement("div"); 
     block.style.width = "100%";
     block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
+    
     var title = document.createElement("p"); 
-    title.textContent = (i === 0) ? introTranslations[selectedLang] : "Stop " + i;
+    title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
     title.style.fontWeight = "bold";
+    
     var audio = document.createElement("audio"); 
     audio.controls = true; audio.preload = "none";
-    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + i + ".mp3";
-    audio.onerror = function() { block.remove(); };
-    audio.onplay = function() { document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); };
-    block.appendChild(title); block.appendChild(audio); container.appendChild(block);
+    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
+    
+    audio.onplay = function() { 
+      document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
+    };
+    
+    block.appendChild(title); 
+    block.appendChild(audio); 
+    container.appendChild(block);
   }
+
+  // Prvo provjeravamo uvod (0.mp3)
+  fetch(baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3", { method: 'HEAD' })
+    .then(res => {
+      if(res.ok) { createAudioBlock(0); }
+      // Nakon provjere uvoda, idemo na ostale stopove od 1 do count
+      for(let i=1; i<=count; i++){
+        createAudioBlock(i);
+      }
+    })
+    .catch(() => {
+      // Ako uvod ne postoji, samo učitaj ostale
+      for(let i=1; i<=count; i++){
+        createAudioBlock(i);
+      }
+    });
 }
 
 function togglePasswordVisibility() {
