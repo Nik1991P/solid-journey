@@ -43,7 +43,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
     object-fit: contain; 
 }
 
-/* Individualne korekcije za optičku jednakost */
 .fb-fix { transform: scale(0.85); } 
 .book-fix { transform: scale(1.3); }  
 
@@ -226,7 +225,7 @@ var currentStep = "password";
 var currentTourType = "";
 
 var tours = { 
-    EN:{old:37, walls:16, cabrio:0}, DE:{old:38, walls:16, cabrio:7}, 
+    EN:{old:37, walls:16, cabrio:0}, DE:{old:37, walls:16, cabrio:7}, 
     IT:{old:37, walls:16, cabrio:9}, ES:{old:37, walls:16, cabrio:7}, 
     FR:{old:37, walls:16, cabrio:6}, RU:{old:37, walls:16, cabrio:0},
     PL:{old:37, walls:27, cabrio:0}, SV:{old:38, walls:27, cabrio:0},
@@ -240,7 +239,7 @@ var tourTranslations = {
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
-    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабрио тур", map:"Посмотреть карту"},
+    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
@@ -317,18 +316,26 @@ function submitTour(type){
   var count = tours[selectedLang][type];
   var baseUrl = "https://nik1991p.github.io/solid-journey/";
 
-  // Funkcija za kreiranje bloka audio zapisa
   function createAudioBlock(index) {
     let block = document.createElement("div"); 
     block.style.width = "100%";
-    block.style.marginBottom="20px"; block.style.paddingBottom="10px"; block.style.borderBottom="1px solid #555";
+    block.style.marginBottom="20px"; 
+    block.style.paddingBottom="10px"; 
+    block.style.borderBottom="1px solid #555";
+    
+    // Ako je uvod (0), inicijalno ga sakrivamo
+    if (index === 0) {
+        block.style.display = "none";
+        block.id = "intro-block";
+    }
     
     var title = document.createElement("p"); 
     title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
     title.style.fontWeight = "bold";
     
     var audio = document.createElement("audio"); 
-    audio.controls = true; audio.preload = "none";
+    audio.controls = true; 
+    audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
     
     audio.onplay = function() { 
@@ -340,21 +347,19 @@ function submitTour(type){
     container.appendChild(block);
   }
 
-  // Prvo provjeravamo uvod (0.mp3)
-  fetch(baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3", { method: 'HEAD' })
-    .then(res => {
-      if(res.ok) { createAudioBlock(0); }
-      // Nakon provjere uvoda, idemo na ostale stopove od 1 do count
-      for(let i=1; i<=count; i++){
-        createAudioBlock(i);
+  // Odmah iscrtavamo sve (od 0 do count)
+  for(let i=0; i<=count; i++){
+    createAudioBlock(i);
+  }
+
+  // Tiha provjera uvoda u pozadini - ako postoji, samo ga prikažemo
+  var introUrl = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/0.mp3";
+  fetch(introUrl, { method: 'HEAD' }).then(res => {
+      if(res.ok) {
+          var intro = document.getElementById("intro-block");
+          if(intro) intro.style.display = "block";
       }
-    })
-    .catch(() => {
-      // Ako uvod ne postoji, samo učitaj ostale
-      for(let i=1; i<=count; i++){
-        createAudioBlock(i);
-      }
-    });
+  }).catch(() => {});
 }
 
 function togglePasswordVisibility() {
