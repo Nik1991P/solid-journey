@@ -263,10 +263,33 @@ function checkPassword(){
 }
 
 function validateForm(){
-  var name=document.getElementById("name").value.trim();
-  var surname=document.getElementById("surname").value.trim();
-  var phoneRaw=document.getElementById("phone").value.trim();
-  if(!name || !surname || !phoneRaw){ return; }
+  var name = document.getElementById("name").value.trim();
+  var surname = document.getElementById("surname").value.trim();
+  var phoneRaw = document.getElementById("phone").value.trim();
+  var errorDiv = document.getElementById("formError");
+  
+  // Regex za slova (uključuje i HR znakove)
+  var nameRegex = /^[a-zA-ZčćžđšČĆŽĐŠ\s]+$/;
+
+  if(!name || !surname || !phoneRaw){ 
+    errorDiv.textContent = "Please fill in all fields."; 
+    errorDiv.classList.add("show");
+    return; 
+  }
+  
+  if(!nameRegex.test(name) || !nameRegex.test(surname)){
+    errorDiv.textContent = "Name and Surname can only contain letters.";
+    errorDiv.classList.add("show");
+    return;
+  }
+  
+  if(phoneRaw.length < 5){
+    errorDiv.textContent = "Phone number must have at least 5 characters.";
+    errorDiv.classList.add("show");
+    return;
+  }
+
+  errorDiv.classList.remove("show");
   formData = {name, surname, phone: phoneRaw};
   goToStep("languageDiv", "language");
 }
