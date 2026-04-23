@@ -243,8 +243,8 @@ function openMap() {
 function submitTour(type){
   currentTourType = type;
   
-  // ZAŠTITA: Koristimo memoriju uređaja. Ako je ovaj mobitel već poslao podatke za ovu turu, preskačemo slanje.
-  var storageKey = "sent_" + type; 
+  // KLJUČ: Spajamo jezik i turu kako bi omogućili po jedan upis za svaki jezik
+  var storageKey = "sent_" + selectedLang + "_" + type; 
   var alreadySent = localStorage.getItem(storageKey);
 
   if(!alreadySent){
@@ -256,12 +256,10 @@ function submitTour(type){
       "&tourType=" + encodeURIComponent(type);
       
     fetch(url).then(() => {
-      // Označavamo da je ovaj uređaj poslao podatke za ovu turu
       localStorage.setItem(storageKey, "true");
     }).catch(e => console.log("Excel error"));
   }
 
-  // Uvijek otvara audio listu, bez obzira na to jesu li podaci tek poslani ili su već bili u memoriji
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
   var container = document.getElementById("audioList");
