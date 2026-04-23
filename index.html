@@ -18,7 +18,6 @@ button.back-btn { width:80%; background:#0a7cff; }
 h2 { margin-bottom:20px; font-size:24px; }
 audio { width:100% !important; margin-top:10px; display: block; }
 
-/* FOOTER I IKONE */
 .footer-section { margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
 .follow-us-text { font-size: 13px; color: #aaa; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
 .social-links { display: flex; justify-content: center; align-items: center; gap: 25px; margin-bottom: 20px; }
@@ -120,25 +119,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button onclick="sendDataAndGoToTour('TR')">Türkçe</button><br>
       <button onclick="sendDataAndGoToTour('HR')">Hrvatski</button><br>
       <button class="back-btn" onclick="backToForm()">Back</button>
-
-      <div class="footer-section">
-        <p class="follow-us-text">Follow us</p>
-        <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper fb-fix">
-            <img src="images/facebook-icon.png" class="app-icon">
-          </a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
-            <img src="images/instagram-icon.png" class="app-icon">
-          </a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper book-fix">
-            <img src="images/booking-icon.png" class="app-icon">
-          </a>
-        </div>
-        <div class="contact-info">
-          Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
-          Email: <a href="mailto:info@hop-on-hop-off-dubrovnik.com">info@hop-on-hop-off-dubrovnik.com</a>
-        </div>
-      </div>
     </div>
 
     <div id="tourDiv" class="container" style="display:none">
@@ -147,25 +127,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button id="wallsBtn" onclick="submitTour('walls')">Walls</button><br>
       <button id="cabrioBtn" onclick="submitTour('cabrio')">Cabrio Tour</button><br> 
       <button class="back-btn" onclick="backToLanguage()">Back</button>
-
-      <div class="footer-section">
-        <p class="follow-us-text">Follow us</p>
-        <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper fb-fix">
-            <img src="images/facebook-icon.png" class="app-icon">
-          </a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
-            <img src="images/instagram-icon.png" class="app-icon">
-          </a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper book-fix">
-            <img src="images/booking-icon.png" class="app-icon">
-          </a>
-        </div>
-        <div class="contact-info">
-          Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
-          Email: <a href="mailto:info@hop-on-hop-off-dubrovnik.com">info@hop-on-hop-off-dubrovnik.com</a>
-        </div>
-      </div>
     </div>
 
     <div id="audioListDiv" class="container" style="display:none">
@@ -173,25 +134,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button id="mapBtn" class="map-btn" onclick="openMap()">View Map</button>
       <div id="audioList"></div>
       <button class="back-btn" onclick="backToTour()">Back</button>
-
-      <div class="footer-section">
-        <p class="follow-us-text">Follow us</p>
-        <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper fb-fix">
-            <img src="images/facebook-icon.png" class="app-icon">
-          </a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
-            <img src="images/instagram-icon.png" class="app-icon">
-          </a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper book-fix">
-            <img src="images/booking-icon.png" class="app-icon">
-          </a>
-        </div>
-        <div class="contact-info">
-          Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
-          Email: <a href="mailto:info@hop-on-hop-off-dubrovnik.com">info@hop-on-hop-off-dubrovnik.com</a>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -225,7 +167,7 @@ var tourTranslations = {
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
-    RU:{old:"Старый город", walls:"Стены", cabrio:"Кабrio тур", map:"Посмотреть карту"},
+    RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
@@ -268,27 +210,43 @@ function validateForm(){
   var phoneRaw = document.getElementById("phone").value.trim();
   var errorDiv = document.getElementById("formError");
   
-  // Regex za slova (uključuje i HR znakove)
+  // RegEx za Ime i Prezime: Samo slova i razmaci
   var nameRegex = /^[a-zA-ZčćžđšČĆŽĐŠ\s]+$/;
+  
+  // STROGI RegEx za telefon: Početni +, pa samo brojke i razmaci
+  // Ako postoji bilo što drugo (točka, kosa crta, slovo), regex vraća false.
+  var strictPhoneRegex = /^[+]?[0-9\s]+$/;
 
+  // 1. Provjera jesu li polja prazna
   if(!name || !surname || !phoneRaw){ 
     errorDiv.textContent = "Please fill in all fields."; 
     errorDiv.classList.add("show");
     return; 
   }
-  
+
+  // 2. Provjera imena i prezimena
   if(!nameRegex.test(name) || !nameRegex.test(surname)){
     errorDiv.textContent = "Name and Surname can only contain letters.";
     errorDiv.classList.add("show");
     return;
   }
   
-  if(phoneRaw.length < 5){
-    errorDiv.textContent = "Phone number must have at least 5 characters.";
+  // 3. STROGA PROVJERA ZNAKOVA U TELEFONU (npr. odbija točke)
+  if(!strictPhoneRegex.test(phoneRaw)){
+    errorDiv.textContent = "Phone can only contain numbers, spaces or +.";
     errorDiv.classList.add("show");
     return;
   }
 
+  // 4. Provjera minimalnog broja pravih znamenki
+  var digitsOnly = phoneRaw.replace(/\D/g, ""); 
+  if(digitsOnly.length < 5){
+    errorDiv.textContent = "Invalid phone number (min. 5 digits required).";
+    errorDiv.classList.add("show");
+    return;
+  }
+
+  // Ako su sve provjere prošle, nastavi
   errorDiv.classList.remove("show");
   formData = {name, surname, phone: phoneRaw};
   goToStep("languageDiv", "language");
@@ -315,8 +273,6 @@ function openMap() {
 
 function submitTour(type){
   currentTourType = type;
-
-  // --- IZMJENA ZA EXCEL (usklađivanje sa skriptom) ---
   var url = scriptUrl + 
     "?ime=" + encodeURIComponent(formData.name) + 
     "&prezime=" + encodeURIComponent(formData.surname) + 
@@ -340,10 +296,7 @@ function submitTour(type){
 
   function createAudioBlock(index) {
     let block = document.createElement("div"); 
-    block.style.width = "100%";
-    block.style.marginBottom="20px"; 
-    block.style.paddingBottom="10px"; 
-    block.style.borderBottom="1px solid #555";
+    block.style.cssText = "width:100%; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #555;";
     
     var title = document.createElement("p"); 
     title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
