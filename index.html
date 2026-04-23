@@ -83,25 +83,6 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <input id="phone" type="tel" placeholder="Phone"><br>
       <button onclick="validateForm()">Submit</button>
       <p id="formError" class="error-message"></p>
-
-      <div class="footer-section">
-        <p class="follow-us-text">Follow us</p>
-        <div class="social-links">
-          <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper fb-fix">
-            <img src="images/facebook-icon.png" class="app-icon">
-          </a>
-          <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
-            <img src="images/instagram-icon.png" class="app-icon">
-          </a>
-          <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper book-fix">
-            <img src="images/booking-icon.png" class="app-icon">
-          </a>
-        </div>
-        <div class="contact-info">
-          Tel: <a href="tel:+385992206031">+385 99 220 6031</a><br>
-          Email: <a href="mailto:info@hop-on-hop-off-dubrovnik.com">info@hop-on-hop-off-dubrovnik.com</a>
-        </div>
-      </div>
     </div>
 
     <div id="languageDiv" class="container" style="display:none">
@@ -210,35 +191,24 @@ function validateForm(){
   var phoneRaw = document.getElementById("phone").value.trim();
   var errorDiv = document.getElementById("formError");
   
-  // RegEx za Ime i Prezime: Samo slova i razmaci
   var nameRegex = /^[a-zA-ZčćžđšČĆŽĐŠ\s]+$/;
-  
-  // STROGI RegEx za telefon: Početni +, pa samo brojke i razmaci
-  // Ako postoji bilo što drugo (točka, kosa crta, slovo), regex vraća false.
   var strictPhoneRegex = /^[+]?[0-9\s]+$/;
 
-  // 1. Provjera jesu li polja prazna
   if(!name || !surname || !phoneRaw){ 
     errorDiv.textContent = "Please fill in all fields."; 
     errorDiv.classList.add("show");
     return; 
   }
-
-  // 2. Provjera imena i prezimena
   if(!nameRegex.test(name) || !nameRegex.test(surname)){
     errorDiv.textContent = "Name and Surname can only contain letters.";
     errorDiv.classList.add("show");
     return;
   }
-  
-  // 3. STROGA PROVJERA ZNAKOVA U TELEFONU (npr. odbija točke)
   if(!strictPhoneRegex.test(phoneRaw)){
     errorDiv.textContent = "Phone can only contain numbers, spaces or +.";
     errorDiv.classList.add("show");
     return;
   }
-
-  // 4. Provjera minimalnog broja pravih znamenki
   var digitsOnly = phoneRaw.replace(/\D/g, ""); 
   if(digitsOnly.length < 5){
     errorDiv.textContent = "Invalid phone number (min. 5 digits required).";
@@ -246,7 +216,6 @@ function validateForm(){
     return;
   }
 
-  // Ako su sve provjere prošle, nastavi
   errorDiv.classList.remove("show");
   formData = {name, surname, phone: phoneRaw};
   goToStep("languageDiv", "language");
@@ -273,22 +242,32 @@ function openMap() {
 
 function submitTour(type){
   currentTourType = type;
-  var url = scriptUrl + 
-    "?ime=" + encodeURIComponent(formData.name) + 
-    "&prezime=" + encodeURIComponent(formData.surname) + 
-    "&phone=" + encodeURIComponent(formData.phone) + 
-    "&jezik=" + encodeURIComponent(selectedLang) +
-    "&tourType=" + encodeURIComponent(type);
-    
-  fetch(url).catch(e => console.log("Excel error"));
+  
+  // ZAŠTITA: Koristimo memoriju uređaja. Ako je ovaj mobitel već poslao podatke za ovu turu, preskačemo slanje.
+  var storageKey = "sent_" + type; 
+  var alreadySent = localStorage.getItem(storageKey);
 
+  if(!alreadySent){
+    var url = scriptUrl + 
+      "?ime=" + encodeURIComponent(formData.name) + 
+      "&prezime=" + encodeURIComponent(formData.surname) + 
+      "&phone=" + encodeURIComponent(formData.phone) + 
+      "&jezik=" + encodeURIComponent(selectedLang) +
+      "&tourType=" + encodeURIComponent(type);
+      
+    fetch(url).then(() => {
+      // Označavamo da je ovaj uređaj poslao podatke za ovu turu
+      localStorage.setItem(storageKey, "true");
+    }).catch(e => console.log("Excel error"));
+  }
+
+  // Uvijek otvara audio listu, bez obzira na to jesu li podaci tek poslani ili su već bili u memoriji
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   
   var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
-  
   var tourData = tours[selectedLang][type];
   var count = tourData.count;
   var hasIntro = tourData.intro;
@@ -297,19 +276,14 @@ function submitTour(type){
   function createAudioBlock(index) {
     let block = document.createElement("div"); 
     block.style.cssText = "width:100%; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #555;";
-    
     var title = document.createElement("p"); 
     title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
     title.style.fontWeight = "bold";
-    
     var audio = document.createElement("audio"); 
     audio.controls = true; 
     audio.preload = "none";
     audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
-    audio.onplay = function() { 
-      document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
-    };
-    
+    audio.onplay = function() { document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); };
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
