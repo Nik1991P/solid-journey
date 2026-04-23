@@ -90,6 +90,7 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button onclick="sendDataAndGoToTour('EN')">English</button><br>
       <button onclick="sendDataAndGoToTour('DE')">Deutsch</button><br>
       <button onclick="sendDataAndGoToTour('IT')">Italiano</button><br>
+      <button onclick="sendDataAndGoToTour('PT')">Português</button><br>
       <button onclick="sendDataAndGoToTour('ES')">Español</button><br>
       <button onclick="sendDataAndGoToTour('FR')">Français</button><br>
       <button onclick="sendDataAndGoToTour('RU')">Pусский</button><br>
@@ -131,6 +132,7 @@ var tours = {
     EN:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}}, 
     DE:{old:{count:37, intro:true}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
     IT:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
+    PT:{old:{count:1, intro:false}, walls:{count:1, intro:false}, cabrio:{count:8, intro:false}}, 
     ES:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
     FR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
     RU:{old:{count:36, intro:true}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}},
@@ -146,6 +148,7 @@ var tourTranslations = {
     EN:{old:"Old Town", walls:"Walls", cabrio:"Cabrio Tour", map:"View Map"}, 
     DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour", map:"Karte ansehen"}, 
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
+    PT:{old:"Cidade Velha", walls:"Muralhas", cabrio:"Tour em Cabrio", map:"Ver Mapa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
@@ -268,7 +271,7 @@ function submitTour(type){
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   
-  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
+  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
   var tourData = tours[selectedLang][type];
   var count = tourData.count;
   var hasIntro = tourData.intro;
