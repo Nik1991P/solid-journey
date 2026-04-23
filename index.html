@@ -151,7 +151,7 @@ var tourTranslations = {
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
-    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
+    CS:{old:"Staré Město", hradby:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
     TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
@@ -229,21 +229,24 @@ function sendDataAndGoToTour(lang){
   goToStep("tourDiv", "tour");
 }
 
+/* --- FUNKCIJA ZA MAPE --- */
 function openMap() {
     var mapPath = "";
-    if (currentTourType === "old") mapPath = "images/map-old.jpg"; 
-    else if (currentTourType === "walls") mapPath = "images/map-walls.jpg";
-    else if (currentTourType === "cabrio") mapPath = "images/map-cabrio.png";
+    var lang = selectedLang.toLowerCase(); 
+    if (currentTourType === "cabrio") {
+        mapPath = "images/map-cabrio.png";
+    } else {
+        mapPath = "images/map-" + lang + "-" + currentTourType + ".jpg";
+    }
     if(mapPath) {
         var mapWindow = window.open("");
-        mapWindow.document.write(`<html><head><title>Map</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; } img { max-width: 100%; height: auto; }</style></head><body><img src="${mapPath}" /></body></html>`);
+        mapWindow.document.write(`<html><head><title>Map</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; } img { max-width: 100%; height: auto; }</style></head><body><img src="${mapPath}" onerror="this.src='images/map-old.jpg';" /></body></html>`);
     }
 }
 
 function submitTour(type){
   currentTourType = type;
   
-  // KLJUČ: Spajamo jezik i turu kako bi omogućili po jedan upis za svaki jezik
   var storageKey = "sent_" + selectedLang + "_" + type; 
   var alreadySent = localStorage.getItem(storageKey);
 
