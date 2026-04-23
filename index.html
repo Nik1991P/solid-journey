@@ -129,19 +129,19 @@ var currentStep = "password";
 var currentTourType = "";
 
 var tours = { 
-    EN:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}}, 
-    DE:{old:{count:37, intro:true}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
+    EN:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
+    DE:{old:{count:37, intro:true}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
     IT:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
     PT:{old:{count:1, intro:false}, walls:{count:1, intro:false}, cabrio:{count:8, intro:false}}, 
-    ES:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
-    FR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:7, intro:false}}, 
-    RU:{old:{count:36, intro:true}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}},
-    PL:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}}, 
-    SV:{old:{count:38, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}},
-    CS:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:0, intro:false}}, 
-    ZH:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}},
-    TR:{old:{count:37, intro:false}, walls:{count:0, intro:false}, cabrio:{count:0, intro:false}}, 
-    HR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:0, intro:false}} 
+    ES:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
+    FR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
+    RU:{old:{count:36, intro:true}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}},
+    PL:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}}, 
+    SV:{old:{count:38, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}},
+    CS:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}}, 
+    ZH:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}},
+    TR:{old:{count:37, intro:false}, walls:{count:0, intro:false}, cabrio:{count:8, intro:false}}, 
+    HR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}} 
 };
 
 var tourTranslations = { 
@@ -154,10 +154,26 @@ var tourTranslations = {
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
-    CS:{old:"Staré Město", hradby:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
+    CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
     TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
+};
+
+var cabrioStopNames = {
+    HR: ["Polazak s Pila", "Novi dio grada", "Port Gruž", "Ragusa", "Novi most", "Lokrum", "Panoramic", "Povratak na Pile"],
+    EN: ["Departure from Pile", "New Part of Town", "Port Gruž", "Ragusa", "New Bridge", "Lokrum", "Panoramic", "Return to Pile"],
+    DE: ["Abfahrt von Pile", "Neuer Stadtteil", "Hafen Gruž", "Ragusa", "Neue Brücke", "Lokrum", "Panorama", "Rückkehr nach Pile"],
+    IT: ["Partenza da Pile", "Nuova parte della città", "Porto Gruž", "Ragusa", "Nuovo ponte", "Lokrum", "Panoramico", "Ritorno a Pile"],
+    PT: ["Partida de Pile", "Nova parte da cidade", "Porto Gruž", "Ragusa", "Nova ponte", "Lokrum", "Panorâmico", "Regresso a Pile"],
+    ES: ["Salida de Pile", "Nueva parte de la ciudad", "Puerto Gruž", "Ragusa", "Nuevo puente", "Lokrum", "Panorámico", "Regreso a Pile"],
+    FR: ["Départ de Pile", "Nouvelle partie de la ville", "Port Gruž", "Ragusa", "Nouveau pont", "Lokrum", "Panoramique", "Retour à Pile"],
+    RU: ["Отправление от Пиле", "Новая часть города", "Порт Груж", "Рагуза", "Новый мост", "Локрум", "Панорамный", "Возвращение на Пиле"],
+    PL: ["Odjazd z Pile", "Nowa część miasta", "Port Gruž", "Ragusa", "Nowy most", "Lokrum", "Panoramiczny", "Powrót na Pile"],
+    SV: ["Avgång från Pile", "Ny del av staden", "Port Gruž", "Ragusa", "Nya bron", "Lokrum", "Panoramisk", "Återresa till Pile"],
+    CS: ["Odjezd z Pile", "Nová část města", "Port Gruž", "Ragusa", "Nový most", "Lokrum", "Panoramatický", "Návrat na Pile"],
+    ZH: ["从 Pile 出发", "城市新区", "Gruž 港", "Ragusa", "新大桥", "Lokrum", "全景", "返回 Pile"],
+    TR: ["Pile'den hareket", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
 };
 
 window.onpopstate = function(event) {
@@ -232,7 +248,6 @@ function sendDataAndGoToTour(lang){
   goToStep("tourDiv", "tour");
 }
 
-/* --- FUNKCIJA ZA MAPE --- */
 function openMap() {
     var mapPath = "";
     var lang = selectedLang.toLowerCase(); 
@@ -281,7 +296,16 @@ function submitTour(type){
     let block = document.createElement("div"); 
     block.style.cssText = "width:100%; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #555;";
     var title = document.createElement("p"); 
-    title.textContent = (index === 0) ? introTranslations[selectedLang] : "Stop " + index;
+    
+    // LOGIKA ZA NAZIVE STOPA
+    if (index === 0) {
+        title.textContent = introTranslations[selectedLang];
+    } else if (type === 'cabrio' && cabrioStopNames[selectedLang] && cabrioStopNames[selectedLang][index-1]) {
+        title.textContent = cabrioStopNames[selectedLang][index-1];
+    } else {
+        title.textContent = "Stop " + index;
+    }
+
     title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; 
