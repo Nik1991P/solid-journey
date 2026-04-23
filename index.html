@@ -233,7 +233,7 @@ function openMap() {
     var mapPath = "";
     if (currentTourType === "old") mapPath = "images/map-old.jpg"; 
     else if (currentTourType === "walls") mapPath = "images/map-walls.jpg";
-    else if (currentTourType === "cabrio") mapPath = "images/map-cabrio.jpg";
+    else if (currentTourType === "cabrio") mapPath = "images/map-cabrio.png";
     if(mapPath) {
         var mapWindow = window.open("");
         mapWindow.document.write(`<html><head><title>Map</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; } img { max-width: 100%; height: auto; }</style></head><body><img src="${mapPath}" /></body></html>`);
