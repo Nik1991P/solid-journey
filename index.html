@@ -297,7 +297,6 @@ function submitTour(type){
     block.style.cssText = "width:100%; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #555;";
     var title = document.createElement("p"); 
     
-    // LOGIKA ZA NAZIVE STOPA
     if (index === 0) {
         title.textContent = introTranslations[selectedLang];
     } else if (type === 'cabrio' && cabrioStopNames[selectedLang] && cabrioStopNames[selectedLang][index-1]) {
@@ -309,12 +308,25 @@ function submitTour(type){
     title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; 
-    audio.preload = "none";
-    audio.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
-    audio.onplay = function() { document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); };
+    audio.preload = "metadata"; // Poboljšano za iOS
+    audio.playsInline = true;
+
+    var source = document.createElement("source");
+    source.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
+    source.type = "audio/mpeg";
+    
+    audio.appendChild(source);
+    
+    audio.onplay = function() { 
+        document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
+    };
+
     block.appendChild(title); 
     block.appendChild(audio); 
     container.appendChild(block);
+    
+    // Prisila učitavanja za Safari
+    audio.load();
   }
 
   if(hasIntro) { createAudioBlock(0); }
