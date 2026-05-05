@@ -308,11 +308,16 @@ function submitTour(type){
     title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; 
-    audio.preload = "metadata"; // Poboljšano za iOS
+    audio.preload = "metadata"; 
     audio.playsInline = true;
 
+    // Popravak za iPhone: Prisilna mala slova i izbjegavanje cache-a
+    var langPath = selectedLang.toLowerCase();
+    var typePath = type.toLowerCase();
+    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3?v=" + new Date().getTime();
+
     var source = document.createElement("source");
-    source.src = baseUrl + "audio/" + selectedLang.toLowerCase() + "/" + type + "/" + index + ".mp3";
+    source.src = finalUrl;
     source.type = "audio/mpeg";
     
     audio.appendChild(source);
@@ -325,7 +330,6 @@ function submitTour(type){
     block.appendChild(audio); 
     container.appendChild(block);
     
-    // Prisila učitavanja za Safari
     audio.load();
   }
 
