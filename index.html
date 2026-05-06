@@ -95,6 +95,7 @@ audio { width:100% !important; margin-top:10px; display: block; }
       <button onclick="sendDataAndGoToTour('FR')">Français</button><br>
       <button onclick="sendDataAndGoToTour('RU')">Pусский</button><br>
       <button onclick="sendDataAndGoToTour('PL')">Polski</button><br>
+      <button onclick="sendDataAndGoToTour('FI')">Suomi</button><br>
       <button onclick="sendDataAndGoToTour('SV')">Svenska</button><br>
       <button onclick="sendDataAndGoToTour('CS')">Čeština</button><br>
       <button onclick="sendDataAndGoToTour('ZH')">中文</button><br>
@@ -137,6 +138,7 @@ var tours = {
     FR:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
     RU:{old:{count:36, intro:true}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}},
     PL:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}}, 
+    FI:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}},
     SV:{old:{count:38, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}},
     CS:{old:{count:37, intro:false}, walls:{count:27, intro:false}, cabrio:{count:8, intro:false}}, 
     ZH:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}},
@@ -153,6 +155,7 @@ var tourTranslations = {
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
+    FI:{old:"Vanhakaupunki", walls:"Muuri", cabrio:"Cabrio-kierros", map:"Näytä kartta"},
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
@@ -170,6 +173,7 @@ var cabrioStopNames = {
     FR: ["Départ de Pile", "Nouvelle partie de la ville", "Port Gruž", "Ragusa", "Nouveau pont", "Lokrum", "Panoramique", "Retour à Pile"],
     RU: ["Отправление от Пиле", "Новая часть города", "Порт Груж", "Рагуза", "Новый мост", "Локрум", "Панорамный", "Возвращение на Пиле"],
     PL: ["Odjazd z Pile", "Nowa część miasta", "Port Gruž", "Ragusa", "Nowy most", "Lokrum", "Panoramiczny", "Powrót na Pile"],
+    FI: ["Lähtö Pileltä", "Kaupungin uusi osa", "Port Gruž", "Ragusa", "Uusi silta", "Lokrum", "Panoraama", "Paluu Pilelle"],
     SV: ["Avgång från Pile", "Ny del av staden", "Port Gruž", "Ragusa", "Nya bron", "Lokrum", "Panoramisk", "Återresa till Pile"],
     CS: ["Odjezd z Pile", "Nová část města", "Port Gruž", "Ragusa", "Nový most", "Lokrum", "Panoramatický", "Návrat na Pile"],
     ZH: ["从 Pile 出发", "城市新区", "Gruž 港", "Ragusa", "新大桥", "Lokrum", "全景", "返回 Pile"],
@@ -286,7 +290,7 @@ function submitTour(type){
   var container = document.getElementById("audioList");
   container.innerHTML = "";
   
-  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
+  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", FI:"Johdanto", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
   var tourData = tours[selectedLang][type];
   var count = tourData.count;
   var hasIntro = tourData.intro;
