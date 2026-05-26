@@ -23,8 +23,8 @@ audio { width:100% !important; margin-top:10px; display: block; }
 .social-links { display: flex; justify-content: center; align-items: center; gap: 25px; margin-bottom: 20px; }
 .icon-wrapper { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .app-icon { height: 35px; width: auto; object-fit: contain; }
-.fb-fix { transform: scale(0.85); }
-.book-fix { transform: scale(1.3); }
+.fb-fix { transform: scale(0.85); } 
+.book-fix { transform: scale(1.3); }  
 .contact-info { font-size: 14px; line-height: 1.8; margin-top: 10px; color: #ddd; }
 .contact-info a { color: #0a7cff; text-decoration: none; font-weight: bold; }
 
@@ -159,7 +159,7 @@ var tourTranslations = {
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
-    TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
+    TR:{old:"Eski Şehir", whites:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
 };
 
@@ -171,7 +171,7 @@ var cabrioStopNames = {
     PT: ["Partida de Pile", "Nova parte da cidade", "Porto Gruž", "Ragusa", "Nova ponte", "Lokrum", "Panorâmico", "Regresso a Pile"],
     ES: ["Salida de Pile", "Nueva parte de la ciudad", "Puerto Gruž", "Ragusa", "Nuevo puente", "Lokrum", "Panorámico", "Regreso a Pile"],
     FR: ["Départ de Pile", "Nouvelle partie de la ville", "Port Gruž", "Ragusa", "Nouveau pont", "Lokrum", "Panoramique", "Retour à Pile"],
-    RU: ["Отправление от Пиле", "Новая часть города", "Порт Груж", "Рагуза", "Новый мост", "Локрум", "Панорамный", "Возвращение на Пиле"],
+    RU: ["Отправление от Пиле", "Новая часть города", "Порт Gruž", "Рагуза", "Новый мост", "Локрум", "Панорамный", "Возвращение на Пиле"],
     PL: ["Odjazd z Pile", "Nowa część miasta", "Port Gruž", "Ragusa", "Nowy most", "Lokrum", "Panoramiczny", "Powrót na Pile"],
     FI: ["Lähtö Pileltä", "Kaupungin uusi osa", "Port Gruž", "Ragusa", "Uusi silta", "Lokrum", "Panoraama", "Paluu Pilelle"],
     SV: ["Avgång från Pile", "Ny del av staden", "Port Gruž", "Ragusa", "Nya bron", "Lokrum", "Panoramisk", "Återresa till Pile"],
@@ -312,14 +312,18 @@ function submitTour(type){
     title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; 
-    audio.preload = "auto"; 
-    audio.setAttribute('playsinline', '');
+    audio.preload = "metadata"; 
+    audio.playsInline = true;
 
     var langPath = selectedLang.toLowerCase();
     var typePath = type.toLowerCase();
     var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3?v=" + new Date().getTime();
 
-    audio.src = finalUrl;
+    var source = document.createElement("source");
+    source.src = finalUrl;
+    source.type = "audio/mpeg";
+     
+    audio.appendChild(source);
      
     audio.onplay = function() { 
         document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
