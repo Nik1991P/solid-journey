@@ -24,7 +24,7 @@ audio { width:100% !important; margin-top:10px; display: block; }
 .icon-wrapper { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .app-icon { height: 35px; width: auto; object-fit: contain; }
 .fb-fix { transform: scale(0.85); } 
-.book-fix { transform: scale(1.3); }  
+.book-fix { transform: scale(1.3); }   
 .contact-info { font-size: 14px; line-height: 1.8; margin-top: 10px; color: #ddd; }
 .contact-info a { color: #0a7cff; text-decoration: none; font-weight: bold; }
 
@@ -213,7 +213,7 @@ function validateForm(){
   var surname = document.getElementById("surname").value.trim();
   var phoneRaw = document.getElementById("phone").value.trim();
   var errorDiv = document.getElementById("formError");
-  
+   
   var nameRegex = /^[a-zA-ZčćžđšČĆŽĐŠ\s]+$/;
   var strictPhoneRegex = /^[+]?[0-9\s]+$/;
 
@@ -268,7 +268,7 @@ function openMap() {
 
 function submitTour(type){
   currentTourType = type;
-  
+   
   var storageKey = "sent_" + selectedLang + "_" + type; 
   var alreadySent = localStorage.getItem(storageKey);
 
@@ -279,7 +279,7 @@ function submitTour(type){
       "&phone=" + encodeURIComponent(formData.phone) + 
       "&jezik=" + encodeURIComponent(selectedLang) +
       "&tourType=" + encodeURIComponent(type);
-      
+       
     fetch(url).then(() => {
       localStorage.setItem(storageKey, "true");
     }).catch(e => console.log("Excel error"));
@@ -289,7 +289,7 @@ function submitTour(type){
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
   var container = document.getElementById("audioList");
   container.innerHTML = "";
-  
+   
   var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", FI:"Johdanto", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
   var tourData = tours[selectedLang][type];
   var count = tourData.count;
@@ -300,55 +300,10 @@ function submitTour(type){
     let block = document.createElement("div"); 
     block.style.cssText = "width:100%; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #555;";
     var title = document.createElement("p"); 
-    
+     
     if (index === 0) {
         title.textContent = introTranslations[selectedLang];
     } else if (type === 'cabrio' && cabrioStopNames[selectedLang] && cabrioStopNames[selectedLang][index-1]) {
         title.textContent = cabrioStopNames[selectedLang][index-1];
     } else {
-        title.textContent = "Stop " + index;
-    }
-
-    title.style.fontWeight = "bold";
-    var audio = document.createElement("audio"); 
-    audio.controls = true; 
-    audio.preload = "metadata"; 
-    audio.playsInline = true;
-
-    // Popravak za iPhone: Prisilna mala slova i izbjegavanje cache-a
-    var langPath = selectedLang.toLowerCase();
-    var typePath = type.toLowerCase();
-    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3?v=" + new Date().getTime();
-
-    var source = document.createElement("source");
-    source.src = finalUrl;
-    source.type = "audio/mpeg";
-    
-    audio.appendChild(source);
-    
-    audio.onplay = function() { 
-        document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
-    };
-
-    block.appendChild(title); 
-    block.appendChild(audio); 
-    container.appendChild(block);
-    
-    audio.load();
-  }
-
-  if(hasIntro) { createAudioBlock(0); }
-  for(let i=1; i<=count; i++){ createAudioBlock(i); }
-}
-
-function togglePasswordVisibility() {
-  var input = document.getElementById("passwordInput");
-  input.type = (input.type === "password") ? "text" : "password";
-}
-function backToStart() { goToStep("passwordDiv", "password"); }
-function backToForm(){ goToStep("formDiv", "form"); }
-function backToLanguage(){ goToStep("languageDiv", "language"); }
-function backToTour(){ goToStep("tourDiv", "tour"); }
-</script>
-</body>
-</html>
+        title.textContent = "
