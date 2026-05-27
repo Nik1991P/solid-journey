@@ -23,8 +23,8 @@ audio { width:100% !important; margin-top:10px; display: block; }
 .social-links { display: flex; justify-content: center; align-items: center; gap: 25px; margin-bottom: 20px; }
 .icon-wrapper { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .app-icon { height: 35px; width: auto; object-fit: contain; }
-.fb-fix { transform: scale(0.85); } 
-.book-fix { transform: scale(1.3); }  
+.fb-fix { transform: scale(0.85); }
+.book-fix { transform: scale(1.3); }
 .contact-info { font-size: 14px; line-height: 1.8; margin-top: 10px; color: #ddd; }
 .contact-info a { color: #0a7cff; text-decoration: none; font-weight: bold; }
 
@@ -60,13 +60,13 @@ audio { width:100% !important; margin-top:10px; display: block; }
         <p class="follow-us-text">Follow us</p>
         <div class="social-links">
           <a href="https://www.facebook.com/share/1C7DNxVRLL/" target="_blank" class="icon-wrapper fb-fix">
-            <img src="images/facebook-icon.png" class="app-icon">
+            <img src="images/facebook-icon.png" class="app-icon" alt="Facebook">
           </a>
           <a href="https://www.instagram.com/hoponhopoffdubrovnik?igsh=MW43YWR0eHJnbDE0dg==" target="_blank" class="icon-wrapper">
-            <img src="images/instagram-icon.png" class="app-icon">
+            <img src="images/instagram-icon.png" class="app-icon" alt="Instagram">
           </a>
           <a href="https://hop-on-hop-off-dubrovnik.com/" target="_blank" class="icon-wrapper book-fix">
-            <img src="images/booking-icon.png" class="app-icon">
+            <img src="images/booking-icon.png" class="app-icon" alt="Booking">
           </a>
         </div>
         <div class="contact-info">
@@ -159,7 +159,7 @@ var tourTranslations = {
     SV:{old:"Gamla stan", walls:"Murarna", cabrio:"Cabrio Tour", map:"Visa karta"},
     CS:{old:"Staré Město", walls:"Hradby", cabrio:"Cabrio Tour", map:"Zobrazit mapu"},
     ZH:{old:"老城", walls:"城墙", cabrio:"敞篷巴士之旅", map:"查看地图"},
-    TR:{old:"Eski Şehir", whites:"Surlar", cabrio:"Cabrio Turu", map:"Haritayı Görüntüle"},
+    TR:{old:"Eski Şehir", walls:"Surlar", cabrio:"Haritayı Görüntüle"}, 
     HR:{old:"Stari Grad", walls:"Zidine", cabrio:"Cabrio tura", map:"Vidi kartu"} 
 };
 
@@ -180,20 +180,32 @@ var cabrioStopNames = {
     TR: ["Pile'den hareket", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
 };
 
-// POPRAVLJENO: Fizička tipka za nazad na mobitelu sada točno prati sve korake unazad i NE izbacuje klijenta iz aplikacije
+// Praćenje fizičke tipke za nazad na mobitelu
 window.onpopstate = function(event) {
-  if (currentStep === "form") backToStart();
-  else if (currentStep === "language") backToForm();
-  else if (currentStep === "tour") backToLanguage();
-  else if (currentStep === "audio") backToTour();
+  if (event.state && event.state.step) {
+     updateStepUI(event.state.step);
+  } else {
+     updateStepUI("password");
+  }
 };
 
-function goToStep(stepId, stepName) {
+function updateStepUI(stepName) {
+  currentStep = stepName;
   document.querySelectorAll('.container').forEach(div => div.style.display = 'none');
-  document.getElementById(stepId).style.display = 'block';
+  
+  if (stepName === "password") document.getElementById("passwordDiv").style.display = 'block';
+  else if (stepName === "form") document.getElementById("formDiv").style.display = 'block';
+  else if (stepName === "language") document.getElementById("languageDiv").style.display = 'block';
+  else if (stepName === "tour") document.getElementById("tourDiv").style.display = 'block';
+  else if (stepName === "audio") document.getElementById("audioListDiv").style.display = 'block';
+  
   document.querySelector('.scroll-container').scrollTop = 0;
+}
+
+function goToStep(stepId, stepName) {
   currentStep = stepName;
   history.pushState({step: stepName}, "");
+  updateStepUI(stepName);
 }
 
 function checkPassword(){
@@ -206,7 +218,7 @@ function checkPassword(){
         errorDiv.classList.remove("show");
         goToStep("formDiv", "form");
       } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
-  });
+  }).catch(e => { errorDiv.textContent = "Connection error"; });
 }
 
 function validateForm(){
@@ -280,7 +292,7 @@ function submitTour(type){
       "&phone=" + encodeURIComponent(formData.phone) + 
       "&jezik=" + encodeURIComponent(selectedLang) +
       "&tourType=" + encodeURIComponent(type);
-       
+        
     fetch(url).then(() => {
       localStorage.setItem(storageKey, "true");
     }).catch(e => console.log("Excel error"));
@@ -291,7 +303,7 @@ function submitTour(type){
   var container = document.getElementById("audioList");
   container.innerHTML = "";
    
-  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", FI:"Johdanto", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriš", HR:"Uvod" };
+  var introTranslations = { EN:"Introduction", DE:"Einleitung", IT:"Introduzione", PT:"Introdução", ES:"Introducción", FR:"Introduction", RU:"Введение", PL:"Wprowadzenie", FI:"Johdanto", SV:"Introduktion", CS:"Úvod", ZH:"介绍", TR:"Giriş", HR:"Uvod" };
   var tourData = tours[selectedLang][type];
   var count = tourData.count;
   var hasIntro = tourData.intro;
@@ -311,22 +323,19 @@ function submitTour(type){
     }
 
     title.style.fontWeight = "bold";
+    
     var audio = document.createElement("audio"); 
     audio.controls = true; 
-    
-    // POPRAVLJENO: Vraćen sigurni "metadata" preload kako se mobiteli ne bi gasili iz čista mira
     audio.preload = "metadata"; 
-    audio.playsInline = true;
+    audio.setAttribute("playsinline", "true");
 
     var langPath = selectedLang.toLowerCase();
     var typePath = type.toLowerCase();
-    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3?v=" + new Date().getTime();
-
-    var source = document.createElement("source");
-    source.src = finalUrl;
-    source.type = "audio/mpeg";
-     
-    audio.appendChild(source);
+    
+    // POPRAVAK: Maknut dynamic timestamp koji na iOS-u lomi prepoznavanje MP3-a i dodijeljen izravan 'src'
+    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3";
+    audio.src = finalUrl;
+    audio.type = "audio/mpeg";
      
     audio.onplay = function() { 
         document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
@@ -336,8 +345,9 @@ function submitTour(type){
     block.appendChild(audio); 
     container.appendChild(block);
      
-    // POPRAVLJENO: Poziva se load() tek nakon što je element kreiran, što rješava problem s iPhoneom, ali bez rušenja memorije
-    audio.load();
+    setTimeout(function() {
+        audio.load();
+    }, 50);
   }
 
   if(hasIntro) { createAudioBlock(0); }
@@ -348,10 +358,11 @@ function togglePasswordVisibility() {
   var input = document.getElementById("passwordInput");
   input.type = (input.type === "password") ? "text" : "password";
 }
-function backToStart() { goToStep("passwordDiv", "password"); }
-function backToForm(){ goToStep("formDiv", "form"); }
-function backToLanguage(){ goToStep("languageDiv", "language"); }
-function backToTour(){ goToStep("tourDiv", "tour"); }
+
+function backToStart() { history.back(); }
+function backToForm(){ history.back(); }
+function backToLanguage(){ history.back(); }
+function backToTour(){ history.back(); }
 </script>
 </body>
 </html>
