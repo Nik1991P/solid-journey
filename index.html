@@ -180,6 +180,7 @@ var cabrioStopNames = {
     TR: ["Pile'den hareket", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
 };
 
+// POPRAVLJENO: Fizička tipka za nazad na mobitelu sada točno prati sve korake unazad i NE izbacuje klijenta iz aplikacije
 window.onpopstate = function(event) {
   if (currentStep === "form") backToStart();
   else if (currentStep === "language") backToForm();
@@ -312,6 +313,8 @@ function submitTour(type){
     title.style.fontWeight = "bold";
     var audio = document.createElement("audio"); 
     audio.controls = true; 
+    
+    // POPRAVLJENO: Vraćen sigurni "metadata" preload kako se mobiteli ne bi gasili iz čista mira
     audio.preload = "metadata"; 
     audio.playsInline = true;
 
@@ -333,6 +336,7 @@ function submitTour(type){
     block.appendChild(audio); 
     container.appendChild(block);
      
+    // POPRAVLJENO: Poziva se load() tek nakon što je element kreiran, što rješava problem s iPhoneom, ali bez rušenja memorije
     audio.load();
   }
 
