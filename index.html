@@ -333,9 +333,16 @@ function submitTour(type){
     var typePath = type.toLowerCase();
     
     // POPRAVAK: Maknut dynamic timestamp koji na iOS-u lomi prepoznavanje MP3-a i dodijeljen izravan 'src'
-    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index + ".mp3";
-    audio.src = finalUrl;
+    var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index;
+
+// Ako je jezik poljski (PL), koristi .m4a format, za sve ostale ostaje standardni .mp3
+if (selectedLang === "PL") {
+    audio.type = "audio/mp4"; // Ovo govori iPhoneu da se radi o M4A/AAC formatu
+    audio.src = finalUrl + ".m4a";
+} else {
     audio.type = "audio/mpeg";
+    audio.src = finalUrl + ".mp3";
+}
      
     audio.onplay = function() { 
         document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
