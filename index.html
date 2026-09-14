@@ -128,6 +128,12 @@ var formData = {};
 var selectedLang = "";
 var currentStep = "password";
 var currentTourType = "";
+var cachedPassword = "";
+
+// Preuzmi lozinku u pozadini čim se stranica učita da provjera bude trenutačna
+fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
+    cachedPassword = pass.trim();
+}).catch(e => console.log("Pass prefetch error"));
 
 var tours = { 
     EN:{old:{count:37, intro:false}, walls:{count:16, intro:false}, cabrio:{count:8, intro:false}}, 
@@ -211,14 +217,26 @@ function goToStep(stepId, stepName) {
 function checkPassword(){
   var input = document.getElementById("passwordInput").value;
   var errorDiv = document.getElementById("passwordError");
-  errorDiv.textContent = "Checking...";
-  errorDiv.classList.add("show");
-  fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
-      if(input === pass.trim()){
+
+  if(cachedPassword !== "") {
+      if(input === cachedPassword){
         errorDiv.classList.remove("show");
         goToStep("formDiv", "form");
-      } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
-  }).catch(e => { errorDiv.textContent = "Connection error"; });
+      } else { 
+        errorDiv.textContent = "Wrong password"; 
+        errorDiv.classList.add("show"); 
+      }
+  } else {
+      errorDiv.textContent = "Checking...";
+      errorDiv.classList.add("show");
+      fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
+          cachedPassword = pass.trim();
+          if(input === cachedPassword){
+            errorDiv.classList.remove("show");
+            goToStep("formDiv", "form");
+          } else { errorDiv.textContent = "Wrong password"; errorDiv.classList.add("show"); }
+      }).catch(e => { errorDiv.textContent = "Connection error"; });
+  }
 }
 
 function validateForm(){
@@ -274,8 +292,14 @@ function openMap() {
         mapPath = "images/map-" + lang + "-" + currentTourType + ".jpg";
     }
     if(mapPath) {
-        var mapWindow = window.open("");
-        mapWindow.document.write(`<html><head><title>Map</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; } img { max-width: 100%; height: auto; }</style></head><body><img src="${mapPath}" onerror="this.src='images/map-old.jpg';" /></body></html>`);
+        var newWin = window.open("", "_blank");
+        if (newWin) {
+            newWin.document.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Map</title><style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}img{max-width:100%;max-height:100%;object-fit:contain;}.close-btn{position:fixed;top:15px;right:15px;background:rgba(0,0,0,0.8);color:white;border:2px solid white;border-radius:50%;width:45px;height:45px;font-size:24px;font-weight:bold;cursor:pointer;display:flex;justify-content:center;align-items:center;z-index:9999;}</style></head><body>');
+            newWin.document.write('<button class="close-btn" onclick="window.close()">×</button>');
+            newWin.document.write('<img src="' + mapPath + '" onerror="this.src=\'images/map-old.jpg\';">');
+            newWin.document.write('</body></html>');
+            newWin.document.close();
+        }
     }
 }
 
@@ -332,12 +356,10 @@ function submitTour(type){
     var langPath = selectedLang.toLowerCase();
     var typePath = type.toLowerCase();
     
-    // POPRAVAK: Maknut dynamic timestamp koji na iOS-u lomi prepoznavanje MP3-a i dodijeljen izravan 'src'
     var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index;
 
-// Ako je jezik poljski (PL), koristi .m4a format, za sve ostale ostaje standardni .mp3
 if (selectedLang === "PL") {
-    audio.type = "audio/mp4"; // Ovo govori iPhoneu da se radi o M4A/AAC formatu
+    audio.type = "audio/mp4"; 
     audio.src = finalUrl + ".m4a";
 } else {
     audio.type = "audio/mpeg";
