@@ -130,7 +130,6 @@ var currentStep = "password";
 var currentTourType = "";
 var cachedPassword = "";
 
-// Preuzmi lozinku u pozadini čim se stranica učita da provjera bude trenutačna
 fetch(scriptUrl + "?checkPass=true").then(r => r.text()).then(pass => {
     cachedPassword = pass.trim();
 }).catch(e => console.log("Pass prefetch error"));
@@ -158,7 +157,7 @@ var tourTranslations = {
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     PT:{old:"Cidade Velha", walls:"Muralhas", cabrio:"Tour em Cabrio", map:"Ver Mapa"}, 
     ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
-    FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour en Cabrio", map:"Voir la Carte"}, 
+    FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour em Cabrio", map:"Voir la Carte"}, 
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
     FI:{old:"Vanhakaupunki", walls:"Muuri", cabrio:"Cabrio-kierros", map:"Näytä kartta"},
@@ -186,7 +185,6 @@ var cabrioStopNames = {
     TR: ["Pile'den hareket", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
 };
 
-// Praćenje fizičke tipke za nazad na mobitelu
 window.onpopstate = function(event) {
   if (event.state && event.state.step) {
      updateStepUI(event.state.step);
@@ -294,9 +292,9 @@ function openMap() {
     if(mapPath) {
         var newWin = window.open("", "_blank");
         if (newWin) {
-            newWin.document.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Map</title><style>body{margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}img{max-width:100%;max-height:100%;object-fit:contain;}.close-btn{position:fixed;top:15px;right:15px;background:rgba(0,0,0,0.8);color:white;border:2px solid white;border-radius:50%;width:45px;height:45px;font-size:24px;font-weight:bold;cursor:pointer;display:flex;justify-content:center;align-items:center;z-index:9999;}</style></head><body>');
+            newWin.document.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Map</title><style>html, body { width: 100%; height: 100%; margin: 0; padding: 0; background: #000; overflow: hidden; } .map-container { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; } img { max-width: 100%; max-height: 100%; object-fit: contain; } .close-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: white; border: 2px solid white; border-radius: 50%; width: 45px; height: 45px; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 9999; }</style></head><body>');
             newWin.document.write('<button class="close-btn" onclick="window.close()">×</button>');
-            newWin.document.write('<img src="' + mapPath + '" onerror="this.src=\'images/map-old.jpg\';">');
+            newWin.document.write('<div class="map-container"><img src="' + mapPath + '" onerror="this.src=\'images/map-old.jpg\';"></div>');
             newWin.document.write('</body></html>');
             newWin.document.close();
         }
@@ -306,6 +304,13 @@ function openMap() {
 function submitTour(type){
   currentTourType = type;
    
+  if (!formData.name || !selectedLang) {
+      goToStep("audioListDiv", "audio");
+      document.getElementById("mapBtn").textContent = tourTranslations[selectedLang] ? tourTranslations[selectedLang].map : "View Map";
+      renderAudioList(type);
+      return;
+  }
+
   var storageKey = "sent_" + selectedLang + "_" + type; 
   var alreadySent = localStorage.getItem(storageKey);
 
@@ -324,6 +329,10 @@ function submitTour(type){
 
   goToStep("audioListDiv", "audio");
   document.getElementById("mapBtn").textContent = tourTranslations[selectedLang].map;
+  renderAudioList(type);
+}
+
+function renderAudioList(type) {
   var container = document.getElementById("audioList");
   container.innerHTML = "";
    
@@ -358,14 +367,14 @@ function submitTour(type){
     
     var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index;
 
-if (selectedLang === "PL") {
-    audio.type = "audio/mp4"; 
-    audio.src = finalUrl + ".m4a";
-} else {
-    audio.type = "audio/mpeg";
-    audio.src = finalUrl + ".mp3";
-}
-     
+    if (selectedLang === "PL") {
+        audio.type = "audio/mp4"; 
+        audio.src = finalUrl + ".m4a";
+    } else {
+        audio.type = "audio/mpeg";
+        audio.src = finalUrl + ".mp3";
+    }
+         
     audio.onplay = function() { 
         document.querySelectorAll('audio').forEach(other => { if (other !== this) other.pause(); }); 
     };
