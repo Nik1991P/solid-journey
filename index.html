@@ -158,7 +158,7 @@ var tourTranslations = {
     DE:{old:"Altstadt", walls:"Stadtmauern", cabrio:"Cabrio Tour", map:"Karte ansehen"}, 
     IT:{old:"Centro Storico", walls:"Mura", cabrio:"Tour in Cabrio", map:"Vedi Mappa"}, 
     PT:{old:"Cidade Velha", walls:"Muralhas", cabrio:"Tour em Cabrio", map:"Ver Mapa"}, 
-    ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour en Cabrio", map:"Ver Mapa"}, 
+    ES:{old:"Ciudad Vieja", walls:"Murallas", cabrio:"Tour em Cabrio", map:"Ver Mapa"}, 
     FR:{old:"Vieille Ville", walls:"Remparts", cabrio:"Tour em Cabrio", map:"Voir la Carte"}, 
     RU:{old:"Старый город", walls:"Сtenы", cabrio:"Кабrio тур", map:"Посмотреть карту"},
     PL:{old:"Stare Miasto", walls:"Mury", cabrio:"Wycieczka Cabrio", map:"Zobacz mapę"},
@@ -298,7 +298,7 @@ function openMap() {
         img.src = mapPath;
         var newWin = window.open("", "_blank");
         if (newWin) {
-            newWin.document.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3.0, user-scalable=yes"><title>Map</title><style>html, body { width: 100%; height: 100%; margin: 0; padding: 0; background: #000; overflow: auto; } .map-container { width: 100%; min-height: 100%; display: flex; justify-content: center; align-items: center; } img { width: 100%; height: auto; object-fit: contain; } .close-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: white; border: 2px solid white; border-radius: 50%; width: 45px; height: 45px; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 9999; }</style></head><body>');
+            newWin.document.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"><title>Map</title><style>html, body { width: 100%; height: 100%; margin: 0; padding: 0; background: #000; overflow: auto; display: flex; justify-content: center; align-items: center; } .map-container { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; touch-action: auto; } img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; } .close-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: white; border: 2px solid white; border-radius: 50%; width: 45px; height: 45px; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 9999; }</style></head><body>');
             newWin.document.write('<button class="close-btn" onclick="window.close()">×</button>');
             newWin.document.write('<div class="map-container"><img src="' + mapPath + '" onerror="this.src=\'images/map-old.jpg\';"></div>');
             newWin.document.write('</body></html>');
