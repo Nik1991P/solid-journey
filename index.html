@@ -186,7 +186,7 @@ var cabrioStopNames = {
     SV: ["Avgång från Pile", "Ny del av staden", "Port Gruž", "Ragusa", "Nya bron", "Lokrum", "Panoramisk", "Återresa till Pile"],
     CS: ["Odjezd z Pile", "Nová část města", "Port Gruž", "Ragusa", "Nový most", "Lokrum", "Panoramatický", "Návrat na Pile"],
     ZH: ["从 Pile 出发", "城市新区", "Gruž 港", "Ragusa", "新大桥", "Lokrum", "全景", "返回 Pile"],
-    TR: ["Pile'den hareket", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
+    TR: ["Pile'ye dönüş", "Şehrin yeni bölgesi", "Gruž Limanı", "Ragusa", "Yeni köprü", "Lokrum", "Panoramik", "Pile'ye dönüş"]
 };
 
 window.onpopstate = function(event) {
@@ -356,7 +356,8 @@ function renderAudioList(type) {
     if (index === 0) {
         title.textContent = introTranslations[selectedLang];
     } else if (type === 'cabrio' && cabrioStopNames[selectedLang] && cabrioStopNames[selectedLang][index-1]) {
-        title.textContent = cabrioStopNames[selectedLang][index-1];
+        var prefix = (selectedLang === 'HR' || selectedLang === 'BS' || selectedLang === 'SR') ? "Broj " : "Stop ";
+        title.textContent = prefix + index + " - " + cabrioStopNames[selectedLang][index-1];
     } else {
         title.textContent = "Stop " + index;
     }
