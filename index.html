@@ -374,7 +374,8 @@ function renderAudioList(type) {
     
     var finalUrl = baseUrl + "audio/" + langPath + "/" + typePath + "/" + index;
 
-    if (selectedLang === "PL" || selectedLang === "EL") {
+    // OVDJE JE JEDINA IZMJENA: Poljski za cabrio koristi .m4a, a za ostalo .mp3
+    if (selectedLang === "EL" || (selectedLang === "PL" && type === "cabrio")) {
         audio.type = "audio/mp4"; 
         audio.src = finalUrl + ".m4a";
     } else if (selectedLang === "ZH") {
